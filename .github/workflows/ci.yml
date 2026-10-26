@@ -58,7 +58,7 @@ jobs:
           CHROME_PATH: /usr/bin/google-chrome
       - name: Upload measurements
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: perf-budget
           path: .perf/budget.json
