@@ -23,14 +23,14 @@ export function Form({ demo, action, method, ...rest }: FormHTMLAttributes<HTMLF
  * One FAQ entry: <details>/<summary> normally, a static block on demo pages. The question is an <h3>, so FAQs sit in
  * the page outline under their section's <h2>; the answer is in the HTML either way (crawlable without JavaScript).
  */
-export function FaqItem({ demo, q, a }: Demo & { q: string; a: string }) {
+export function FaqItem({ demo, q, a, open = false }: Demo & { q: string; a: string; open?: boolean }) {
   return demo ? (
     <div className="faq-static">
       <h3 className="faq-q">{q}</h3>
       <p>{a}</p>
     </div>
   ) : (
-    <details>
+    <details open={open || undefined}>
       <summary>
         <h3 className="faq-q">{q}</h3>
       </summary>

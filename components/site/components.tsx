@@ -16,11 +16,13 @@ import {
 import { personAlt } from '../../lib/render/alt.ts';
 import { officialLabel, type SiteContext } from '../../lib/render/context.ts';
 import { A, Button, Crest, Form, Photo } from './primitives.tsx';
+import { formatLine, offering } from './sections.tsx';
 
 /**
- * Roster card for one person, used on the home page, roster, profiles and hospitality page. `level` is the name's
- * heading level: 3 under a section's <h2>, 2 where the cards sit directly under the page's <h1> (the roster).
- * `eager` loads the photo straight away (cards in the first viewport); others load lazily.
+ * Roster card for one person, used on the home page, roster, categories and profiles. `level` is the name's heading
+ * level: 3 under a section's <h2>, 2 where the cards sit directly under the page's <h1> (the roster).
+ * `eager` loads the photo straight away (cards in the first viewport); others load lazily. The data-* attributes feed
+ * the roster filters (lib/behaviour.ts).
  */
 export function Card({ ctx, person, level = 3, eager = false }: { ctx: SiteContext; person: Person; level?: 2 | 3; eager?: boolean }) {
   const { base, demo } = ctx;
@@ -31,6 +33,7 @@ export function Card({ ctx, person, level = 3, eager = false }: { ctx: SiteConte
       className="card"
       data-role={person.role}
       data-era={person.era}
+      data-formats={person.formats.join(' ')}
       data-search={`${person.name} ${person.short} ${person.talks.join(' ')}`.toLowerCase()}
     >
       <A demo={demo} href={href} tabIndex={-1} aria-hidden="true">
@@ -49,17 +52,10 @@ export function Card({ ctx, person, level = 3, eager = false }: { ctx: SiteConte
         </Heading>
         <div className="meta">{person.short}</div>
         <div className="hon">{person.honour}</div>
-        <ul className="tags" aria-label={`${person.first} talks about`}>
-          {person.talks.slice(0, 3).map(talk => (
-            <li key={talk}>{talk}</li>
-          ))}
-        </ul>
-        <div className="act">
-          <A demo={demo} href={href}>
-            View <span className="sr-only">{person.name}'s </span>profile →
-          </A>
-          <ShortlistButton ctx={ctx} person={person} />
-        </div>
+      </div>
+      <div className="ft">
+        <span className="fmts">{formatLine(person, 2)}</span>
+        <ShortlistButton ctx={ctx} person={person} />
       </div>
     </article>
   );
@@ -120,7 +116,11 @@ export function Beyond({ ctx }: { ctx: SiteContext }) {
   );
 }
 
-/** Numbered grid of booking formats; detailed adds the description and example items. `level` as for Card. */
+/**
+ * Booking formats. The short form (home page) is a grid: title, one line and how many people offer it, linking to the
+ * format on the ways-to-book page. `detailed` (the ways-to-book page) is one anchored row per format: description,
+ * what's included, how many offer it and the actions. `level` as for Card.
+ */
 export function WaysGrid({
   ctx,
   keys,
@@ -132,29 +132,60 @@ export function WaysGrid({
   detailed?: boolean;
   level?: 2 | 3;
 }) {
+  const { site, base, demo } = ctx;
   const Heading = level === 2 ? 'h2' : 'h3';
+  if (!detailed)
+    return (
+      <div className="ways">
+        {keys.map(key => {
+          const format = ctx.FORMATS[key];
+          const count = offering(site.people, key);
+          return (
+            <div className="way" key={key}>
+              <Heading>{format.title}</Heading>
+              <p>{format.short}</p>
+              <A demo={demo} className="more" href={`${base}/legends?format=${key}`}>
+                {count} {count === 1 ? 'speaker' : 'speakers'} available <span aria-hidden="true">→</span>
+              </A>
+            </div>
+          );
+        })}
+      </div>
+    );
   return (
-    <div className="ways">
+    <ol className="fmt-rows">
       {keys.map((key, i) => {
         const format = ctx.FORMATS[key];
+        const count = offering(site.people, key);
         return (
-          <div className="way" key={key}>
-            <div className="n" aria-hidden="true">
-              {i + 1}
+          <li className="fmt-row" id={key} key={key}>
+            <span className="n" aria-hidden="true">
+              {String(i + 1).padStart(2, '0')}
+            </span>
+            <div className="what">
+              <Heading>{format.title}</Heading>
+              <p>{format.desc}</p>
             </div>
-            <Heading>{format.title}</Heading>
-            <p>{detailed ? format.desc : format.short}</p>
-            {detailed ? (
+            <div className="incl">
+              <span className="eyebrow">Includes</span>
               <ul>
                 {format.items.map(item => (
                   <li key={item}>{item}</li>
                 ))}
               </ul>
-            ) : null}
-          </div>
+            </div>
+            <div className="go">
+              <A demo={demo} className="more" href={`${base}/legends?format=${key}`}>
+                See {count} {count === 1 ? 'speaker' : 'speakers'} <span aria-hidden="true">→</span>
+              </A>
+              <A demo={demo} className="btn btn-line" href={`${base}/check-availability`}>
+                Check availability
+              </A>
+            </div>
+          </li>
         );
       })}
-    </div>
+    </ol>
   );
 }
 
@@ -307,7 +338,7 @@ function EnquiryForm({ ctx, idPrefix, state }: { ctx: SiteContext; idPrefix: str
           disabled={demo || undefined}
         />
       </div>
-      <Button demo={demo} className="btn btn-blue" type="submit">
+      <Button demo={demo} className="btn btn-cta btn-lg" type="submit">
         Check availability →
       </Button>
       <Consent ctx={ctx} />

@@ -1,6 +1,9 @@
 // Page chrome shared by every page of every site: utility bar, header and nav, footer.
 import type { ReactNode } from 'react';
+import type { FormatKey } from '../../lib/content/types.ts';
+import { categoryRoles } from '../../lib/render/category.ts';
 import { PEPTALK, type SiteContext } from '../../lib/render/context.ts';
+import { categoryPath } from '../../lib/render/routes.ts';
 import type { Crumb, Node } from '../../lib/seo/jsonld.ts';
 import { Behaviour } from '../behaviour.tsx';
 import { Concept } from '../concept.tsx';
@@ -44,25 +47,35 @@ export function SiteLayout({
 }
 
 /**
- * The utility bar (crest, tagline, "Powered by PepTalk") and the header: the organisation's mark and the platform name,
- * the menu button, the nav (switched-off pages left out; `path` marks the current section) and the main call to action.
+ * The utility bar (crest and tagline; the no-obligation promise and the PepTalk operator mark) and the header: the
+ * organisation's mark and the platform name, the menu button, the nav (switched-off pages left out; `path` marks the
+ * current section; the venue-hire link when the site has one) and the main call to action.
  */
 export function SiteHeader({ ctx, path }: { ctx: SiteContext; path: string }) {
   const { site, base, pages, v, nl, demo } = ctx;
   const nav = (
-    [
-      ['/legends', nl.legends],
-      pages.waysToBook && ['/ways-to-book', nl.ways],
-      pages.hospitality && ['/hospitality', nl.hospitality],
-      pages.about && ['/about', nl.about],
-    ].filter(Boolean) as [string, string][]
+    [['/legends', nl.legends], pages.waysToBook && ['/ways-to-book', nl.ways], pages.about && ['/about', nl.about]].filter(Boolean) as [
+      string,
+      string,
+    ][]
   ).map(([href, label]) => (
     <li key={href}>
-      <A demo={demo} href={`${base}${href}`} aria-current={path.startsWith(href) ? 'page' : undefined}>
+      <A
+        demo={demo}
+        href={`${base}${href}`}
+        aria-current={path.startsWith(href) || (href === '/legends' && path.startsWith('/category')) ? 'page' : undefined}
+      >
         {label}
       </A>
     </li>
   ));
+  const venue = site.eventSpaces?.url ? (
+    <li>
+      <A demo={demo} href={site.eventSpaces.url} target="_blank" rel="noopener">
+        Event spaces<span className="sr-only"> (opens in a new tab)</span>
+      </A>
+    </li>
+  ) : null;
   const small = v.officialSmall ?? `Official ${site.orgName}`;
   return (
     <>
@@ -72,9 +85,13 @@ export function SiteHeader({ ctx, path }: { ctx: SiteContext; path: string }) {
             <Crest ctx={ctx} size="xs" />
             {site.tagline}
           </span>
-          <A demo={demo} href={PEPTALK} rel="noopener">
-            Powered by PepTalk
-          </A>
+          <span className="util-r">
+            <span className="promise">Free, no-obligation enquiries</span>
+            <A demo={demo} className="op" href={PEPTALK} rel="noopener">
+              Operated by {/* biome-ignore lint/performance/noImgElement: PepTalk's own logo file. */}
+              <img className="pt-logo" src="/peptalk/logo.png" alt="PepTalk" width={62} height={16} />
+            </A>
+          </span>
         </div>
       </div>
       <header className="nav">
@@ -104,9 +121,12 @@ export function SiteHeader({ ctx, path }: { ctx: SiteContext; path: string }) {
           <Button demo={demo} className="menu-btn" type="button" aria-expanded="false" aria-controls="menu" aria-label="Menu">
             ☰
           </Button>{' '}
-          <ul id="menu">{nav}</ul>{' '}
-          <A demo={demo} className="btn btn-blue cta" href={`${base}/check-availability`}>
-            Check availability
+          <ul id="menu">
+            {nav}
+            {venue}
+          </ul>{' '}
+          <A demo={demo} className="btn btn-cta cta" href={`${base}/check-availability`}>
+            Check availability <span aria-hidden="true">→</span>
           </A>
         </div>
       </header>
@@ -114,74 +134,80 @@ export function SiteHeader({ ctx, path }: { ctx: SiteContext; path: string }) {
   );
 }
 
-/** The footer: crest, motto and entity sentence, role links, booking links, about links, legal links and the PepTalk line. */
+/** The footer: the organisation's mark and entity sentence, category links, booking links, about links, legal links and the PepTalk line. */
 export function SiteFooter({ ctx }: { ctx: SiteContext }) {
-  const { site, base, pages, v, nl, demo } = ctx;
+  const { site, base, pages, v, nl, FORMATS, demo } = ctx;
   return (
     <footer>
       <div className="wrap">
         <div className="fgrid">
-          <div>
-            <Crest ctx={ctx} size="lg" />
-            {site.motto ? <div className="motto">{site.motto}</div> : null}
+          <div className="fbrand">
+            {site.navMark === 'wordmark' && site.marks.wordmark ? (
+              // biome-ignore lint/performance/noImgElement: partner marks are hotlinked, unmodified files.
+              <img className="wordmark" src={site.marks.wordmark} alt={site.orgName} width={141} height={24} loading="lazy" />
+            ) : (
+              <Crest ctx={ctx} size="lg" />
+            )}
             <p className="fstate">{site.entity}</p>
           </div>
           <div>
             <h2>{nl.legends}</h2>
             <ul>
-              {site.roles.map(role => (
+              {categoryRoles(site).map(role => (
                 <li key={role.key}>
-                  <A demo={demo} href={`${base}/legends?role=${role.key}`}>
+                  <A demo={demo} href={categoryPath(base, role)}>
                     {role.label}
                   </A>
                 </li>
               ))}
+              <li>
+                <A demo={demo} href={`${base}/legends`}>
+                  All {v.legendsNoun}
+                </A>
+              </li>
             </ul>
           </div>
+          {pages.waysToBook ? (
+            <div>
+              <h2>{nl.ways}</h2>
+              <ul>
+                {(Object.keys(FORMATS) as FormatKey[]).slice(0, 5).map(key => (
+                  <li key={key}>
+                    <A demo={demo} href={`${base}/ways-to-book#${key}`}>
+                      {FORMATS[key].title}
+                    </A>
+                  </li>
+                ))}
+                {pages.hospitality ? (
+                  <li>
+                    <A demo={demo} href={`${base}/hospitality`}>
+                      {nl.hospitality}
+                    </A>
+                  </li>
+                ) : null}
+              </ul>
+            </div>
+          ) : null}
           <div>
-            <h2>Book a {v.legendNoun}</h2>
+            <h2>{nl.about}</h2>
             <ul>
+              {pages.about ? (
+                <>
+                  <li>
+                    <A demo={demo} href={`${base}/about`}>
+                      About this platform
+                    </A>
+                  </li>
+                  <li>
+                    <A demo={demo} href={`${base}/about#faq`}>
+                      FAQs
+                    </A>
+                  </li>
+                </>
+              ) : null}
               <li>
                 <A demo={demo} href={`${base}/check-availability`}>
                   Check availability
-                </A>
-              </li>
-              {pages.waysToBook ? (
-                <li>
-                  <A demo={demo} href={`${base}/ways-to-book`}>
-                    Ways to book
-                  </A>
-                </li>
-              ) : null}
-              {pages.hospitality ? (
-                <li>
-                  <A demo={demo} href={`${base}/hospitality`}>
-                    {nl.hospitality}
-                  </A>
-                </li>
-              ) : null}
-              {pages.about ? (
-                <li>
-                  <A demo={demo} href={`${base}/about#faq`}>
-                    FAQs
-                  </A>
-                </li>
-              ) : null}
-            </ul>
-          </div>
-          <div>
-            <h2>About the platform</h2>
-            <ul>
-              {pages.about ? (
-                <li>
-                  <A demo={demo} href={`${base}/about`}>
-                    About this platform
-                  </A>
-                </li>
-              ) : null}
-              <li>
-                <A demo={demo} href={PEPTALK} rel="noopener">
-                  About PepTalk
                 </A>
               </li>
               <li>
@@ -205,7 +231,8 @@ export function SiteFooter({ ctx }: { ctx: SiteContext }) {
             </A>
           </span>
           <A demo={demo} className="ppl" href={PEPTALK} rel="noopener">
-            Bookings, contracting &amp; payments powered by <i>PepTalk</i>
+            Operated by {/* biome-ignore lint/performance/noImgElement: PepTalk's own logo file. */}
+            <img className="pt-logo" src="/peptalk/logo.png" alt="PepTalk" width={69} height={18} loading="lazy" />
           </A>
         </div>
       </div>
@@ -222,6 +249,7 @@ export function SimplePage({
   lead,
   graph,
   crumbs,
+  extra,
   children,
 }: {
   ctx: SiteContext;
@@ -231,6 +259,8 @@ export function SimplePage({
   lead?: string | null;
   graph: Node;
   crumbs: Crumb[];
+  /** Shown under the heading row (jump links on ways to book, filters on the roster). */
+  extra?: ReactNode;
   children: ReactNode;
 }) {
   return (
@@ -238,8 +268,11 @@ export function SimplePage({
       <section className="page-head">
         <div className="wrap">
           <span className="eyebrow">{eyebrow}</span>
-          <h1 className="disp">{title}</h1>
-          {lead ? <p className="lead">{lead}</p> : null}
+          <div className="ph-row">
+            <h1 className="disp">{title}</h1>
+            {lead ? <p className="lead">{lead}</p> : null}
+          </div>
+          {extra}
         </div>
       </section>
       {children}

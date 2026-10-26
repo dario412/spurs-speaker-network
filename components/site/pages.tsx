@@ -1,11 +1,14 @@
-// Inner pages of a site: roster, profile, ways to book, hospitality, about, enquiry, legal; and the profile's sections,
-// exported so the component gallery (/_gallery) can show each on its own.
-import type { FormatKey, LegalDoc, Person } from '../../lib/content/types.ts';
+// Inner pages of a site: roster, category, profile, ways to book, hospitality, about, enquiry, legal; and the profile's
+// sections, exported so the component gallery (/_gallery) can show each on its own.
+import type { FormatKey, LegalDoc, Person, Role } from '../../lib/content/types.ts';
 import { personAlt } from '../../lib/render/alt.ts';
-import { PEPTALK, type SiteContext } from '../../lib/render/context.ts';
+import { categoryRoles, peopleIn, topItems } from '../../lib/render/category.ts';
+import type { SiteContext } from '../../lib/render/context.ts';
 import { renderMarkdown } from '../../lib/render/markdown-view.ts';
+import { categoryPath } from '../../lib/render/routes.ts';
 import {
   aboutCopy,
+  categoryCopy,
   checkAvailabilityCopy,
   hospitalityCopy,
   legalCopy,
@@ -17,7 +20,8 @@ import {
 import { type Crumb, faqNode, peopleListNode, personNode, servicesNode, siteGraph } from '../../lib/seo/jsonld.ts';
 import { Availability, Beyond, Card, FormSection, Official, ShortlistButton, WaysGrid } from './components.tsx';
 import { SimplePage, SiteLayout } from './layout.tsx';
-import { A, Button, Crest, FaqItem, Photo } from './primitives.tsx';
+import { A, Button, FaqItem, Photo } from './primitives.tsx';
+import { CtaBand, FaqBlock, FORMAT_SHORT, HowItWorks, offering, RoleList } from './sections.tsx';
 
 /** Home, then the given trail. The visible breadcrumbs and the BreadcrumbList use the same list. */
 const trail = ({ home }: SiteContext, ...rest: Crumb[]): Crumb[] => [{ name: 'Home', path: home }, ...rest];
@@ -28,12 +32,30 @@ const EAGER_CARDS = 3;
 /** Display titles of booking formats, in the given order. */
 const formatTitles = ({ FORMATS }: SiteContext, keys: FormatKey[]): string[] => keys.map(key => FORMATS[key].title);
 
+const lower = (text: string) => text.charAt(0).toLowerCase() + text.slice(1);
+
+/** The "not sure who to book?" tile closing a grid of cards (not a .card, so the roster filters leave it alone). */
+export function HelpTile({ ctx }: { ctx: SiteContext }) {
+  const { base, v, demo } = ctx;
+  return (
+    <div className="help-tile">
+      <div>
+        <span className="eyebrow">Not sure who to book?</span>
+        <p className="big">Tell us about your event. We’ll suggest the right fit.</p>
+        <p>A free shortlist from the PepTalk bookings team, matched to your audience and budget.</p>
+      </div>
+      <A demo={demo} className="btn btn-cta" href={`${base}/check-availability`}>
+        Get a shortlist of {v.legendsNoun} <span aria-hidden="true">→</span>
+      </A>
+    </div>
+  );
+}
+
 export function LegendsPage({ ctx }: { ctx: SiteContext }) {
-  const { site, base, v, nl, demo } = ctx;
-  const chips: [string, string][] = [['', 'All'], ...site.roles.map(role => [role.key, role.label] as [string, string])];
+  const { site, base, v, nl, FORMATS, demo } = ctx;
   const path = `${base}/legends`;
   const crumbs = trail(ctx, { name: nl.legends, path });
-  const heading = `${site.short} ${v.legendsNoun}`;
+  const heading = `All ${site.short} ${v.legendsNoun}`;
   const graph = siteGraph({
     ctx,
     path,
@@ -43,49 +65,74 @@ export function LegendsPage({ ctx }: { ctx: SiteContext }) {
     crumbs,
     mainEntity: peopleListNode(ctx, site.people, ctx.url(path), heading),
   });
+  const tabs: [string, string, number][] = [
+    ['', 'All', site.people.length],
+    ...categoryRoles(site).map(role => [role.key, role.label, peopleIn(site, role).length] as [string, string, number]),
+  ];
+  const offered = (Object.keys(FORMATS) as FormatKey[]).filter(key => offering(site.people, key) > 0);
   return (
     <SiteLayout ctx={ctx} path="/legends" graph={graph} crumbs={crumbs}>
       <section className="page-head">
         <div className="wrap">
           <span className="eyebrow">The roster</span>
-          <h1 className="disp">
-            {site.short} {v.legendsNoun}
-          </h1>
-          <p className="lead">{v.rosterLead}</p>
+          <div className="ph-row">
+            <h1 className="disp">{heading}</h1>
+            <p className="lead">{v.rosterLead}</p>
+          </div>
         </div>
       </section>
-      <section className="block first">
+      <section className="block first roster">
         <div className="wrap" data-roster="">
-          {/* biome-ignore lint/a11y/useSemanticElements: a <fieldset> would restyle the chip row; role="group" names it for assistive tech. */}
-          <div className="filters" role="group" aria-label="Filter by role">
-            {chips.map(([key, label]) => (
+          {/* biome-ignore lint/a11y/useSemanticElements: a <fieldset> would restyle the tab row; role="group" names it for assistive tech. */}
+          <div className="filters tabs" role="group" aria-label="Filter by role">
+            {tabs.map(([key, label, count]) => (
               <Button demo={demo} key={key} className="chip" type="button" data-filter="role" data-value={key} aria-pressed={key === ''}>
-                {label}
+                {label} <small>{count}</small>
               </Button>
             ))}
           </div>
-          {/* biome-ignore lint/a11y/useSemanticElements: a <fieldset> would restyle the chip row; role="group" names it for assistive tech. */}
-          <div className="filters" role="group" aria-label="Filter by era">
-            {site.eras.map(era => (
-              <Button demo={demo} key={era.key} className="chip" type="button" data-filter="era" data-value={era.key} aria-pressed="false">
-                {era.label}
-              </Button>
-            ))}
-            <label className="chip searchbox">
+          <div className="filter-row">
+            <label className="select">
+              <span className="sr-only">Era</span>
+              <select data-filter="era" disabled={demo || undefined}>
+                <option value="">Any era</option>
+                {site.eras.map(era => (
+                  <option key={era.key} value={era.key}>
+                    {era.label}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label className="select">
+              <span className="sr-only">Format</span>
+              <select data-filter="format" disabled={demo || undefined}>
+                <option value="">Any format</option>
+                {offered.map(key => (
+                  <option key={key} value={key}>
+                    {FORMATS[key].title}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label className="searchbox">
               <input
                 className="roster-q"
                 type="search"
-                placeholder="Search name or theme"
+                placeholder="Search by name or topic, e.g. leadership"
                 aria-label={`Search ${v.legendsNoun}`}
                 disabled={demo || undefined}
               />
             </label>
           </div>
+          <p className="count" data-count="" aria-live="polite">
+            Showing {site.people.length} of {site.people.length} {v.legendsNoun}
+          </p>
           {/* The cards sit directly under the page's <h1>, so their names are <h2>s. */}
           <div className="grid">
             {site.people.map((person, i) => (
               <Card key={person.slug} ctx={ctx} person={person} level={2} eager={i < EAGER_CARDS} />
             ))}
+            {site.people.length ? <HelpTile ctx={ctx} /> : null}
           </div>
           {/* Shown by the filters when nothing matches; shown from the start (no script needed) when the roster is empty. */}
           <p className="empty" hidden={site.people.length > 0}>
@@ -101,13 +148,172 @@ export function LegendsPage({ ctx }: { ctx: SiteContext }) {
   );
 }
 
-export function ProfilePage({ ctx, person }: { ctx: SiteContext; person: Person }) {
+/** The questions a category page answers, built from its people (formats and topics) plus the shared booking FAQ. */
+export function categoryFaq(ctx: SiteContext, role: Role, people: Person[]): { q: string; a: string }[] {
+  const { site, FORMATS } = ctx;
+  const label = lower(role.label);
+  const [cost, leadTime] = ctx.faq();
+  const formats = (Object.keys(FORMATS) as FormatKey[])
+    .map(key => ({ key, count: offering(people, key) }))
+    .filter(({ count }) => count > 0)
+    .sort((a, b) => b.count - a.count);
+  const topics = topItems(
+    people.map(person => person.talks),
+    5,
+  ).map(({ item }) => lower(item));
+  return [
+    { q: `How much does it cost to book ${site.short} ${label}?`, a: cost.a },
+    {
+      q: `Which formats do ${site.short} ${label} offer?`,
+      a: `${listText(formats.map(({ key, count }) => `${FORMATS[key].title} (${count} of ${people.length})`))}.`,
+    },
+    ...(topics.length ? [{ q: `What do ${site.short} ${label} talk about?`, a: `Most often: ${listText(topics)}.` }] : []),
+    leadTime,
+  ];
+}
+
+export function CategoryPage({ ctx, role }: { ctx: SiteContext; role: Role }) {
   const { site, base, v, nl, FORMATS, demo } = ctx;
+  const people = peopleIn(site, role);
+  const path = categoryPath(base, role);
+  const url = ctx.url(path);
+  const crumbs = trail(ctx, { name: nl.legends, path: `${base}/legends` }, { name: role.label, path });
+  const copy = categoryCopy(ctx, role, people);
+  const faq = categoryFaq(ctx, role, people);
+  const graph = siteGraph({
+    ctx,
+    path,
+    type: 'CollectionPage',
+    name: role.label,
+    description: copy.description,
+    crumbs,
+    image: role.image ? site.images[role.image] : null,
+    mainEntity: peopleListNode(ctx, people, url, `${site.short} ${lower(role.label)}`),
+    extra: [faqNode(faq, url, ctx)],
+  });
+  const formats = (Object.keys(FORMATS) as FormatKey[])
+    .map(key => ({ key, count: offering(people, key) }))
+    .filter(({ count }) => count > 0)
+    .sort((a, b) => b.count - a.count);
+  const topics = topItems(
+    people.map(person => person.talks),
+    8,
+  );
+  const label = lower(role.label);
+  return (
+    <SiteLayout ctx={ctx} path="/category" graph={graph} crumbs={crumbs}>
+      <section className="c-hero">
+        <div className="split-hero">
+          <div className="copy">
+            <div className="badges">
+              <span className="badge light">Category</span>
+              <span className="badge-note">
+                {people.length} {people.length === 1 ? 'speaker' : 'speakers'}
+              </span>
+            </div>
+            <h1 className="disp">{role.label}</h1>
+            <p className="lead">
+              Book {site.orgName} {label} for {listText(formats.slice(0, 3).map(({ key }) => lower(FORMATS[key].title)))}. {role.blurb}
+            </p>
+            <div className="ctas">
+              <A demo={demo} className="btn btn-cta btn-lg" href={`${base}/check-availability`}>
+                Check availability <span aria-hidden="true">→</span>
+              </A>
+              <A demo={demo} className="quiet" href="#people">
+                See all {people.length}
+              </A>
+            </div>
+          </div>
+          {role.image ? (
+            <Photo ctx={ctx} id={role.image} cls="top media" slot="profile" alt={`${role.label}, ${site.orgName}`} priority />
+          ) : null}
+        </div>
+      </section>
+      <nav className="cat-tabs" aria-label="Categories">
+        <div className="wrap">
+          <A demo={demo} href={`${base}/legends`}>
+            All {v.legendsNoun} <small>{site.people.length}</small>
+          </A>
+          {categoryRoles(site).map(other => (
+            <A demo={demo} key={other.key} href={categoryPath(base, other)} aria-current={other.key === role.key ? 'page' : undefined}>
+              {other.label} <small>{peopleIn(site, other).length}</small>
+            </A>
+          ))}
+        </div>
+      </nav>
+      <section className="block first" id="people" aria-labelledby="people-title">
+        <div className="wrap">
+          <h2 className="count" id="people-title">
+            {people.length} {label}
+          </h2>
+          <div className="grid g3">
+            {people.map((person, i) => (
+              <Card key={person.slug} ctx={ctx} person={person} eager={i < 3} />
+            ))}
+            <HelpTile ctx={ctx} />
+          </div>
+        </div>
+      </section>
+      <section className="block tint" aria-labelledby="topics-title">
+        <div className="wrap side-head">
+          <div className="intro">
+            <span className="eyebrow">What they talk about</span>
+            <h2 className="disp" id="topics-title">
+              Topics &amp; formats
+            </h2>
+            <p className="lead">
+              What {site.short} {label} are booked for most, from their own profiles.
+            </p>
+          </div>
+          <div className="topic-cols">
+            <div>
+              <h3>Popular topics</h3>
+              <ul className="tags big">
+                {topics.map(({ item, count }) => (
+                  <li key={item}>
+                    {item} {count > 1 ? <small>{count}</small> : null}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div>
+              <h3>Formats offered</h3>
+              <ul className="fmt-count">
+                {formats.map(({ key, count }) => (
+                  <li key={key}>
+                    <A demo={demo} href={ctx.pages.waysToBook ? `${base}/ways-to-book#${key}` : `${base}/legends?format=${key}`}>
+                      {FORMATS[key].title}
+                    </A>
+                    <span>
+                      {count} of {people.length}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+      <FaqBlock ctx={ctx} faq={faq} title={`${role.label}, answered.`} />
+      <RoleList ctx={ctx} eyebrow="Other categories" title="Explore another category." exclude={role.key} tint />
+      <CtaBand ctx={ctx} title={`Bring ${role.singular ? `a ${lower(role.singular)}` : `${site.short} ${label}`} to your next event.`} />
+    </SiteLayout>
+  );
+}
+
+export function ProfilePage({ ctx, person }: { ctx: SiteContext; person: Person }) {
+  const { site, base, v, nl, demo } = ctx;
   const others = site.people.filter(other => other.slug !== person.slug);
-  const sims = [...others.filter(other => other.role === person.role), ...others.filter(other => other.role !== person.role)].slice(0, 3);
+  const sims = [...others.filter(other => other.role === person.role), ...others.filter(other => other.role !== person.role)].slice(0, 4);
   const path = `${base}/legends/${person.slug}`;
   const url = ctx.url(path);
-  const crumbs = trail(ctx, { name: nl.legends, path: `${base}/legends` }, { name: person.name, path });
+  const role = site.roles.find(candidate => candidate.key === person.role);
+  const crumbs = trail(
+    ctx,
+    { name: nl.legends, path: `${base}/legends` },
+    ...(role && peopleIn(site, role).length ? [{ name: role.label, path: categoryPath(base, role) }] : []),
+    { name: person.name, path },
+  );
   const faq = ctx.faq(person);
   const graph = siteGraph({
     ctx,
@@ -120,45 +326,48 @@ export function ProfilePage({ ctx, person }: { ctx: SiteContext; person: Person 
     mainEntity: personNode(ctx, person),
     extra: [faqNode(faq, url, ctx)],
   });
-  const tags = (items: string[], label: string) => (
-    <ul className="tags" aria-label={label}>
+  const tags = (items: string[], label: string, cls = 'tags') => (
+    <ul className={cls} aria-label={label}>
       {items.map(item => (
         <li key={item}>{item}</li>
       ))}
     </ul>
   );
-  const pastEvents = v.pastEvents ?? [
-    ['Matchday hospitality · placeholder', `Partner lounge host, ${site.stadium}`, '120 guests · pre-match Q&A and table visits'],
-    ['Keynote · placeholder', 'Sales kick-off, London', '400 delegates · 40-minute keynote and Q&A'],
-  ];
   return (
     <SiteLayout ctx={ctx} path="/legends" graph={graph} crumbs={crumbs}>
       <ProfileHero ctx={ctx} person={person} />
       <nav className="subnav" aria-label="Profile sections">
         <div className="wrap">
-          {(
-            [
-              ['overview', 'Overview'],
-              ['career', 'Career'],
-              ['talks', 'Talks about'],
-              ['formats', 'Ways to book'],
-              ['gallery', 'Gallery'],
-              ['events', 'Past events'],
-              ['faq', 'FAQ'],
-              ['book', 'Book'],
-            ] as const
-          ).map(([id, label]) => (
-            <A demo={demo} key={id} href={`#${id}`}>
-              {label}
+          <span className="links">
+            {(
+              [
+                ['overview', 'At a glance'],
+                ['about', 'About'],
+                ['career', 'Career'],
+                ['talks', 'Talks about'],
+                ['formats', 'Ways to book'],
+                ['gallery', 'Gallery'],
+                ['faq', 'FAQ'],
+              ] as const
+            ).map(([id, label]) => (
+              <A demo={demo} key={id} href={`#${id}`}>
+                {label}
+              </A>
+            ))}
+          </span>
+          <span className="sub-cta">
+            <b>{person.first}</b>
+            <A demo={demo} className="btn btn-cta btn-sm" href={`${base}/check-availability?legend=${person.slug}`}>
+              Check availability
             </A>
-          ))}
+          </span>
         </div>
       </nav>
       <div className="wrap pbody">
-        <div>
+        <div className="pmain">
           <AtAGlance ctx={ctx} person={person} />{' '}
           <section className="bio" id="about">
-            <span className="eyebrow">Overview</span>
+            <span className="eyebrow">About</span>
             <h2>About {person.first}</h2>
             {person.bio.map(paragraph => (
               <p key={paragraph}>{paragraph}</p>
@@ -172,7 +381,7 @@ export function ProfilePage({ ctx, person }: { ctx: SiteContext; person: Person 
             <div className="taglists">
               <div>
                 <h3>Talks about</h3>
-                {tags(person.talks, `${person.first} talks about`)}
+                {tags(person.talks, `${person.first} talks about`, 'tags line')}
               </div>
               <div>
                 <h3>Great for</h3>
@@ -184,71 +393,31 @@ export function ProfilePage({ ctx, person }: { ctx: SiteContext; person: Person 
               </div>
             </div>
           </section>{' '}
-          <section id="formats">
-            <span className="eyebrow">Ways to book</span>
-            <h2>How you can work with {person.first}</h2>{' '}
-            <div className="formats">
-              {person.formats.map(key => {
-                const format = FORMATS[key];
-                return (
-                  <div className="fmt" key={key}>
-                    <h3>{format.title}</h3>
-                    <p>{format.desc}</p>
-                    <ul>
-                      {format.items.map(item => (
-                        <li key={item}>{item}</li>
-                      ))}
-                    </ul>
-                  </div>
-                );
-              })}
-            </div>
-          </section>{' '}
-          <ProfileGallery ctx={ctx} person={person} />{' '}
-          <section id="events">
-            <span className="eyebrow">Past events</span>
-            <h2>Recent appearances</h2>{' '}
-            <div className="events">
-              {pastEvents.map(([kind, title, detail]) => (
-                <div className="ev" key={title}>
-                  <small>{kind}</small>
-                  <h3>{title}</h3>
-                  <p>{detail}</p>
-                </div>
-              ))}
-            </div>{' '}
-            {/* An unattributed, site-level placeholder: never marked up as a Review (docs/architecture.md). */}
-            <figure className="tq">
-              <blockquote>{v.profileQuote}</blockquote>
-              <figcaption>
-                <cite>{v.quoteCite}</cite>
-              </figcaption>
-            </figure>
-          </section>{' '}
+          <ProfileFormats ctx={ctx} person={person} /> <ProfileGallery ctx={ctx} person={person} />{' '}
           <section className="faq" id="faq">
             <span className="eyebrow">FAQ</span>
             <h2>Booking {person.first}</h2>
-            {faq.map(({ q, a }) => (
-              <FaqItem key={q} demo={demo} q={q} a={a} />
+            {faq.map(({ q, a }, i) => (
+              <FaqItem key={q} demo={demo} q={q} a={a} open={i === 0} />
             ))}
-          </section>{' '}
-          <ClosingBand ctx={ctx} person={person} />
+          </section>
         </div>{' '}
         <BookingCard ctx={ctx} person={person} />
       </div>
+      <ClosingBand ctx={ctx} person={person} />
       {/* A site with one person has nobody else to suggest; the section (and its heading) is left out. */}
       {sims.length ? (
-        <section className="sim">
+        <section className="sim block tint">
           <div className="wrap">
             <div className="head">
               <div>
                 <span className="eyebrow">You might also like</span>
                 <h2 className="disp">
-                  More {site.short} {v.legendsNoun}
+                  More {site.short} {v.legendsNoun}.
                 </h2>
               </div>
-              <A demo={demo} href={`${base}/legends`}>
-                See all {v.legendsNoun}
+              <A demo={demo} className="more" href={`${base}/legends`}>
+                See all {v.legendsNoun} <span aria-hidden="true">→</span>
               </A>
             </div>{' '}
             <div className="grid">
@@ -263,40 +432,42 @@ export function ProfilePage({ ctx, person }: { ctx: SiteContext; person: Person 
   );
 }
 
-/** The profile hero: official label, role and era pills, name, position, calls to action, key stats and the photo. */
+/** The profile hero: badges, name, position, line, calls to action and availability beside the photo; key stats below. */
 export function ProfileHero({ ctx, person }: { ctx: SiteContext; person: Person }) {
-  const { site, eraLabel, v, demo } = ctx;
+  const { site, base, eraLabel, v, demo } = ctx;
   return (
     <section className="p-hero">
-      <div className="wrap">
-        <div>
-          <Official ctx={ctx} label={v.officialLegendLabel ?? `Official ${site.orgName} ${v.legendNoun}`} />
-          <div className="pills">
+      <div className="split-hero">
+        <div className="copy">
+          <div className="badges">
+            <Official ctx={ctx} label={v.officialLegendLabel ?? `Official ${site.short} ${v.legendNoun}`} />
             <span className="pill">{person.roleLabel}</span>
-            <span className="pill alt">{eraLabel(person.era)}</span>
+            <span className="pill">{eraLabel(person.era)}</span>
           </div>
           <h1 className="disp">{person.name}</h1>
           <div className="pos">{person.pos}</div>
           <p className="line">{person.line}</p>
           <div className="ctas">
-            <A demo={demo} className="btn btn-blue" href="#book">
-              Check {person.first}'s availability →
+            <A demo={demo} className="btn btn-cta btn-lg" href={`${base}/check-availability?legend=${person.slug}`}>
+              Check {person.first}'s availability <span aria-hidden="true">→</span>
             </A>
-            <ShortlistButton ctx={ctx} person={person} cls="btn btn-line shortlist" />
+            <ShortlistButton ctx={ctx} person={person} cls="btn btn-ghost shortlist" />
             <Availability person={person} />
           </div>
-          <dl className="kstats">
-            {person.stats.map(([value, caption]) => (
-              <div key={caption}>
-                <dt>
-                  <small>{caption}</small>
-                </dt>
-                <dd>{value}</dd>
-              </div>
-            ))}
-          </dl>
         </div>{' '}
-        <Photo ctx={ctx} id={person.hero} cls="top" slot="profile" alt={personAlt(person)} priority />
+        <Photo ctx={ctx} id={person.hero} cls="top media" slot="profile" alt={personAlt(person)} priority />
+      </div>
+      <div className="wrap">
+        <dl className="kstats">
+          {person.stats.map(([value, caption]) => (
+            <div key={caption}>
+              <dt>
+                <small>{caption}</small>
+              </dt>
+              <dd>{value}</dd>
+            </div>
+          ))}
+        </dl>
       </div>
     </section>
   );
@@ -334,7 +505,7 @@ export function AtAGlance({ ctx, person }: { ctx: SiteContext; person: Person })
   );
 }
 
-/** The career timeline: `[year, text]` entries, oldest first. */
+/** The career timeline: `[year, text]` entries, oldest first, laid out as a row. */
 export function Timeline({ ctx, person }: { ctx: SiteContext; person: Person }) {
   const { site, v } = ctx;
   return (
@@ -349,6 +520,37 @@ export function Timeline({ ctx, person }: { ctx: SiteContext; person: Person }) 
           </li>
         ))}
       </ol>
+    </section>
+  );
+}
+
+/** "How you can work with <name>": one tile per format, each starting an enquiry for this person. */
+export function ProfileFormats({ ctx, person }: { ctx: SiteContext; person: Person }) {
+  const { base, FORMATS, demo } = ctx;
+  return (
+    <section id="formats">
+      <span className="eyebrow">Ways to book</span>
+      <h2>How you can work with {person.first}</h2>{' '}
+      <div className="formats">
+        {person.formats.map(key => {
+          const format = FORMATS[key];
+          return (
+            <div className="fmt" key={key}>
+              <h3>{format.title}</h3>
+              <p>{format.desc}</p>
+              <ul>
+                {format.items.map(item => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+              <A demo={demo} className="more" href={`${base}/check-availability?legend=${person.slug}`}>
+                Enquire for {lower(FORMAT_SHORT[key])}
+                <span className="sr-only"> with {person.name}</span> <span aria-hidden="true">→</span>
+              </A>
+            </div>
+          );
+        })}
+      </div>
     </section>
   );
 }
@@ -380,20 +582,27 @@ export function ProfileGallery({ ctx, person }: { ctx: SiteContext; person: Pers
   );
 }
 
-/** The closing band at the foot of a profile: crest, a last call to action and a link to the enquiry form. */
+/** The closing band under a profile: a photo, a last call to action and a link to the enquiry form. */
 export function ClosingBand({ ctx, person }: { ctx: SiteContext; person: Person }) {
   const { base, demo } = ctx;
+  const photo = person.gallery.find(Boolean) ?? person.card;
   return (
-    <div className="closing">
-      <Crest ctx={ctx} size="xl" />
-      <div>
-        <h2>Bring {person.first} to your event</h2>
-        <p>Tell us your date and the PepTalk bookings team will come back within one working day.</p>
+    <section className="band closing" aria-labelledby="closing-title">
+      <div className="wrap">
+        <div className="who">
+          <Photo ctx={ctx} id={photo} cls="top thumb" slot="mini" alt="" />
+          <div>
+            <h2 className="disp" id="closing-title">
+              Bring {person.first} to your event.
+            </h2>
+            <p>Tell us your date and the PepTalk bookings team will come back with availability and an indicative fee.</p>
+          </div>
+        </div>
+        <A demo={demo} className="btn btn-cta btn-lg" href={`${base}/check-availability?legend=${person.slug}`}>
+          Check availability <span aria-hidden="true">→</span>
+        </A>
       </div>
-      <A demo={demo} className="btn btn-white" href={`${base}/check-availability?legend=${person.slug}`}>
-        Check availability →
-      </A>
-    </div>
+    </section>
   );
 }
 
@@ -403,43 +612,50 @@ export function BookingCard({ ctx, person }: { ctx: SiteContext; person: Person 
   const travelsFrom = person.travelsFrom ?? v.travelsFrom;
   return (
     <aside className="side" id="book" aria-label={`Book ${person.name}`}>
-      <h2>Book {person.first}</h2>
-      <div className="av">
-        <Availability person={person} />
-      </div>{' '}
-      <dl>
-        <div className="row">
-          <dt>Fee band</dt>
-          <dd>On enquiry</dd>
-        </div>{' '}
-        <div className="row">
-          <dt>Formats</dt>
-          <dd>{formatTitles(ctx, person.formats.slice(0, 3)).join(', ')}</dd>
-        </div>{' '}
-        <div className="row">
-          <dt>Travels from</dt>
-          <dd>{travelsFrom}</dd>
-        </div>{' '}
-        <div className="row">
-          <dt>Languages</dt>
-          <dd>{person.langs}</dd>
-        </div>{' '}
-        <div className="row">
-          <dt>Virtual</dt>
-          <dd>{person.formats.includes('virtual') ? 'Yes' : 'On request'}</dd>
+      <div className="side-head">
+        <Photo ctx={ctx} id={person.card} cls="top thumb" slot="mini" alt="" />
+        <div>
+          <h2>Book {person.first}</h2>
+          <div className="av">
+            <Availability person={person} />
+          </div>
         </div>
-      </dl>{' '}
-      <A demo={demo} className="btn btn-blue" href={`${base}/check-availability?legend=${person.slug}`}>
-        Check availability →
-      </A>{' '}
-      <ShortlistButton ctx={ctx} person={person} label="+ Add to shortlist" cls="btn btn-line shortlist" />{' '}
-      <p className="note">Handled by the PepTalk bookings team on behalf of {site.orgName}.</p>
+      </div>{' '}
+      <div className="side-body">
+        <dl>
+          <div className="row">
+            <dt>Fee</dt>
+            <dd>On enquiry</dd>
+          </div>{' '}
+          <div className="row">
+            <dt>Formats</dt>
+            <dd>{person.formats.map(key => FORMAT_SHORT[key]).join(', ')}</dd>
+          </div>{' '}
+          <div className="row">
+            <dt>Travels from</dt>
+            <dd>{travelsFrom}</dd>
+          </div>{' '}
+          <div className="row">
+            <dt>Languages</dt>
+            <dd>{person.langs}</dd>
+          </div>{' '}
+          <div className="row">
+            <dt>Virtual</dt>
+            <dd>{person.formats.includes('virtual') ? 'Yes' : 'On request'}</dd>
+          </div>
+        </dl>{' '}
+        <A demo={demo} className="btn btn-cta" href={`${base}/check-availability?legend=${person.slug}`}>
+          Check availability →
+        </A>{' '}
+        <ShortlistButton ctx={ctx} person={person} label="+ Add to shortlist" cls="btn btn-line shortlist" />{' '}
+        <p className="note">Handled by the PepTalk bookings team on behalf of {site.orgName}.</p>
+      </div>
     </aside>
   );
 }
 
 export function WaysToBookPage({ ctx }: { ctx: SiteContext }) {
-  const { site, base, v, FORMATS } = ctx;
+  const { site, base, v, FORMATS, demo } = ctx;
   const path = `${base}/ways-to-book`;
   const title = `Ways to book ${site.short} ${v.legendsNoun}`;
   const crumbs = trail(ctx, { name: 'Ways to book', path });
@@ -461,38 +677,29 @@ export function WaysToBookPage({ ctx }: { ctx: SiteContext }) {
       lead={v.waysLead ?? `From a keynote to a full matchday, here is how you can work with ${site.short} ${v.legendsNoun}.`}
       graph={graph}
       crumbs={crumbs}
+      extra={
+        <nav className="jump" aria-label="Formats">
+          {keys.map(key => (
+            <A demo={demo} key={key} href={`#${key}`}>
+              {FORMATS[key].title}
+            </A>
+          ))}
+        </nav>
+      }
     >
       <section className="block first">
         <div className="wrap">
           {/* Each format is a top-level section of this page, so its title is an <h2>. */}
-          <WaysGrid ctx={ctx} keys={keys} detailed level={2} />{' '}
-          <div className="head mt">
-            <div>
-              <span className="eyebrow">How it works</span>
-              <h2 className="disp">{v.howTitle}</h2>
-            </div>
-          </div>{' '}
-          <div className="ways">
-            <div className="way">
-              <div className="n">1</div>
-              <h3>Share your brief</h3>
-              <p>Date, audience, format and who you have in mind.</p>
-            </div>
-            <div className="way">
-              <div className="n">2</div>
-              <h3>Confirm availability</h3>
-              <p>{v.diaryCheck}</p>
-            </div>
-            <div className="way">
-              <div className="n">3</div>
-              <h3>Contract &amp; deliver</h3>
-              <p>PepTalk handles contracts, payment, briefing and logistics.</p>
-            </div>
-          </div>{' '}
+          <WaysGrid ctx={ctx} keys={keys} detailed level={2} />
+        </div>
+      </section>
+      <HowItWorks ctx={ctx} />
+      <section className="block">
+        <div className="wrap">
           <Beyond ctx={ctx} />
         </div>
       </section>
-      <FormSection ctx={ctx} />
+      <CtaBand ctx={ctx} />
     </SimplePage>
   );
 }
@@ -501,7 +708,7 @@ export function HospitalityPage({ ctx }: { ctx: SiteContext }) {
   const { site, base, v, nl, demo } = ctx;
   const path = `${base}/hospitality`;
   const crumbs = trail(ctx, { name: v.hospitalityTitle, path });
-  const hosts = site.people.filter(person => person.formats.includes('hospitality')).slice(0, 3);
+  const hosts = site.people.filter(person => person.formats.includes('hospitality')).slice(0, 4);
   const graph = siteGraph({ ctx, path, name: v.hospitalityTitle, description: hospitalityCopy(ctx).description, crumbs });
   return (
     <SimplePage
@@ -540,8 +747,8 @@ export function HospitalityPage({ ctx }: { ctx: SiteContext }) {
                 <span className="eyebrow">{nl.hospitality}</span>
                 <h2 className="disp">Popular hosts</h2>
               </div>
-              <A demo={demo} href={`${base}/legends`}>
-                See all {v.legendsNoun}
+              <A demo={demo} className="more" href={`${base}/legends?format=hospitality`}>
+                See all hosts <span aria-hidden="true">→</span>
               </A>
             </div>{' '}
             <div className="grid">
@@ -552,13 +759,13 @@ export function HospitalityPage({ ctx }: { ctx: SiteContext }) {
           </div>
         </section>
       ) : null}
-      <FormSection ctx={ctx} tint={false} />
+      <CtaBand ctx={ctx} />
     </SimplePage>
   );
 }
 
 export function AboutPage({ ctx }: { ctx: SiteContext }) {
-  const { site, base, v, demo } = ctx;
+  const { site, base, v, FORMATS, demo } = ctx;
   const path = `${base}/about`;
   const crumbs = trail(ctx, { name: v.aboutTitle, path });
   const faq = ctx.faq();
@@ -571,39 +778,70 @@ export function AboutPage({ ctx }: { ctx: SiteContext }) {
     crumbs,
     extra: [faqNode(faq, ctx.url(path), ctx)],
   });
+  const facts: [number, string][] = [
+    [site.people.length, `${v.legendsNoun.charAt(0).toUpperCase()}${v.legendsNoun.slice(1)} to book`],
+    [categoryRoles(site).length, 'Categories, from legends to today’s squad'],
+    [Object.keys(FORMATS).length, 'Ways to book, in person or virtual'],
+    [1, 'Team handling it all: PepTalk'],
+  ];
   return (
-    <SimplePage ctx={ctx} path="/about" eyebrow="About this platform" title={v.aboutTitle} lead={site.entity} graph={graph} crumbs={crumbs}>
-      <section className="block first">
-        <div className="wrap prose">
-          <p>
-            {site.platform}{' '}
-            {v.aboutLead ??
-              `brings together former ${site.orgName} players, managers and backroom staff, plus today's first-team squad, for keynotes, hospitality, brand partnerships and community work, all through one official platform.`}
-          </p>{' '}
-          <h2>Who runs the platform</h2>{' '}
-          <p>
-            The platform is operated by{' '}
-            <A demo={demo} href={PEPTALK} rel="noopener">
-              <b>PepTalk</b>
-            </A>
-            , the speaker and talent booking agency. PepTalk handles enquiries, availability, contracts, payments and event logistics on
-            behalf of {site.orgName}.
-          </p>{' '}
-          <p>
-            Looking for speakers beyond {site.short}? PepTalk represents hundreds of{' '}
-            <A demo={demo} href={v.beyondUrl} rel="noopener">
-              <b>{v.beyondLinkText.replace(/^PepTalk /, '')}</b>
-            </A>
-            .
-          </p>{' '}
-          <h2 id="faq">Frequently asked questions</h2>{' '}
-          <div className="faq">
-            {faq.map(({ q, a }) => (
-              <FaqItem key={q} demo={demo} q={q} a={a} />
+    <SimplePage ctx={ctx} path="/about" eyebrow="About the network" title={v.aboutTitle} lead={site.entity} graph={graph} crumbs={crumbs}>
+      <section className="about-media">
+        <div className="wrap">
+          <Photo ctx={ctx} id={site.home.hospitalityImage} cls="wide" slot="split" alt="" priority />
+          <dl className="facts">
+            {facts.map(([value, caption]) => (
+              <div key={caption}>
+                <dt>{caption}</dt>
+                <dd>{value}</dd>
+              </div>
             ))}
-          </div>{' '}
+          </dl>
         </div>
       </section>
+      <section className="block tint" aria-labelledby="who-title">
+        <div className="wrap">
+          <div className="head">
+            <div>
+              <span className="eyebrow">Who does what</span>
+              <h2 className="disp" id="who-title">
+                The club’s people. PepTalk’s booking team.
+              </h2>
+            </div>
+            <p className="lead">
+              {site.platform}{' '}
+              {v.aboutLead ??
+                `brings together former ${site.orgName} players, managers and backroom staff, plus today's first-team squad, for keynotes, hospitality, brand partnerships and community work, all through one official platform.`}
+            </p>
+          </div>
+          <div className="duo">
+            <div className="club">
+              <span className="crest lg" role="img" aria-label={`${site.orgName} crest`} />
+              <h3>{site.orgName}</h3>
+              <p>
+                Puts its people forward, agrees the appearances and hosts matchday hospitality at {site.stadium}. Current players are booked
+                around the {v.fixtureWord}.
+              </p>
+            </div>
+            <div className="op">
+              {/* biome-ignore lint/performance/noImgElement: PepTalk's own logo file. */}
+              <img src="/peptalk/logo.png" alt="PepTalk" width={123} height={32} loading="lazy" />
+              <h3>PepTalk</h3>
+              <p>
+                The speaker and talent booking agency that runs the platform: enquiries, availability, contracts, payments and event
+                logistics, on behalf of {site.orgName}.{' '}
+                <A demo={demo} href={v.beyondUrl} rel="noopener">
+                  More speakers on PepTalk
+                </A>
+                .
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+      <HowItWorks ctx={ctx} />
+      <FaqBlock ctx={ctx} faq={faq} title="Frequently asked questions" />
+      <CtaBand ctx={ctx} />
     </SimplePage>
   );
 }
@@ -622,7 +860,7 @@ export function CheckAvailabilityPage({ ctx }: { ctx: SiteContext }) {
   });
   return (
     <SiteLayout ctx={ctx} path="/check-availability" graph={graph} crumbs={crumbs}>
-      <FormSection ctx={ctx} tint={false} first h1 />
+      <FormSection ctx={ctx} tint first h1 />
     </SiteLayout>
   );
 }
@@ -649,7 +887,7 @@ export function SiteLegalPage({ ctx, doc }: { ctx: SiteContext; doc: LegalDoc })
   );
 }
 
-/** Legal text (the safe markdown subset, lib/render/markdown.ts) in the prose column of a legal page. */
+/** Legal text (the safe markdown subset, lib/render/markdown-view.ts) in the prose column of a legal page. */
 export function LegalText({ body }: { body: string }) {
   return <div className="wrap prose legal">{renderMarkdown(body)}</div>;
 }

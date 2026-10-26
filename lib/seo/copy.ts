@@ -3,7 +3,7 @@
 // descriptions are unique per page and clamped to DESCRIPTION_MAX at a word boundary. Google sets no hard limit on
 // either but truncates to the device width (https://developers.google.com/search/docs/appearance/title-link,
 // https://developers.google.com/search/docs/appearance/snippet), so these are display budgets, not rules.
-import type { LegalDoc, Person } from '../content/types.ts';
+import type { FormatKey, LegalDoc, Person, Role } from '../content/types.ts';
 import type { SiteContext } from '../render/context.ts';
 
 export const TITLE_MAX = 65;
@@ -66,6 +66,22 @@ export function profileCopy({ site, v }: SiteContext, person: Person): PageCopy 
       `Book ${person.name}`,
     ]),
     description: clampDescription(`Book ${person.name} for keynotes, hospitality and events. ${person.line}`),
+  };
+}
+
+/** A category page (one role): "Book Spurs managers & head coaches", the count, the formats on offer and the role's blurb. */
+export function categoryCopy(ctx: SiteContext, role: Role, people: Person[]): PageCopy {
+  const { site, FORMATS } = ctx;
+  const label = lower(role.label);
+  const offered = (Object.keys(FORMATS) as FormatKey[]).filter(key => people.some(person => person.formats.includes(key)));
+  const formats = listText(offered.slice(0, 3).map(key => lower(FORMATS[key].title)));
+  return {
+    title: fitTitle([
+      `Book ${site.short} ${label} | ${site.platform}`,
+      `${site.short} ${label} | ${site.platformShort}`,
+      `${role.label} | ${site.platformShort}`,
+    ]),
+    description: clampDescription(`Book ${people.length} ${site.orgName} ${label} for ${formats}. ${role.blurb}`),
   };
 }
 

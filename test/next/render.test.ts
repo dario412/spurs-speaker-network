@@ -8,10 +8,11 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import { createJsonProvider } from '../../lib/content/json-provider.ts';
 import { PAGE_DEFAULTS, publishable } from '../../lib/content/publish.ts';
 import type { RawSite, Site } from '../../lib/content/types.ts';
+import { categoryRoles } from '../../lib/render/category.ts';
 import { siteContext } from '../../lib/render/context.ts';
 import { parseInline, parseMarkdown, safeHref } from '../../lib/render/markdown.ts';
 import { renderMarkdown } from '../../lib/render/markdown-view.ts';
-import { allPaths, landingPath, resolvePage, sitePaths } from '../../lib/render/routes.ts';
+import { allPaths, categoryPath, landingPath, resolvePage, sitePaths } from '../../lib/render/routes.ts';
 import { decode, decodeDeep } from '../../lib/render/text.ts';
 import { landingStylesheet, siteStylesheet, themeFor } from '../../lib/render/theme.ts';
 import { renderPage } from '../../src/admin/next-render/index.mjs';
@@ -46,7 +47,13 @@ test('the route table: hub pages, then every site’s pages as its switches allo
   for (const site of sites) {
     const base = `/${site.slug}`;
     const pages = { ...PAGE_DEFAULTS, ...site.pages };
-    expected.push(base, `${base}/legends`, ...site.people.map(person => `${base}/legends/${person.slug}`), `${base}/check-availability`);
+    expected.push(
+      base,
+      `${base}/legends`,
+      ...categoryRoles(site).map(role => categoryPath(base, role)),
+      ...site.people.map(person => `${base}/legends/${person.slug}`),
+      `${base}/check-availability`,
+    );
     if (pages.waysToBook) expected.push(`${base}/ways-to-book`);
     if (pages.hospitality) expected.push(`${base}/hospitality`);
     if (pages.about) expected.push(`${base}/about`);

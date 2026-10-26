@@ -4,14 +4,27 @@
 // linked, not embedded (they bring their own header, footer and structured data).
 import type { ReactNode } from 'react';
 import type { FormatKey, LegalDoc, Person } from '../../lib/content/types.ts';
+import { categoryRoles } from '../../lib/render/category.ts';
 import type { SiteContext } from '../../lib/render/context.ts';
+import { categoryPath } from '../../lib/render/routes.ts';
 import { personNode } from '../../lib/seo/jsonld.ts';
 import { Availability, Beyond, Card, ConsentBanner, FormSection, Official, WaysGrid } from '../site/components.tsx';
 import { EventSpaces } from '../site/event-spaces.tsx';
-import { Eras, EventStory, FeaturedGrid, HomeHero, Quote, RoleTiles, Squad, WaysSection } from '../site/home.tsx';
+import { FeaturedGrid, HomeHero, Squad, WaysSection } from '../site/home.tsx';
 import { SiteFooter, SiteHeader } from '../site/layout.tsx';
-import { AtAGlance, BookingCard, ClosingBand, LegalText, ProfileGallery, ProfileHero, Timeline } from '../site/pages.tsx';
+import {
+  AtAGlance,
+  BookingCard,
+  ClosingBand,
+  HelpTile,
+  LegalText,
+  ProfileFormats,
+  ProfileGallery,
+  ProfileHero,
+  Timeline,
+} from '../site/pages.tsx';
 import { A, Button, Crest, Crumbs, FaqItem, Form, Photo, Picture } from '../site/primitives.tsx';
+import { CtaBand, FaqBlock, Head, HowItWorks, PepTalkBand, RoleList, TrustChecks } from '../site/sections.tsx';
 
 export interface GalleryProps {
   /** The site's render context (hub folder copy, live links). */
@@ -56,9 +69,14 @@ function ProfileColumn({ children }: { children: ReactNode }) {
 }
 
 /** Page components, the path segment they render at, and the page switch that can turn them off. */
-const PAGES: { component: string; segment: string | ((person: Person) => string); page?: 'waysToBook' | 'hospitality' | 'about' }[] = [
+const PAGES: {
+  component: string;
+  segment: string | ((person: Person, ctx: SiteContext) => string | null);
+  page?: 'waysToBook' | 'hospitality' | 'about';
+}[] = [
   { component: 'HomePage', segment: '' },
   { component: 'LegendsPage', segment: '/legends' },
+  { component: 'CategoryPage', segment: (_, ctx) => (categoryRoles(ctx.site)[0] ? categoryPath('', categoryRoles(ctx.site)[0]) : null) },
   { component: 'ProfilePage', segment: person => `/legends/${person.slug}` },
   { component: 'WaysToBookPage', segment: '/ways-to-book', page: 'waysToBook' },
   { component: 'HospitalityPage', segment: '/hospitality', page: 'hospitality' },
@@ -150,15 +168,78 @@ export const GALLERY: GalleryEntry[] = [
     title: 'Hero',
     covers: ['HomeHero'],
     source: 'components/site/home.tsx',
-    note: 'Headline, role pills, the roster search, and the hero and inset photos (site.json → home).',
+    note: 'Eyebrow, headline, lead, the roster finder (who, format, search), trust checks, and the hero and inset photos (site.json → home).',
     render: ({ ctx }) => <HomeHero ctx={ctx} />,
   },
   {
-    id: 'roles',
-    title: 'Role tiles',
-    covers: ['RoleTiles'],
-    source: 'components/site/home.tsx',
-    render: ({ ctx }) => <RoleTiles ctx={ctx} />,
+    id: 'section-head',
+    title: 'Section head and trust checks',
+    covers: ['Head', 'TrustChecks'],
+    source: 'components/site/sections.tsx',
+    note: 'Eyebrow, heading, lead and the “see all” link; the three trust checks under the hero finder.',
+    render: ({ ctx }) => (
+      <div className="block">
+        <div className="wrap">
+          <Head
+            ctx={ctx}
+            eyebrow="Eyebrow"
+            title="A section heading."
+            lead="A lead line that explains the section."
+            link={[ctx.base, 'See all']}
+          />
+          <TrustChecks ctx={ctx} />
+        </div>
+      </div>
+    ),
+  },
+  {
+    id: 'role-list',
+    title: 'Role list',
+    covers: ['RoleList'],
+    source: 'components/site/sections.tsx',
+    note: 'One row per category with a person in it, linking to its category page.',
+    render: ({ ctx }) => <RoleList ctx={ctx} />,
+  },
+  {
+    id: 'how',
+    title: 'How booking works',
+    covers: ['HowItWorks'],
+    source: 'components/site/sections.tsx',
+    render: ({ ctx }) => <HowItWorks ctx={ctx} />,
+  },
+  {
+    id: 'peptalk-band',
+    title: 'PepTalk band',
+    covers: ['PepTalkBand'],
+    source: 'components/site/sections.tsx',
+    note: 'The operator, in PepTalk’s own typeface and blue.',
+    render: ({ ctx }) => <PepTalkBand ctx={ctx} />,
+  },
+  {
+    id: 'faq-block',
+    title: 'FAQ block',
+    covers: ['FaqBlock'],
+    source: 'components/site/sections.tsx',
+    render: ({ ctx }) => <FaqBlock ctx={ctx} faq={ctx.faq()} title="Frequently asked questions" id="gallery-faq" />,
+  },
+  {
+    id: 'cta-band',
+    title: 'Closing call to action',
+    covers: ['CtaBand'],
+    source: 'components/site/sections.tsx',
+    render: ({ ctx }) => <CtaBand ctx={ctx} />,
+  },
+  {
+    id: 'help-tile',
+    title: 'Help tile',
+    covers: ['HelpTile'],
+    source: 'components/site/pages.tsx',
+    note: 'Closes the roster and category grids.',
+    render: ({ ctx }) => (
+      <div className="wrap gallery-narrow">
+        <HelpTile ctx={ctx} />
+      </div>
+    ),
   },
   {
     id: 'card',
@@ -195,7 +276,7 @@ export const GALLERY: GalleryEntry[] = [
     title: 'Squad',
     covers: ['Squad'],
     source: 'components/site/home.tsx',
-    note: 'The first six current players (role `squad`). The home page leaves the section out when a site has none.',
+    note: 'The first four current players (role `squad`). The home page leaves the section out when a site has none.',
     render: ({ ctx }) =>
       ctx.hasSquad ? (
         <Squad ctx={ctx} />
@@ -219,30 +300,6 @@ export const GALLERY: GalleryEntry[] = [
         </div>
       </>
     ),
-  },
-  {
-    id: 'event-story',
-    title: 'Event story',
-    covers: ['EventStory'],
-    source: 'components/site/home.tsx',
-    note: 'Placeholder wording until real case studies exist (docs/brand-and-legal.md).',
-    render: ({ ctx }) => <EventStory ctx={ctx} index={1} />,
-  },
-  {
-    id: 'eras',
-    title: 'Eras',
-    covers: ['Eras'],
-    source: 'components/site/home.tsx',
-    note: 'Hidden on a home page with site.json → homeLayout.hideEras.',
-    render: ({ ctx }) => <Eras ctx={ctx} />,
-  },
-  {
-    id: 'quote',
-    title: 'Quote',
-    covers: ['Quote'],
-    source: 'components/site/home.tsx',
-    note: 'An unattributed placeholder (vocab.quote), never marked up as a review.',
-    render: ({ ctx }) => <Quote ctx={ctx} />,
   },
   {
     id: 'form',
@@ -334,6 +391,18 @@ export const GALLERY: GalleryEntry[] = [
     ),
   },
   {
+    id: 'profile-formats',
+    title: 'Profile formats',
+    covers: ['ProfileFormats'],
+    source: 'components/site/pages.tsx',
+    note: 'One tile per format the person offers, each starting an enquiry for them.',
+    render: ({ ctx, person }) => (
+      <ProfileColumn>
+        <ProfileFormats ctx={ctx} person={person} />
+      </ProfileColumn>
+    ),
+  },
+  {
     id: 'gallery',
     title: 'Gallery',
     covers: ['ProfileGallery'],
@@ -349,11 +418,7 @@ export const GALLERY: GalleryEntry[] = [
     title: 'Closing band',
     covers: ['ClosingBand'],
     source: 'components/site/pages.tsx',
-    render: ({ ctx, person }) => (
-      <ProfileColumn>
-        <ClosingBand ctx={ctx} person={person} />
-      </ProfileColumn>
-    ),
+    render: ({ ctx, person }) => <ClosingBand ctx={ctx} person={person} />,
   },
   {
     id: 'beyond',
@@ -478,6 +543,7 @@ export const GALLERY: GalleryEntry[] = [
       'SimplePage',
       'HomePage',
       'LegendsPage',
+      'CategoryPage',
       'ProfilePage',
       'WaysToBookPage',
       'HospitalityPage',
@@ -490,11 +556,18 @@ export const GALLERY: GalleryEntry[] = [
     render: ({ ctx, person }) => (
       <ul className="wrap gallery-pages">
         {PAGES.map(({ component, segment, page }) => {
-          const path = `${ctx.base}${typeof segment === 'function' ? segment(person) : segment}`;
+          const resolved = typeof segment === 'function' ? segment(person, ctx) : segment;
+          const path = `${ctx.base}${resolved ?? ''}`;
           return (
             <li key={component}>
               <code>{component}</code>{' '}
-              {page && !ctx.pages[page] ? <span>switched off for this site (site.json → pages.{page})</span> : <A href={path}>{path}</A>}
+              {page && !ctx.pages[page] ? (
+                <span>switched off for this site (site.json → pages.{page})</span>
+              ) : resolved === null ? (
+                <span>no category has anyone in it on this site</span>
+              ) : (
+                <A href={path}>{path}</A>
+              )}
             </li>
           );
         })}
