@@ -39,8 +39,10 @@ export default async function config(phase: string): Promise<NextConfig> {
     htmlLimitedBots: /.*/,
     env: {
       APPEARANCES_MANIFEST: JSON.stringify(manifest),
-      // Scopes the content cache (lib/content/index.ts) to this build: cached entries outlive deployments.
-      APPEARANCES_CACHE_SCOPE: cacheScope(),
+      // Scopes the content cache (lib/content/index.ts) to this build: cached entries outlive deployments. `next dev`
+      // reads uncached, so it gets a fixed value: a new random one on every start changes the inlined env, which
+      // Turbopack's persistent dev cache (.next/dev) treats as a framework change, reloading the browser forever.
+      APPEARANCES_CACHE_SCOPE: phase === PHASE_DEVELOPMENT_SERVER ? 'dev' : cacheScope(),
     },
     // The JSON provider reads these at build time (and at runtime in `next dev`); file tracing can't see dynamic fs
     // paths, so include them explicitly.
