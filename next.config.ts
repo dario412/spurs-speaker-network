@@ -57,6 +57,10 @@ export default async function config(phase: string): Promise<NextConfig> {
       ],
     },
     experimental: {
+      // No persistent Turbopack cache for `next dev`: a cache left behind by an earlier session (or a `next build` in
+      // the same .next) can make the dev server report the framework bundle as changed on every request, so the
+      // browser reloads forever. Restarts compile a little slower instead.
+      turbopackFileSystemCacheForDev: false,
       // Several root layouts (one per site, plus the hub) share one 404 page: app/global-not-found.tsx.
       globalNotFound: true,
       // Integrity hashes on the framework's script tags (build-time; pages are static).
