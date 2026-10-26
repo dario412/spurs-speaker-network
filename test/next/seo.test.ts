@@ -287,9 +287,12 @@ test('bug: roster filters ignore unknown roles and eras from the URL instead of 
     { filter: 'role', value: '' },
     { filter: 'role', value: 'player' },
     { filter: 'era', value: '1990s' },
+    { filter: 'format', value: 'keynote' },
   ];
-  assert.deepEqual(rosterState('?role=player&era=1990s&q=kane', chips), { role: 'player', era: '1990s', q: 'kane' });
-  assert.deepEqual(rosterState('?role=goalkeeper&era=1800s', chips), { role: '', era: '', q: '' });
+  assert.deepEqual(rosterState('?role=player&era=1990s&q=kane', chips), { role: 'player', era: '1990s', format: '', q: 'kane' });
+  assert.deepEqual(rosterState('?role=goalkeeper&era=1800s', chips), { role: '', era: '', format: '', q: '' });
+  assert.deepEqual(rosterState('?format=keynote', chips), { role: '', era: '', format: 'keynote', q: '' });
+  assert.deepEqual(rosterState('?format=juggling', chips), { role: '', era: '', format: '', q: '' });
 });
 
 test('bug: updating the roster URL keeps the #fragment', () => {

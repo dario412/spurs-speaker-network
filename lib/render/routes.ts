@@ -2,14 +2,24 @@
 // manifest, the admin preview and the tests. The app/ routes call notFound() on exactly the cases this returns null for.
 import { LEGAL_KINDS } from '../content/legal.ts';
 import { pagesFor } from '../content/publish.ts';
-import type { LegalKind, PageKey, Person, Site } from '../content/types.ts';
+import type { LegalKind, PageKey, Person, Role, Site } from '../content/types.ts';
+import { categoryRoles, roleForSlug, roleSlug } from './category.ts';
 
-export type PageKind = 'home' | 'legends' | 'profile' | 'ways-to-book' | 'hospitality' | 'about' | 'check-availability' | LegalKind;
+export type PageKind =
+  | 'home'
+  | 'legends'
+  | 'profile'
+  | 'category'
+  | 'ways-to-book'
+  | 'hospitality'
+  | 'about'
+  | 'check-availability'
+  | LegalKind;
 
 export type ResolvedPage =
   | { kind: 'landing' }
   | { kind: 'hub-legal'; legal: LegalKind }
-  | { kind: PageKind; site: Site; person?: Person; demo: boolean };
+  | { kind: PageKind; site: Site; person?: Person; role?: Role; demo: boolean };
 
 /** The landing page's URL when it is the hub's home (registry.json has no `rootSite`): `/all` answers 301 here. */
 export const LANDING_HOME = '/';
@@ -39,19 +49,27 @@ export function resolvePage(sites: Site[], pathname: string): ResolvedPage | nul
     const found = site.people.find(candidate => candidate.slug === person);
     return found ? { kind: 'profile', site, person: found, demo: site.demoProfiles?.includes(found.slug) === true } : null;
   }
+  if (page === 'category' && parts.length === 3) {
+    const role = roleForSlug(site, person);
+    return role ? { kind: 'category', site, role, demo: false } : null;
+  }
   if (parts.length !== 2) return null;
   if (ALWAYS.has(page)) return { kind: page as PageKind, site, demo: false };
   if (Object.hasOwn(OPTIONAL_PAGES, page) && pagesFor(site)[OPTIONAL_PAGES[page]]) return { kind: page as PageKind, site, demo: false };
   return null;
 }
 
-/** Every page path one site serves: home, roster, the optional pages that are on, enquiry, legal pages, profiles. */
+/** A category page's path within a site: `${base}/category/<role-slug>`. */
+export const categoryPath = (base: string, role: Pick<Role, 'label'>): string => `${base}/category/${roleSlug(role)}`;
+
+/** Every page path one site serves: home, roster, categories, the optional pages that are on, enquiry, legal pages, profiles. */
 export function sitePaths(site: Site): string[] {
   const base = `/${site.slug}`;
   const pages = pagesFor(site);
   return [
     base,
     `${base}/legends`,
+    ...categoryRoles(site).map(role => categoryPath(base, role)),
     ...Object.entries(OPTIONAL_PAGES)
       .filter(([, key]) => pages[key])
       .map(([segment]) => `${base}/${segment}`),

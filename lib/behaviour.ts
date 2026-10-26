@@ -57,8 +57,8 @@ function initShortlist(doc: Document, signal: AbortSignal) {
 }
 
 /**
- * Roster filter state from the query string. A role or era the page has no chip for (a stale or mistyped link) is
- * ignored, rather than filtering every card out.
+ * Roster filter state from the query string. A role, era or format the page has no control for (a stale or mistyped
+ * link) is ignored, rather than filtering every card out.
  */
 export function rosterState(search: string, chips: { filter: string; value: string }[]): Record<string, string> {
   const params = new URLSearchParams(search);
@@ -67,7 +67,7 @@ export function rosterState(search: string, chips: { filter: string; value: stri
     const value = params.get(filter) || '';
     return value && known(filter, value) ? value : '';
   };
-  return { role: pick('role'), era: pick('era'), q: params.get('q') || '' };
+  return { role: pick('role'), era: pick('era'), format: pick('format'), q: params.get('q') || '' };
 }
 
 /** The roster URL for a filter state: only set filters in the query, and the #fragment kept. */
@@ -84,14 +84,18 @@ export const legendChoice = (requested: string | null, options: string[]): strin
 function initRoster(doc: Document, signal: AbortSignal) {
   const roster = doc.querySelector<HTMLElement>('[data-roster]');
   if (!roster) return;
-  const chipList = [...roster.querySelectorAll<HTMLElement>('[data-filter]')].map(chip => ({
-    filter: chip.dataset.filter ?? '',
-    value: chip.dataset.value ?? '',
-  }));
+  // Role tabs are buttons (data-filter + data-value); era and format are <select data-filter> lists.
+  const buttons = [...roster.querySelectorAll<HTMLElement>('button[data-filter]')];
+  const selects = [...roster.querySelectorAll<HTMLSelectElement>('select[data-filter]')];
+  const chipList = [
+    ...buttons.map(chip => ({ filter: chip.dataset.filter ?? '', value: chip.dataset.value ?? '' })),
+    ...selects.flatMap(select => [...select.options].map(option => ({ filter: select.dataset.filter ?? '', value: option.value }))),
+  ];
   const state = rosterState(location.search, chipList);
   const cards = [...roster.querySelectorAll<HTMLElement>('.card')];
   const empty = roster.querySelector<HTMLElement>('.empty');
   const search = roster.querySelector<HTMLInputElement>('.roster-q');
+  const count = roster.querySelector<HTMLElement>('[data-count]');
   if (!empty || !search) return;
   search.value = state.q;
   const apply = () => {
@@ -100,28 +104,36 @@ function initRoster(doc: Document, signal: AbortSignal) {
       const ok =
         (!state.role || card.dataset.role === state.role) &&
         (!state.era || card.dataset.era === state.era) &&
+        (!state.format || (card.dataset.formats ?? '').split(' ').includes(state.format)) &&
         (!state.q || (card.dataset.search ?? '').includes(state.q.toLowerCase()));
       card.hidden = !ok;
       if (ok) shown += 1;
     }
     empty.hidden = shown > 0;
-    for (const chip of roster.querySelectorAll<HTMLElement>('[data-filter]')) {
-      chip.setAttribute('aria-pressed', String(state[chip.dataset.filter ?? ''] === chip.dataset.value));
-    }
+    if (count) count.textContent = (count.textContent ?? '').replace(/^Showing \d+/, `Showing ${shown}`);
+    for (const chip of buttons) chip.setAttribute('aria-pressed', String(state[chip.dataset.filter ?? ''] === chip.dataset.value));
+    for (const select of selects) select.value = state[select.dataset.filter ?? ''] ?? '';
     history.replaceState(history.state, '', rosterUrl(state, location.pathname, location.hash));
   };
   roster.addEventListener(
     'click',
     event => {
-      const chip = (event.target as Element | null)?.closest<HTMLElement>('[data-filter]');
+      const chip = (event.target as Element | null)?.closest<HTMLElement>('button[data-filter]');
       if (!chip) return;
-      const filter = chip.dataset.filter ?? '';
-      const value = chip.dataset.value ?? '';
-      state[filter] = state[filter] === value && filter === 'era' ? '' : value;
+      state[chip.dataset.filter ?? ''] = chip.dataset.value ?? '';
       apply();
     },
     { signal },
   );
+  for (const select of selects)
+    select.addEventListener(
+      'change',
+      () => {
+        state[select.dataset.filter ?? ''] = select.value;
+        apply();
+      },
+      { signal },
+    );
   search.addEventListener(
     'input',
     () => {

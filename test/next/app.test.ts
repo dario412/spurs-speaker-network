@@ -559,7 +559,11 @@ test('structured data: one valid @graph per page, matching the visible page, nev
   assert.equal(roster?.numberOfItems, site.people.length, 'the roster ItemList lists every published person');
   const ways = nodes(jsonLd((await get('/spurs/ways-to-book')).html)[0]).filter(node => node['@type'] === 'Service');
   assert.equal(ways.length, 7);
-  assert.ok(!nodes(jsonLd((await get('/spurs')).html)[0]).some(node => node['@type'] === 'FAQPage'), 'no FAQ markup where no FAQ renders');
+  // The home page shows the booking FAQ, so it carries FAQPage markup (every question visible: checked above).
+  assert.ok(
+    nodes(jsonLd((await get('/spurs')).html)[0]).some(node => node['@type'] === 'FAQPage'),
+    'FAQ markup where the FAQ renders',
+  );
 });
 
 test('metadata: unique titles and descriptions within budget, canonical, robots, complete Open Graph with a resolvable card, and <html lang>', async () => {

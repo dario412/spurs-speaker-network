@@ -55,9 +55,34 @@ test('every component exported from components/site/ has a gallery entry, and ev
   for (const name of covered) assert.ok(components.has(name), `the gallery names ${name}, which components/site/ doesn't export`);
   const ids = GALLERY.map(entry => entry.id);
   assert.equal(new Set(ids).size, ids.length, 'entry ids are unique');
-  for (const required of ['header', 'hero', 'roles', 'card', 'featured', 'squad', 'ways', 'event-story', 'eras', 'quote', 'form', 'faq'])
+  for (const required of [
+    'header',
+    'hero',
+    'role-list',
+    'card',
+    'featured',
+    'squad',
+    'ways',
+    'how',
+    'peptalk-band',
+    'faq-block',
+    'cta-band',
+    'form',
+    'faq',
+  ])
     assert.ok(ids.includes(required), required);
-  for (const required of ['profile-hero', 'at-a-glance', 'booking-card', 'timeline', 'gallery', 'closing', 'footer', 'legal'])
+  for (const required of [
+    'profile-hero',
+    'at-a-glance',
+    'booking-card',
+    'timeline',
+    'profile-formats',
+    'gallery',
+    'closing',
+    'help-tile',
+    'footer',
+    'legal',
+  ])
     assert.ok(ids.includes(required), required);
   for (const required of ['consent', 'beyond', 'breadcrumbs', 'badges']) assert.ok(ids.includes(required), required);
 });

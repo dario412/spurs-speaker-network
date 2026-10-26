@@ -9,10 +9,10 @@
   "motto": "To Dare Is To Do",
   "copyright": "Tottenham Hotspur Football &amp; Athletic Co. Ltd.",
   "heroTitle": [
-    "Welcome to the official",
-    "Spurs speaker network."
+    "Book a Spurs legend",
+    "for your next event."
   ],
-  "waysTitle": "Ways to book",
+  "waysTitle": "Six ways to book.",
   "stadium": "Tottenham Hotspur Stadium",
   "marks": {
     "crest": "https://upload.wikimedia.org/wikipedia/en/thumb/b/b4/Tottenham_Hotspur.svg/960px-Tottenham_Hotspur.svg.png",
@@ -22,7 +22,7 @@
   "crestOnLight": true,
   "crestOn": {
     "bar": "white",
-    "brand": "white",
+    "brand": "full",
     "dark": "white"
   },
   "theme": {
@@ -61,8 +61,8 @@
     "activeEra": "pochettino"
   },
   "vocab": {
-    "rosterLead": "Filter by role or era, or search by name or topic.",
-    "heroLead": "Book keynotes, firesides, meet &amp; greets and more, all in one place.",
+    "rosterLead": "Filter by role, era or format, or search by name or topic, to find the right voice for your event.",
+    "heroLead": "The official way to book former Tottenham Hotspur players, managers and coaches for keynotes, matchday hospitality, brand campaigns and virtual events.",
     "eraLead": "From the old Lane to the new stadium, find the Spurs side you remember and book the people who built it.",
     "eventStoryTitle": "Example booking: partner dinner, 300 guests",
     "eventStoryBody": "A former head coach and two former players hosted a partner dinner at Tottenham Hotspur Stadium: welcome, Q&amp;A and photos. (Illustrative example.)",
@@ -74,17 +74,17 @@
     "staffPill": "Backroom staff",
     "assureRoles": "Players, head coaches and staff",
     "squadEyebrow": "First team",
-    "squadHeadline": "Current first team",
+    "squadHeadline": "Book today’s first team.",
     "squadLead": "Current players are available for brand work, fan events and hospitality, subject to the fixture list and training schedule.",
-    "rolesEyebrow": "Players · Managers · Staff",
+    "rolesEyebrow": "Players · Managers · Coaches · Spurs Women",
     "rolesHeadline": "Find a speaker by role",
     "legendNoun": "speaker",
     "legendsNoun": "speakers",
     "navLabels": {
       "legends": "Speakers"
     },
-    "featuredEyebrow": "Speakers",
-    "featuredHeadline": "Featured this season",
+    "featuredEyebrow": "Featured speakers",
+    "featuredHeadline": "Legends of every era.",
     "officialLabel": "Official Tottenham Hotspur speaker network",
     "officialLegendLabel": "Official Spurs speaker",
     "officialSmall": "Official Tottenham Hotspur",
@@ -93,7 +93,7 @@
     "aboutTitle": "About the Spurs Speaker Network",
     "quoteEyebrow": "Client feedback",
     "beyondLead": "Browse football and sports speakers on PepTalk.",
-    "waysLead": "Here is how you can book Spurs speakers."
+    "waysLead": "From a conference keynote to a matchday lounge, pick the format that fits your event. Every booking is handled end to end by PepTalk."
   },
   "formats": {
     "clinic": {
@@ -108,8 +108,7 @@
     "buttonRadius": "0",
     "headingCase": "none",
     "cardRadius": "0",
-    "buttonCase": "none",
-    "buttonClip": true
+    "buttonCase": "none"
   },
   "homeLayout": {
     "waysAfterRoles": true,

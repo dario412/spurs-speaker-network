@@ -115,12 +115,13 @@ export async function renderPage(pathname, sites, { hubIndexable = false, landin
     return { status: 200, html: html(doc.title, hubDocument([], tree)) };
   }
 
-  const { site, person, demo, kind } = page;
+  const { site, person, role, demo, kind } = page;
   const ctx = m.context.siteContext(site, { demo });
   const P = m.pages;
   const body = {
     home: () => h(m.home.HomePage, { ctx }),
     legends: () => h(P.LegendsPage, { ctx }),
+    category: () => h(P.CategoryPage, { ctx, role: ctx.site.roles.find(candidate => candidate.key === role.key) }),
     profile: () => h(P.ProfilePage, { ctx, person }),
     'ways-to-book': () => h(P.WaysToBookPage, { ctx }),
     hospitality: () => h(P.HospitalityPage, { ctx }),
