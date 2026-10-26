@@ -1,0 +1,139 @@
+{
+  "slug": "eastvale",
+  "status": "shell",
+  "pages": {
+    "hospitality": false
+  },
+  "short": "Eastvale",
+  "orgName": "Eastvale Rovers",
+  "platform": "Eastvale Rovers Legends",
+  "platformShort": "Rovers Legends",
+  "tagline": "Official Eastvale Rovers legends bookings",
+  "entity": "Eastvale Rovers Legends is the official Eastvale Rovers speaker booking service, operated by PepTalk.",
+  "motto": null,
+  "copyright": "Eastvale Rovers Football Club",
+  "heroTitle": [
+    "Book an Eastvale",
+    "Rovers legend"
+  ],
+  "waysTitle": "Ways to book",
+  "stadium": "Eastvale Lane",
+  "marks": {
+    "crest": null,
+    "wordmark": null
+  },
+  "navMark": "crest",
+  "crestFallback": "ERFC",
+  "theme": {
+    "brand": "#15803d",
+    "ink": "#052e16",
+    "dark": "#022c22",
+    "bar": "#166534",
+    "display": "Outfit, helvetica, sans-serif"
+  },
+  "featured": [
+    "placeholder-legend"
+  ],
+  "home": {
+    "hero": {
+      "image": null,
+      "name": "Placeholder legend",
+      "line": "Club legend"
+    },
+    "inset": {
+      "image": null,
+      "name": "Placeholder legend",
+      "line": "Club legend"
+    },
+    "eraImage": null,
+    "storyImage": null,
+    "hospitalityImage": null,
+    "activeEra": "classic"
+  },
+  "roles": [
+    {
+      "key": "player",
+      "label": "Ex-players",
+      "blurb": "Club legends"
+    }
+  ],
+  "eras": [
+    {
+      "key": "classic",
+      "label": "Classic era",
+      "blurb": "The club's history"
+    }
+  ],
+  "people": [
+    {
+      "slug": "placeholder-legend",
+      "name": "Placeholder legend",
+      "first": "Placeholder",
+      "role": "player",
+      "roleLabel": "Ex-player",
+      "era": "classic",
+      "limited": false,
+      "hero": null,
+      "card": null,
+      "gallery": [
+        null,
+        null,
+        null
+      ],
+      "pos": "Position · Eastvale Rovers",
+      "short": "Club legend",
+      "honour": "Club honour",
+      "line": "Placeholder profile while the roster is agreed with the club.",
+      "stats": [
+        [
+          "–",
+          "Years"
+        ],
+        [
+          "–",
+          "Position"
+        ],
+        [
+          "–",
+          "Honours"
+        ],
+        [
+          "–",
+          "Appearances"
+        ]
+      ],
+      "bio": [
+        "Placeholder biography while the roster is agreed with the club."
+      ],
+      "why": "Placeholder.",
+      "timeline": [
+        [
+          "–",
+          "Placeholder"
+        ]
+      ],
+      "talks": [
+        "Placeholder"
+      ],
+      "audiences": [
+        "Placeholder"
+      ],
+      "industries": [
+        "Placeholder"
+      ],
+      "formats": [
+        "keynote"
+      ],
+      "langs": "English"
+    }
+  ],
+  "images": {},
+  "licences": {
+    "images": {},
+    "marks": {}
+  },
+  "verification": {
+    "pages": {},
+    "people": {}
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "$comment": "Ceilings for npm run perf:budget (scripts/perf.mjs --offline, median of 3 cold loads per page, worst page per profile). Measured 2026-10-20 (offline): mobile LCP <= 980 ms, desktop LCP <= 288 ms, CLS 0, JS 138.9 KB, first-party bytes without images <= 236.5 KB, first-party requests <= 19 (mobile) / 22 (desktop). Bytes and requests sit a little above that; LCP has more headroom because CI runners are slower and noisier than a laptop. Raise a ceiling only with a reason in the PR (docs/architecture.md → Performance budgets).",
+  "mobile": {
+    "lcp": 1600,
+    "cls": 0.05,
+    "js": 153600,
+    "transferNoImages": 266240,
+    "firstPartyRequests": 23
+  },
+  "desktop": {
+    "lcp": 600,
+    "cls": 0.05,
+    "js": 153600,
+    "transferNoImages": 266240,
+    "firstPartyRequests": 26
+  }
+}

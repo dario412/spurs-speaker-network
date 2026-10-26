@@ -1,0 +1,46 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["dom", "dom.iterable", "ES2024"],
+    "allowJs": true,
+    "checkJs": false,
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "react-jsx",
+    "incremental": true,
+    "noFallthroughCasesInSwitch": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "allowImportingTsExtensions": true,
+    "verbatimModuleSyntax": true
+  },
+  "include": [
+    "next-env.d.ts",
+    "app/**/*",
+    "components/**/*",
+    "lib/**/*",
+    "proxy.ts",
+    "next.config.ts",
+    "test/next/**/*",
+    "test/contract/**/*",
+    "test/fixtures/**/*.ts",
+    ".next/types/**/*.ts",
+    ".next/dev/types/**/*.ts",
+    ".next-test/types/**/*.ts",
+    ".next-test/dev/types/**/*.ts",
+    ".next-test-fixture/types/**/*.ts",
+    ".next-test-fixture/dev/types/**/*.ts",
+    ".next-rv/types/**/*.ts",
+    ".next-rv/dev/types/**/*.ts"
+  ],
+  "exclude": ["node_modules", "dist", "src", "scripts"]
+}

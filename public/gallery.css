@@ -1,0 +1,215 @@
+/* The component gallery (/_gallery, lib/gallery.ts): its own chrome, and the few overrides that let components sit side
+   by side. Loaded only by the gallery's pages (body.gallery-page; .gallery is the profile photo grid), after the shared
+   stylesheet and the site's theme. */
+.gallery-bar {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: #111;
+  color: #fff;
+  font: 500 13px / 1.4 var(--body);
+}
+.gallery-bar-in {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 10px 32px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+  align-items: center;
+  justify-content: space-between;
+}
+.gallery-bar span {
+  opacity: 0.7;
+}
+.gallery-sites ul,
+.gallery-toc ol {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 14px;
+}
+.gallery-sites a {
+  opacity: 0.75;
+}
+.gallery-sites a[aria-current="page"] {
+  opacity: 1;
+  text-decoration: underline;
+}
+.gallery-toc {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 18px 32px;
+  font: 500 13px / 1.4 var(--body);
+  color: var(--blue-60);
+}
+.gallery-toc a:hover,
+.gallery-sites a:hover {
+  text-decoration: underline;
+}
+.gallery-entry {
+  border-top: 8px solid #f0f0f0;
+}
+/* Sticky site chrome would stack under the gallery bar; in the gallery everything scrolls with its entry. */
+.gallery-page .nav,
+.gallery-page .side,
+.gallery-page .subnav {
+  position: static;
+}
+.gallery-entry-head {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 22px 32px 14px;
+  font: 500 14px / 1.5 var(--body);
+  color: var(--blue-80);
+}
+.gallery-entry-head h2 {
+  font: 700 20px / 1.2 var(--body);
+  color: #111;
+  margin-bottom: 4px;
+}
+.gallery-meta {
+  font-size: 12px;
+  color: var(--blue-60);
+}
+.gallery-page code {
+  font:
+    500 12px / 1.4 ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    Consolas,
+    monospace;
+}
+.gallery-frame {
+  padding-bottom: 24px;
+}
+.gallery-variant {
+  margin-bottom: 18px;
+}
+.gallery-variant-label {
+  max-width: 1200px;
+  margin: 0 auto 8px;
+  padding: 0 32px;
+  font: 600 11px / 1 var(--body);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--blue-60);
+}
+.gallery-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  align-items: flex-start;
+}
+.gallery-row .gallery-variant-label {
+  padding: 0;
+}
+.gallery-cards > .gallery-variant {
+  width: 300px;
+}
+.gallery-halves > .gallery-variant {
+  flex: 1 1 420px;
+}
+.gallery-inline {
+  padding: 0;
+  background: none;
+}
+.gallery-crests {
+  align-items: center;
+  padding: 16px;
+  border: 1px dashed var(--line);
+  border-radius: 12px;
+}
+.gallery-pbody {
+  grid-template-columns: 1fr;
+  padding: 24px 32px;
+}
+.gallery-narrow {
+  max-width: 404px;
+  margin: 0;
+}
+.gallery-consent .consent-banner {
+  position: static;
+  margin: 0;
+}
+.gallery-empty,
+.gallery-more {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  font: 500 14px / 1.5 var(--body);
+  color: var(--blue-60);
+}
+.gallery-more a {
+  text-decoration: underline;
+}
+.gallery-code {
+  background: #f6f6f8;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 16px;
+  overflow-x: auto;
+  max-height: 360px;
+}
+.gallery-pages {
+  list-style: none;
+  display: grid;
+  gap: 8px;
+  font: 500 14px / 1.5 var(--body);
+}
+.gallery-pages a {
+  text-decoration: underline;
+}
+.gallery-form {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+/* The enquiry form's error and thank-you states, fixed by `state` (on a page they follow the URL fragment). */
+.enquiry[data-state="sent"] > .enquiry-state.done,
+.enquiry[data-state="error"] > .enquiry-state.error:not(.done) {
+  display: block;
+}
+.enquiry[data-state="error"] > .enquiry-state.error ~ .enquiry-state.error {
+  display: none;
+}
+.enquiry[data-state="sent"] > .enquiry-state.done ~ * {
+  display: none;
+}
+/* The site switcher (/_gallery), in hub branding. */
+.gallery-index-in {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 72px 32px;
+}
+.gallery-index h1 {
+  font-size: 56px;
+  margin: 14px 0 16px;
+  color: var(--dark);
+}
+.gallery-index .lead {
+  font-size: 18px;
+  line-height: 1.5;
+  max-width: 760px;
+  margin-bottom: 32px;
+}
+.gallery-index-sites {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 14px;
+}
+.gallery-index-sites a {
+  display: grid;
+  gap: 4px;
+  padding: 16px 18px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: #fff;
+}
+.gallery-index-sites a:hover {
+  border-color: var(--brand);
+}
+.gallery-index-sites span {
+  font-size: 13px;
+  color: var(--blue-60);
+}

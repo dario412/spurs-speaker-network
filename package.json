@@ -1,0 +1,47 @@
+{
+  "name": "spurs-speaker-network",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Official sports talent booking platforms (clubs, leagues, associations) operated by PepTalk. Next.js app (App Router) on Vercel.",
+  "type": "module",
+  "engines": {
+    "node": "24.x"
+  },
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "typecheck": "next typegen && tsc --noEmit",
+    "lint": "biome check .",
+    "format": "biome check --write .",
+    "validate": "node scripts/validate-content.mjs",
+    "schema": "node scripts/schema.mjs",
+    "test": "node --test 'test/*.test.mjs' 'test/next/*.test.ts' 'test/contract/*.test.ts'",
+    "check": "npm run lint && npm run validate && npm run schema -- --check && npm run docs:links && npm test && npm run typecheck",
+    "docs:links": "node scripts/check-doc-links.mjs",
+    "contract": "node --test test/contract/selected-provider.ts",
+    "airtable:dry-run": "node scripts/airtable-dry-run.mjs",
+    "visual": "node scripts/visual.mjs",
+    "perf": "node scripts/perf.mjs",
+    "perf:budget": "node scripts/perf.mjs --offline --runs 3 --budget scripts/perf-budgets.json --out .perf/budget.json",
+    "og-cards": "node scripts/og-cards.mjs",
+    "new-site": "node scripts/new-site.mjs",
+    "assemble-site": "node scripts/assemble-site.mjs",
+    "pack-site": "node scripts/pack-site.mjs",
+    "import-pack": "node scripts/import-pack.mjs",
+    "admin": "node --env-file-if-exists=.env src/admin/server.mjs"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.5.15",
+    "@types/node": "24.19.2",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "puppeteer-core": "^25.14.0",
+    "typescript": "7.0.2"
+  },
+  "dependencies": {
+    "next": "16.4.2",
+    "react": "19.3.1",
+    "react-dom": "19.3.1"
+  }
+}

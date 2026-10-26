@@ -1,0 +1,65 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - name: Typecheck
+        run: npm run typecheck
+      - name: Lint and format
+        run: npm run lint
+      - name: Validate site content
+        run: npm run validate
+      - name: Content contract matches the types (schema/*.schema.json, docs/content-contract.md)
+        run: npm run schema -- --check
+      - name: Markdown links and anchors resolve
+        run: npm run docs:links
+      - name: Tests (admin, content rules, packs, content layer, contract and provider conformance, Airtable sync, revalidation, render, proxy, SEO, gallery, Next.js integration)
+        run: npm test
+      - name: Next.js build
+        run: npm run build
+
+  perf:
+    # Performance budgets (scripts/perf-budgets.json): next build && next start, then LCP, CLS, JS bytes, first-party
+    # bytes and requests for home, roster and a profile on two sites, mobile and desktop, in Chrome. Network-free
+    # (--offline): third-party requests are blocked and /_next/image answers a 1×1 PNG, so hotlinked Getty photos and
+    # partner marks can't make it flaky. See docs/architecture.md → Performance budgets.
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - name: Performance budgets (Chrome preinstalled on the runner)
+        run: npm run perf:budget
+        env:
+          CHROME_PATH: /usr/bin/google-chrome
+      - name: Upload measurements
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: perf-budget
+          path: .perf/budget.json
+          if-no-files-found: ignore

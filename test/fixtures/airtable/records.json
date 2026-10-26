@@ -1,0 +1,422 @@
+[
+  {
+    "records": [
+      {
+        "id": "recJoMarsh0000001",
+        "createdTime": "2026-10-01T09:00:00.000Z",
+        "fields": {
+          "fldSITE0000000000": "Northbridge City FC",
+          "fldSTATUS00000000": "Published",
+          "fldORDER000000000": 1,
+          "fldCONSENT0000000": true,
+          "fldSLUG0000000000": "jo-marsh",
+          "fldNAME0000000000": "Jo Marsh",
+          "fldFIRST000000000": "Jo",
+          "fldROLE0000000000": "Ex-player",
+          "fldROLELABEL00000": "Ex-player",
+          "fldERA00000000000": "nineties",
+          "fldPOS00000000000": "Centre-back · Northbridge City 1991–2003 · Wales",
+          "fldSHORT000000000": "Centre-back · 1991–2003 · Wales captain",
+          "fldHONOUR00000000": "Club captain for six seasons",
+          "fldLINE0000000000": "The defender who held Northbridge together through promotion and relegation, and talks about steady leadership when the plan falls apart.",
+          "fldSTATS000000000": "1991–2003 | City years\nCentre-back | Position\nWales | International\nSix seasons | As captain",
+          "fldBIO00000000000": "Jo Marsh joined Northbridge City from the youth team and spent twelve seasons at the heart of the defence.\n\nAs captain she led the side through two promotions and one hard relegation, which shapes how she talks about rebuilding a team's confidence.",
+          "fldWHY00000000000": "Best for leadership offsites and client events that want an honest story about holding a group together.",
+          "fldTIMELINE000000": "1991 | First-team debut\n1997 | Named club captain\n2003 | Final season at the club",
+          "fldTALKS000000000": [
+            "Leadership under pressure",
+            "Rebuilding confidence",
+            "Captaincy"
+          ],
+          "fldAUDIENCES00000": [
+            "Leadership teams",
+            "Sales kick-offs"
+          ],
+          "fldINDUSTRIES0000": [
+            "Finance",
+            "Construction"
+          ],
+          "fldFORMATS0000000": [
+            "Keynote",
+            "Hospitality host",
+            "Fan event"
+          ],
+          "fldLANGS000000000": "English, Welsh",
+          "fldHERO0000000000": "https://media.example.com/people/northbridge/jo-marsh-hero.jpg",
+          "fldCARD0000000000": "https://media.example.com/people/northbridge/jo-marsh-card.jpg",
+          "fldGALLERY0000000": "https://media.example.com/people/northbridge/jo-marsh-gallery-1.jpg\nhttps://media.example.com/people/northbridge/jo-marsh-gallery-2.jpg\nhttps://media.example.com/people/northbridge/jo-marsh-gallery-3.jpg",
+          "fldTRAVELS0000000": "Cardiff, UK",
+          "fldSAMEAS00000000": "https://northbridgecity.example/legends/jo-marsh\nhttps://www.example.org/wiki/Jo_Marsh"
+        }
+      },
+      {
+        "id": "recAdeOkafor00002",
+        "createdTime": "2026-10-01T09:00:00.000Z",
+        "fields": {
+          "fldSITE0000000000": "Northbridge City FC",
+          "fldSTATUS00000000": "Published",
+          "fldORDER000000000": 2,
+          "fldCONSENT0000000": true,
+          "fldSLUG0000000000": "ade-okafor",
+          "fldNAME0000000000": "Ade Okafor",
+          "fldFIRST000000000": "Ade",
+          "fldROLE0000000000": "Manager",
+          "fldROLELABEL00000": "Manager",
+          "fldERA00000000000": "modern",
+          "fldPOS00000000000": "Head coach · Northbridge City 2015–2021",
+          "fldSHORT000000000": "Head coach · 2015–2021",
+          "fldHONOUR00000000": "Took the club up two divisions",
+          "fldLINE0000000000": "A coach who built a promotion side on a small budget, and explains how clear roles beat big spending.",
+          "fldSTATS000000000": "2015–21 | As head coach\nTwo | Promotions\nAcademy | Graduates given debuts\nAnalytics | Early adopter",
+          "fldBIO00000000000": "Ade Okafor coached Northbridge City for six seasons and gave first-team debuts to more academy players than any coach before him.\n\nHis sessions focus on clear roles, honest feedback and using data without losing the human side of a team.",
+          "fldWHY00000000000": "Best for management teams planning change on a tight budget.",
+          "fldTIMELINE000000": "2015 | Appointed head coach\n2018 | First promotion\n2021 | Second promotion",
+          "fldTALKS000000000": [
+            "Clear roles",
+            "Feedback cultures",
+            "Data and judgement"
+          ],
+          "fldAUDIENCES00000": [
+            "Managers",
+            "Graduate programmes"
+          ],
+          "fldINDUSTRIES0000": [
+            "Technology",
+            "Retail"
+          ],
+          "fldFORMATS0000000": [
+            "Keynote",
+            "Workshop",
+            "Virtual"
+          ],
+          "fldLANGS000000000": "English",
+          "fldHERO0000000000": "https://media.example.com/people/northbridge/ade-okafor-hero.jpg",
+          "fldCARD0000000000": "https://media.example.com/people/northbridge/ade-okafor-card.jpg",
+          "fldGALLERY0000000": "https://media.example.com/people/northbridge/ade-okafor-gallery-1.jpg\nhttps://media.example.com/people/northbridge/ade-okafor-gallery-2.jpg\nhttps://media.example.com/people/northbridge/ade-okafor-gallery-3.jpg",
+          "fldSAMEAS00000000": "https://northbridgecity.example/staff/ade-okafor"
+        }
+      },
+      {
+        "id": "recPriyaNatt00003",
+        "createdTime": "2026-10-01T09:00:00.000Z",
+        "fields": {
+          "fldSITE0000000000": "Northbridge City FC",
+          "fldSTATUS00000000": "Published",
+          "fldORDER000000000": 3,
+          "fldCONSENT0000000": true,
+          "fldSLUG0000000000": "priya-natt",
+          "fldNAME0000000000": "Priya Natt",
+          "fldFIRST000000000": "Priya",
+          "fldROLE0000000000": "Women's team",
+          "fldROLELABEL00000": "Women's team",
+          "fldERA00000000000": "modern",
+          "fldPOS00000000000": "Forward · Northbridge City Women 2016–present",
+          "fldSHORT000000000": "Forward · 2016–present",
+          "fldHONOUR00000000": "Record goalscorer for the women's team",
+          "fldLINE0000000000": "The women's team's record scorer, who balances a playing career with coaching the next generation.",
+          "fldSTATS000000000": "2016– | City Women\nForward | Position\nRecord | Club goalscorer\nCoach | Youth licence",
+          "fldBIO00000000000": "Priya Natt has led the line for Northbridge City Women since 2016 and holds the club's scoring record.\n\nAway from matchdays she coaches girls' teams in the city and talks about building habits that last.",
+          "fldWHY00000000000": "Best for schools, youth programmes and brands that want an active, current player.",
+          "fldTIMELINE000000": "2016 | Joins Northbridge City Women\n2020 | Breaks the club scoring record",
+          "fldTALKS000000000": [
+            "Building habits",
+            "Women in sport"
+          ],
+          "fldAUDIENCES00000": [
+            "Schools",
+            "Brand activations"
+          ],
+          "fldINDUSTRIES0000": [
+            "Education",
+            "Sportswear"
+          ],
+          "fldFORMATS0000000": [
+            "Fan event",
+            "Brand partnership",
+            "Coaching clinic"
+          ],
+          "fldLANGS000000000": "English, Punjabi",
+          "fldHERO0000000000": "https://media.example.com/people/northbridge/priya-natt-hero.jpg",
+          "fldCARD0000000000": "https://media.example.com/people/northbridge/priya-natt-card.jpg",
+          "fldGALLERY0000000": "https://media.example.com/people/northbridge/priya-natt-gallery-1.jpg\nhttps://media.example.com/people/northbridge/priya-natt-gallery-2.jpg\nhttps://media.example.com/people/northbridge/priya-natt-gallery-3.jpg",
+          "fldLIMITED0000000": true,
+          "fldSAMEAS00000000": "https://northbridgecity.example/women/priya-natt"
+        }
+      },
+      {
+        "id": "recSamHollis00004",
+        "createdTime": "2026-10-01T09:00:00.000Z",
+        "fields": {
+          "fldSITE0000000000": "Northbridge City FC",
+          "fldSTATUS00000000": "Published",
+          "fldORDER000000000": 4,
+          "fldCONSENT0000000": true,
+          "fldSLUG0000000000": "sam-hollis",
+          "fldNAME0000000000": "Sam Hollis",
+          "fldFIRST000000000": "Sam",
+          "fldROLE0000000000": "Ex-player",
+          "fldROLELABEL00000": "Ex-player",
+          "fldERA00000000000": "modern",
+          "fldPOS00000000000": "Midfielder · Northbridge City 2012–2019",
+          "fldSHORT000000000": "Midfielder · 2012–2019",
+          "fldHONOUR00000000": "Player of the season twice",
+          "fldLINE0000000000": "A box-to-box midfielder who now runs a community football project, and talks about teamwork outside the dressing room.",
+          "fldSTATS000000000": "2012–19 | City years\nMidfield | Position\nTwice | Player of the season\nCommunity | Project founder",
+          "fldBIO00000000000": "Sam Hollis played over two hundred games in midfield and was voted player of the season twice.\n\nSince retiring he has run a community football project, which gives him practical stories about teamwork and volunteering.",
+          "fldWHY00000000000": "Best for corporate volunteering days and community partnerships.",
+          "fldTIMELINE000000": "2012 | Signs for Northbridge City\n2019 | Retires and founds a community project",
+          "fldTALKS000000000": [
+            "Teamwork",
+            "Community impact"
+          ],
+          "fldAUDIENCES00000": [
+            "Volunteering days",
+            "Partnership launches"
+          ],
+          "fldINDUSTRIES0000": [
+            "Charity",
+            "Public sector"
+          ],
+          "fldFORMATS0000000": [
+            "Keynote",
+            "Fan event",
+            "Workshop"
+          ],
+          "fldLANGS000000000": "English",
+          "fldHERO0000000000": "https://media.example.com/people/northbridge/sam-hollis-hero.jpg",
+          "fldCARD0000000000": "https://media.example.com/people/northbridge/sam-hollis-card.jpg",
+          "fldGALLERY0000000": "https://media.example.com/people/northbridge/sam-hollis-gallery-1.jpg\nhttps://media.example.com/people/northbridge/sam-hollis-gallery-2.jpg\nhttps://media.example.com/people/northbridge/sam-hollis-gallery-3.jpg"
+        }
+      },
+      {
+        "id": "recLeeCarver00005",
+        "createdTime": "2026-10-01T09:00:00.000Z",
+        "fields": {
+          "fldSITE0000000000": "Northbridge City FC",
+          "fldSTATUS00000000": "Published",
+          "fldORDER000000000": 5,
+          "fldCONSENT0000000": true,
+          "fldSLUG0000000000": "lee-carver",
+          "fldNAME0000000000": "Lee Carver",
+          "fldFIRST000000000": "Lee",
+          "fldROLE0000000000": "Goalkeeper",
+          "fldROLELABEL00000": "Ex-player",
+          "fldERA00000000000": "modern",
+          "fldPOS00000000000": "Midfielder · Northbridge City 2012–2019",
+          "fldSHORT000000000": "Midfielder · 2012–2019",
+          "fldHONOUR00000000": "Player of the season twice",
+          "fldLINE0000000000": "A box-to-box midfielder who now runs a community football project, and talks about teamwork outside the dressing room.",
+          "fldSTATS000000000": "2012–19 | City years\nMidfield | Position\nTwice | Player of the season\nCommunity | Project founder",
+          "fldBIO00000000000": "Sam Hollis played over two hundred games in midfield and was voted player of the season twice.\n\nSince retiring he has run a community football project, which gives him practical stories about teamwork and volunteering.",
+          "fldWHY00000000000": "Best for corporate volunteering days and community partnerships.",
+          "fldTIMELINE000000": "2012 | Signs for Northbridge City\n2019 | Retires and founds a community project",
+          "fldTALKS000000000": [
+            "Teamwork",
+            "Community impact"
+          ],
+          "fldAUDIENCES00000": [
+            "Volunteering days",
+            "Partnership launches"
+          ],
+          "fldINDUSTRIES0000": [
+            "Charity",
+            "Public sector"
+          ],
+          "fldFORMATS0000000": [
+            "Keynote",
+            "Fan event",
+            "Workshop"
+          ],
+          "fldLANGS000000000": "English",
+          "fldHERO0000000000": "https://media.example.com/people/northbridge/sam-hollis-hero.jpg",
+          "fldCARD0000000000": "https://media.example.com/people/northbridge/sam-hollis-card.jpg",
+          "fldGALLERY0000000": "https://media.example.com/people/northbridge/lee-carver-gallery-1.jpg\nhttps://cdn.elsewhere.example/lee.jpg"
+        }
+      }
+    ],
+    "offset": "itrFixturePage2/recLeeCarver00005"
+  },
+  {
+    "records": [
+      {
+        "id": "recMiaDuval000006",
+        "createdTime": "2026-10-01T09:00:00.000Z",
+        "fields": {
+          "fldSITE0000000000": "Northbridge City FC",
+          "fldSTATUS00000000": "Draft",
+          "fldORDER000000000": 6,
+          "fldCONSENT0000000": true,
+          "fldSLUG0000000000": "mia-duval",
+          "fldNAME0000000000": "Mia Duval",
+          "fldFIRST000000000": "Mia",
+          "fldROLE0000000000": "Ex-player",
+          "fldROLELABEL00000": "Ex-player",
+          "fldERA00000000000": "modern",
+          "fldPOS00000000000": "Midfielder · Northbridge City 2012–2019",
+          "fldSHORT000000000": "Midfielder · 2012–2019",
+          "fldHONOUR00000000": "Player of the season twice",
+          "fldLINE0000000000": "A box-to-box midfielder who now runs a community football project, and talks about teamwork outside the dressing room.",
+          "fldSTATS000000000": "2012–19 | City years\nMidfield | Position\nTwice | Player of the season\nCommunity | Project founder",
+          "fldBIO00000000000": "Sam Hollis played over two hundred games in midfield and was voted player of the season twice.\n\nSince retiring he has run a community football project, which gives him practical stories about teamwork and volunteering.",
+          "fldWHY00000000000": "Best for corporate volunteering days and community partnerships.",
+          "fldTIMELINE000000": "2012 | Signs for Northbridge City\n2019 | Retires and founds a community project",
+          "fldTALKS000000000": [
+            "Teamwork",
+            "Community impact"
+          ],
+          "fldAUDIENCES00000": [
+            "Volunteering days",
+            "Partnership launches"
+          ],
+          "fldINDUSTRIES0000": [
+            "Charity",
+            "Public sector"
+          ],
+          "fldFORMATS0000000": [
+            "Keynote",
+            "Fan event",
+            "Workshop"
+          ],
+          "fldLANGS000000000": "English",
+          "fldHERO0000000000": "https://media.example.com/people/northbridge/sam-hollis-hero.jpg",
+          "fldCARD0000000000": "https://media.example.com/people/northbridge/sam-hollis-card.jpg",
+          "fldGALLERY0000000": "https://media.example.com/people/northbridge/sam-hollis-gallery-1.jpg\nhttps://media.example.com/people/northbridge/sam-hollis-gallery-2.jpg\nhttps://media.example.com/people/northbridge/sam-hollis-gallery-3.jpg"
+        }
+      },
+      {
+        "id": "recNoConsent00007",
+        "createdTime": "2026-10-01T09:00:00.000Z",
+        "fields": {
+          "fldSITE0000000000": "Northbridge City FC",
+          "fldSTATUS00000000": "Published",
+          "fldORDER000000000": 7,
+          "fldSLUG0000000000": "kit-ward",
+          "fldNAME0000000000": "Kit Ward",
+          "fldFIRST000000000": "Kit",
+          "fldROLE0000000000": "Ex-player",
+          "fldROLELABEL00000": "Ex-player",
+          "fldERA00000000000": "modern",
+          "fldPOS00000000000": "Midfielder · Northbridge City 2012–2019",
+          "fldSHORT000000000": "Midfielder · 2012–2019",
+          "fldHONOUR00000000": "Player of the season twice",
+          "fldLINE0000000000": "A box-to-box midfielder who now runs a community football project, and talks about teamwork outside the dressing room.",
+          "fldSTATS000000000": "2012–19 | City years\nMidfield | Position\nTwice | Player of the season\nCommunity | Project founder",
+          "fldBIO00000000000": "Sam Hollis played over two hundred games in midfield and was voted player of the season twice.\n\nSince retiring he has run a community football project, which gives him practical stories about teamwork and volunteering.",
+          "fldWHY00000000000": "Best for corporate volunteering days and community partnerships.",
+          "fldTIMELINE000000": "2012 | Signs for Northbridge City\n2019 | Retires and founds a community project",
+          "fldTALKS000000000": [
+            "Teamwork",
+            "Community impact"
+          ],
+          "fldAUDIENCES00000": [
+            "Volunteering days",
+            "Partnership launches"
+          ],
+          "fldINDUSTRIES0000": [
+            "Charity",
+            "Public sector"
+          ],
+          "fldFORMATS0000000": [
+            "Keynote",
+            "Fan event",
+            "Workshop"
+          ],
+          "fldLANGS000000000": "English",
+          "fldHERO0000000000": "https://media.example.com/people/northbridge/sam-hollis-hero.jpg",
+          "fldCARD0000000000": "https://media.example.com/people/northbridge/sam-hollis-card.jpg",
+          "fldGALLERY0000000": "https://media.example.com/people/northbridge/sam-hollis-gallery-1.jpg\nhttps://media.example.com/people/northbridge/sam-hollis-gallery-2.jpg\nhttps://media.example.com/people/northbridge/sam-hollis-gallery-3.jpg"
+        }
+      },
+      {
+        "id": "recEastvale000008",
+        "createdTime": "2026-10-01T09:00:00.000Z",
+        "fields": {
+          "fldSITE0000000000": "Eastvale Rovers",
+          "fldSTATUS00000000": "Published",
+          "fldORDER000000000": 1,
+          "fldCONSENT0000000": true,
+          "fldSLUG0000000000": "ray-dunn",
+          "fldNAME0000000000": "Ray Dunn",
+          "fldFIRST000000000": "Ray",
+          "fldROLE0000000000": "Ex-player",
+          "fldROLELABEL00000": "Ex-player",
+          "fldERA00000000000": "modern",
+          "fldPOS00000000000": "Midfielder · Northbridge City 2012–2019",
+          "fldSHORT000000000": "Midfielder · 2012–2019",
+          "fldHONOUR00000000": "Player of the season twice",
+          "fldLINE0000000000": "A box-to-box midfielder who now runs a community football project, and talks about teamwork outside the dressing room.",
+          "fldSTATS000000000": "2012–19 | City years\nMidfield | Position\nTwice | Player of the season\nCommunity | Project founder",
+          "fldBIO00000000000": "Sam Hollis played over two hundred games in midfield and was voted player of the season twice.\n\nSince retiring he has run a community football project, which gives him practical stories about teamwork and volunteering.",
+          "fldWHY00000000000": "Best for corporate volunteering days and community partnerships.",
+          "fldTIMELINE000000": "2012 | Signs for Northbridge City\n2019 | Retires and founds a community project",
+          "fldTALKS000000000": [
+            "Teamwork",
+            "Community impact"
+          ],
+          "fldAUDIENCES00000": [
+            "Volunteering days",
+            "Partnership launches"
+          ],
+          "fldINDUSTRIES0000": [
+            "Charity",
+            "Public sector"
+          ],
+          "fldFORMATS0000000": [
+            "Keynote",
+            "Fan event",
+            "Workshop"
+          ],
+          "fldLANGS000000000": "English",
+          "fldHERO0000000000": "https://media.example.com/people/northbridge/sam-hollis-hero.jpg",
+          "fldCARD0000000000": "https://media.example.com/people/northbridge/sam-hollis-card.jpg",
+          "fldGALLERY0000000": "https://media.example.com/people/northbridge/sam-hollis-gallery-1.jpg\nhttps://media.example.com/people/northbridge/sam-hollis-gallery-2.jpg\nhttps://media.example.com/people/northbridge/sam-hollis-gallery-3.jpg"
+        }
+      },
+      {
+        "id": "recDuplicate00009",
+        "createdTime": "2026-10-01T09:00:00.000Z",
+        "fields": {
+          "fldSITE0000000000": "Northbridge City FC",
+          "fldSTATUS00000000": "Published",
+          "fldORDER000000000": 9,
+          "fldCONSENT0000000": true,
+          "fldSLUG0000000000": "sam-hollis",
+          "fldNAME0000000000": "Sam Hollis (duplicate)",
+          "fldFIRST000000000": "Sam",
+          "fldROLE0000000000": "Ex-player",
+          "fldROLELABEL00000": "Ex-player",
+          "fldERA00000000000": "modern",
+          "fldPOS00000000000": "Midfielder · Northbridge City 2012–2019",
+          "fldSHORT000000000": "Midfielder · 2012–2019",
+          "fldHONOUR00000000": "Player of the season twice",
+          "fldLINE0000000000": "A box-to-box midfielder who now runs a community football project, and talks about teamwork outside the dressing room.",
+          "fldSTATS000000000": "2012–19 | City years\nMidfield | Position\nTwice | Player of the season\nCommunity | Project founder",
+          "fldBIO00000000000": "Sam Hollis played over two hundred games in midfield and was voted player of the season twice.\n\nSince retiring he has run a community football project, which gives him practical stories about teamwork and volunteering.",
+          "fldWHY00000000000": "Best for corporate volunteering days and community partnerships.",
+          "fldTIMELINE000000": "2012 | Signs for Northbridge City\n2019 | Retires and founds a community project",
+          "fldTALKS000000000": [
+            "Teamwork",
+            "Community impact"
+          ],
+          "fldAUDIENCES00000": [
+            "Volunteering days",
+            "Partnership launches"
+          ],
+          "fldINDUSTRIES0000": [
+            "Charity",
+            "Public sector"
+          ],
+          "fldFORMATS0000000": [
+            "Keynote",
+            "Fan event",
+            "Workshop"
+          ],
+          "fldLANGS000000000": "English",
+          "fldHERO0000000000": "https://media.example.com/people/northbridge/sam-hollis-hero.jpg",
+          "fldCARD0000000000": "https://media.example.com/people/northbridge/sam-hollis-card.jpg",
+          "fldGALLERY0000000": "https://media.example.com/people/northbridge/sam-hollis-gallery-1.jpg\nhttps://media.example.com/people/northbridge/sam-hollis-gallery-2.jpg\nhttps://media.example.com/people/northbridge/sam-hollis-gallery-3.jpg"
+        }
+      }
+    ]
+  }
+]

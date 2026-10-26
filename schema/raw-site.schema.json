@@ -1,0 +1,1358 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:peptalk-appearances:content:raw-site",
+  "title": "RawSite",
+  "$ref": "#/$defs/RawSite",
+  "$defs": {
+    "Era": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "string",
+          "minLength": 1
+        },
+        "label": {
+          "type": "string"
+        },
+        "blurb": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "key",
+        "label",
+        "blurb"
+      ],
+      "additionalProperties": false
+    },
+    "FormatKey": {
+      "enum": [
+        "keynote",
+        "hospitality",
+        "brand",
+        "clinic",
+        "fan",
+        "workshop",
+        "virtual"
+      ],
+      "description": "One of the seven booking formats (src/copy/defaults.mjs)."
+    },
+    "Home": {
+      "type": "object",
+      "properties": {
+        "hero": {
+          "$ref": "#/$defs/Slot"
+        },
+        "inset": {
+          "$ref": "#/$defs/Slot"
+        },
+        "eraImage": {
+          "$ref": "#/$defs/ImageId"
+        },
+        "storyImage": {
+          "$ref": "#/$defs/ImageId"
+        },
+        "hospitalityImage": {
+          "$ref": "#/$defs/ImageId"
+        },
+        "activeEra": {
+          "type": "string",
+          "minLength": 1,
+          "description": "An `eras[].key`."
+        }
+      },
+      "required": [
+        "hero",
+        "inset",
+        "eraImage",
+        "storyImage",
+        "hospitalityImage",
+        "activeEra"
+      ],
+      "additionalProperties": false
+    },
+    "ImageId": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "A key of the site’s `images` map: a Getty id today (\"2206513784\"), the URL’s host and path for R2 images (\"media.example.com/people/a.jpg\"). `null` only on `status: \"shell\"` sites (a labelled placeholder renders)."
+    },
+    "Images": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string",
+        "pattern": "^https://",
+        "format": "uri"
+      },
+      "description": "Image id -> https URL. Every id a person or slot references must be here; URLs must be on a host allowed by next/image and the CSP (Getty, the site’s hosts, IMAGE_HOSTS_EXTRA)."
+    },
+    "Pair": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "string"
+        }
+      ],
+      "items": false,
+      "minItems": 2,
+      "maxItems": 2,
+      "description": "`[value, caption]` or `[year, text]`."
+    },
+    "Person": {
+      "type": "object",
+      "properties": {
+        "slug": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+          "description": "URL segment of the profile (`/<site>/legends/<slug>`). Unique within the site; keep it stable."
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Display name."
+        },
+        "first": {
+          "type": "string",
+          "minLength": 1,
+          "description": "First name, used in \"Check Thierry’s availability\"."
+        },
+        "active": {
+          "type": "boolean",
+          "description": "`false` hides the profile and removes the person from every list. A hidden person cannot be featured.",
+          "default": true
+        },
+        "role": {
+          "$ref": "#/$defs/RoleKey"
+        },
+        "roleLabel": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Role line on cards, e.g. \"Ex-player · Goalkeeping coach\"."
+        },
+        "era": {
+          "type": "string",
+          "minLength": 1,
+          "description": "An `eras[].key` of the site."
+        },
+        "limited": {
+          "type": "boolean",
+          "description": "Limited availability (current playing or major job; always true for `squad`). Shows the amber pill."
+        },
+        "hero": {
+          "$ref": "#/$defs/ImageId"
+        },
+        "card": {
+          "$ref": "#/$defs/ImageId"
+        },
+        "gallery": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ImageId"
+          },
+          "minItems": 3,
+          "maxItems": 3,
+          "description": "Exactly three image ids."
+        },
+        "pos": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Position line, e.g. \"Striker · Arsenal 1999–2007 · France\"."
+        },
+        "short": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Card line."
+        },
+        "honour": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Headline honour."
+        },
+        "line": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Positioning line on the profile."
+        },
+        "stats": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Pair"
+          },
+          "minItems": 4,
+          "maxItems": 4,
+          "description": "Exactly four `[value, caption]` pairs; stable facts only."
+        },
+        "bio": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1,
+          "description": "Paragraphs of original copy (no quotes, no contested numbers)."
+        },
+        "why": {
+          "type": "string",
+          "minLength": 1,
+          "description": "\"Best for\" paragraph."
+        },
+        "timeline": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Pair"
+          },
+          "minItems": 1,
+          "description": "`[year, text]` entries, oldest first."
+        },
+        "talks": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1,
+          "description": "Talk topics."
+        },
+        "audiences": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1,
+          "description": "Audiences (\"Great for\")."
+        },
+        "industries": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1,
+          "description": "Industries."
+        },
+        "formats": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/FormatKey"
+          },
+          "description": "Booking formats offered, in display order."
+        },
+        "langs": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Languages, as display text (\"English, French\")."
+        },
+        "travelsFrom": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Defaults to the site’s `vocab.travelsFrom`."
+        },
+        "sameAs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^https://",
+            "format": "uri"
+          },
+          "maxItems": 10,
+          "uniqueItems": true,
+          "description": "Up to 10 official profiles elsewhere (club page, Wikipedia, Wikidata, verified socials). Emitted as `Person.sameAs` in JSON-LD.",
+          "default": []
+        }
+      },
+      "required": [
+        "slug",
+        "name",
+        "first",
+        "role",
+        "roleLabel",
+        "era",
+        "limited",
+        "hero",
+        "card",
+        "gallery",
+        "pos",
+        "short",
+        "honour",
+        "line",
+        "stats",
+        "bio",
+        "why",
+        "timeline",
+        "talks",
+        "audiences",
+        "industries",
+        "formats",
+        "langs"
+      ],
+      "additionalProperties": false
+    },
+    "RawSite": {
+      "type": "object",
+      "description": "A site as stored (`getRawSite()`, `listRawSites()`): hidden people and bookkeeping included.",
+      "properties": {
+        "slug": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+          "description": "URL folder (`/<slug>`)."
+        },
+        "active": {
+          "type": "boolean",
+          "description": "`false` leaves the whole site out: its URLs 404 and it leaves the landing page.",
+          "default": true
+        },
+        "indexable": {
+          "type": "boolean",
+          "description": "Search launch switch. Rejected on shell sites and while demo pages are set.",
+          "default": false
+        },
+        "lang": {
+          "enum": [
+            "en-GB",
+            "en-US"
+          ],
+          "description": "`<html lang>`, `og:locale`, `inLanguage`.",
+          "default": "en-GB"
+        },
+        "pages": {
+          "type": "object",
+          "description": "Optional pages, each `true` by default. `false` removes the page and every link to it.",
+          "properties": {
+            "waysToBook": {
+              "type": "boolean"
+            },
+            "hospitality": {
+              "type": "boolean"
+            },
+            "about": {
+              "type": "boolean"
+            }
+          },
+          "additionalProperties": false
+        },
+        "status": {
+          "const": "shell",
+          "description": "Present only on shell sites: allows `null` images and placeholder copy."
+        },
+        "short": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Short name used in copy (\"Spurs\")."
+        },
+        "orgName": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Organisation name (\"Tottenham Hotspur\")."
+        },
+        "platform": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Site name (\"Spurs Speaker Network\")."
+        },
+        "platformShort": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Nav short form."
+        },
+        "tagline": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Utility-bar text."
+        },
+        "entity": {
+          "type": "string",
+          "minLength": 1,
+          "description": "One factual sentence describing the platform; used everywhere (footer, About, meta, JSON-LD, llms.txt)."
+        },
+        "motto": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Official motto, or null."
+        },
+        "copyright": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Rights holder’s legal name."
+        },
+        "heroTitle": {
+          "type": "array",
+          "prefixItems": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "items": false,
+          "minItems": 2,
+          "maxItems": 2,
+          "description": "The two hero headline lines."
+        },
+        "waysTitle": {
+          "type": "string",
+          "minLength": 1,
+          "description": "\"Ways to book\" heading."
+        },
+        "stadium": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Venue used in copy."
+        },
+        "marks": {
+          "type": "object",
+          "description": "The organisation’s own crest and wordmark files, unmodified.",
+          "properties": {
+            "crest": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^https://",
+                  "format": "uri"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "wordmark": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^https://",
+                  "format": "uri"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "additionalProperties": false
+        },
+        "navMark": {
+          "enum": [
+            "wordmark",
+            "crest"
+          ],
+          "description": "What sits in the nav."
+        },
+        "crestOnLight": {
+          "type": "boolean",
+          "description": "Crest artwork works on white."
+        },
+        "crestOn": {
+          "type": "object",
+          "description": "Crest per surface.",
+          "properties": {
+            "bar": {
+              "enum": [
+                "full",
+                "white",
+                "hide"
+              ]
+            },
+            "brand": {
+              "enum": [
+                "full",
+                "white",
+                "hide"
+              ]
+            },
+            "dark": {
+              "enum": [
+                "full",
+                "white",
+                "hide"
+              ]
+            }
+          },
+          "additionalProperties": false
+        },
+        "crestFallback": {
+          "type": "string",
+          "description": "Text badge when there is no embeddable crest (required then)."
+        },
+        "theme": {
+          "$ref": "#/$defs/Theme"
+        },
+        "style": {
+          "$ref": "#/$defs/StyleTokens"
+        },
+        "cspHosts": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^https://",
+            "format": "uri"
+          },
+          "description": "Origins the marks load from; added to the image CSP."
+        },
+        "orgType": {
+          "type": "string",
+          "description": "`SportsTeam` or `SportsOrganization` (structured data).",
+          "default": "SportsTeam"
+        },
+        "tracking": {
+          "type": "object",
+          "description": "Tags the site loads (off by default; lib/tracking.ts). Unset: the TRACKING_GTM_ID fallback, else none. The CSP allows Google’s hosts only for sites with tags.",
+          "properties": {
+            "gtmId": {
+              "type": "string",
+              "pattern": "^GTM-[A-Z0-9]{4,10}$",
+              "description": "Google Tag Manager container, `GTM-XXXXXXX`."
+            },
+            "ga4Id": {
+              "type": "string",
+              "pattern": "^G-[A-Z0-9]{4,12}$",
+              "description": "GA4 measurement id, `G-XXXXXXXXXX`."
+            }
+          },
+          "additionalProperties": false
+        },
+        "consent": {
+          "type": "object",
+          "description": "Consent banner for the tracking tags.",
+          "properties": {
+            "required": {
+              "type": "boolean",
+              "description": "`true` loads tags only after the visitor accepts in the consent banner.",
+              "default": false
+            }
+          },
+          "additionalProperties": false
+        },
+        "eventSpaces": {
+          "type": "object",
+          "description": "Shared Event Spaces promotion. When url is set, all fields are required. Enquiries and bookings stay on the partner site.",
+          "properties": {
+            "url": {
+              "type": "string",
+              "pattern": "^$|^https://",
+              "description": "Partner venue-hire URL over HTTPS. Empty or absent hides the module on every page."
+            },
+            "heading": {
+              "type": "string",
+              "minLength": 1
+            },
+            "copy": {
+              "type": "string",
+              "minLength": 1
+            },
+            "image": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Image id in this site’s images map. Use a venue photo."
+            },
+            "imageAlt": {
+              "type": "string",
+              "minLength": 1
+            },
+            "buttonText": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "additionalProperties": false
+        },
+        "featured": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+          },
+          "minItems": 1,
+          "description": "People in \"Featured this season\": active people of this site."
+        },
+        "home": {
+          "$ref": "#/$defs/Home"
+        },
+        "homeLayout": {
+          "type": "object",
+          "properties": {
+            "waysAfterRoles": {
+              "type": "boolean"
+            },
+            "hideEras": {
+              "type": "boolean"
+            }
+          },
+          "additionalProperties": false
+        },
+        "demoHome": {
+          "type": "boolean",
+          "description": "Render the home page as a look-only demo."
+        },
+        "demoProfiles": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+          },
+          "description": "Profiles rendered as look-only demos."
+        },
+        "vocab": {
+          "$ref": "#/$defs/VocabOverrides"
+        },
+        "formats": {
+          "type": "object",
+          "description": "Per-format overrides of title, short, desc, items.",
+          "properties": {
+            "keynote": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "short": {
+                  "type": "string"
+                },
+                "desc": {
+                  "type": "string"
+                },
+                "items": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "additionalProperties": false
+            },
+            "hospitality": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "short": {
+                  "type": "string"
+                },
+                "desc": {
+                  "type": "string"
+                },
+                "items": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "additionalProperties": false
+            },
+            "brand": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "short": {
+                  "type": "string"
+                },
+                "desc": {
+                  "type": "string"
+                },
+                "items": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "additionalProperties": false
+            },
+            "clinic": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "short": {
+                  "type": "string"
+                },
+                "desc": {
+                  "type": "string"
+                },
+                "items": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "additionalProperties": false
+            },
+            "fan": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "short": {
+                  "type": "string"
+                },
+                "desc": {
+                  "type": "string"
+                },
+                "items": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "additionalProperties": false
+            },
+            "workshop": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "short": {
+                  "type": "string"
+                },
+                "desc": {
+                  "type": "string"
+                },
+                "items": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "additionalProperties": false
+            },
+            "virtual": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "short": {
+                  "type": "string"
+                },
+                "desc": {
+                  "type": "string"
+                },
+                "items": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false
+        },
+        "faqOverrides": {
+          "type": "object",
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "q": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "a": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "additionalProperties": false
+              }
+            ]
+          },
+          "description": "Keyed by an FAQ `key` in src/copy/defaults.mjs: an answer string, or `{ q, a }`."
+        },
+        "roles": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Role"
+          },
+          "minItems": 1
+        },
+        "eras": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Era"
+          },
+          "minItems": 1
+        },
+        "people": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Person"
+          },
+          "description": "Every person, in display order. Slugs unique."
+        },
+        "images": {
+          "$ref": "#/$defs/Images"
+        },
+        "licences": {
+          "type": "object",
+          "description": "Licence approvals (bookkeeping, never rendered). An asset counts as licensed while `url` equals the URL in use; a changed URL makes the approval stale.",
+          "properties": {
+            "images": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "object",
+                "properties": {
+                  "url": {
+                    "type": "string",
+                    "pattern": "^https://"
+                  },
+                  "note": {
+                    "type": "string"
+                  },
+                  "approvedAt": {
+                    "type": "string",
+                    "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                  }
+                },
+                "required": [
+                  "url",
+                  "approvedAt"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "marks": {
+              "type": "object",
+              "propertyNames": {
+                "enum": [
+                  "crest",
+                  "wordmark"
+                ]
+              },
+              "additionalProperties": {
+                "type": "object",
+                "properties": {
+                  "url": {
+                    "type": "string",
+                    "pattern": "^https://"
+                  },
+                  "note": {
+                    "type": "string"
+                  },
+                  "approvedAt": {
+                    "type": "string",
+                    "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                  }
+                },
+                "required": [
+                  "url",
+                  "approvedAt"
+                ],
+                "additionalProperties": false
+              }
+            }
+          },
+          "required": [
+            "images",
+            "marks"
+          ],
+          "additionalProperties": false
+        },
+        "verification": {
+          "type": "object",
+          "description": "Verification checklists (bookkeeping, never rendered). Item keys are defined in src/sites/verification.mjs.",
+          "properties": {
+            "pages": {
+              "type": "object"
+            },
+            "people": {
+              "type": "object"
+            }
+          },
+          "required": [
+            "pages",
+            "people"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "slug",
+        "short",
+        "orgName",
+        "platform",
+        "platformShort",
+        "tagline",
+        "entity",
+        "motto",
+        "copyright",
+        "heroTitle",
+        "waysTitle",
+        "stadium",
+        "marks",
+        "navMark",
+        "theme",
+        "featured",
+        "home",
+        "roles",
+        "eras",
+        "people",
+        "images",
+        "licences",
+        "verification"
+      ],
+      "additionalProperties": false
+    },
+    "Role": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "$ref": "#/$defs/RoleKey"
+        },
+        "label": {
+          "type": "string"
+        },
+        "blurb": {
+          "type": "string"
+        },
+        "image": {
+          "$ref": "#/$defs/ImageId"
+        },
+        "singular": {
+          "type": "string"
+        },
+        "browseLabel": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "key",
+        "label",
+        "blurb"
+      ],
+      "additionalProperties": false
+    },
+    "RoleKey": {
+      "enum": [
+        "player",
+        "manager",
+        "staff",
+        "women",
+        "squad"
+      ],
+      "description": "Role group: drives roster filters and homepage tiles."
+    },
+    "Slot": {
+      "type": "object",
+      "properties": {
+        "image": {
+          "$ref": "#/$defs/ImageId"
+        },
+        "name": {
+          "type": "string"
+        },
+        "line": {
+          "type": "string"
+        },
+        "tag": {
+          "type": "string",
+          "description": "`\"br\"` puts the name card bottom-right."
+        }
+      },
+      "required": [
+        "image",
+        "name",
+        "line"
+      ],
+      "additionalProperties": false
+    },
+    "StyleTokens": {
+      "type": "object",
+      "properties": {
+        "buttonRadius": {
+          "type": "string",
+          "default": "999px"
+        },
+        "buttonCase": {
+          "type": "string",
+          "default": "none"
+        },
+        "buttonClip": {
+          "type": "boolean",
+          "description": "Chamfered button corners.",
+          "default": false
+        },
+        "headingCase": {
+          "type": "string",
+          "default": "uppercase"
+        },
+        "headingStyle": {
+          "type": "string",
+          "default": "normal"
+        },
+        "cardRadius": {
+          "type": "string",
+          "default": "16px"
+        }
+      },
+      "additionalProperties": false
+    },
+    "Theme": {
+      "type": "object",
+      "properties": {
+        "brand": {
+          "type": "string",
+          "pattern": "^#[0-9a-fA-F]{6}$"
+        },
+        "ink": {
+          "type": "string",
+          "pattern": "^#[0-9a-fA-F]{6}$"
+        },
+        "dark": {
+          "type": "string",
+          "pattern": "^#[0-9a-fA-F]{6}$"
+        },
+        "bar": {
+          "type": "string",
+          "pattern": "^#[0-9a-fA-F]{6}$"
+        },
+        "display": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Display font stack ending in a bundled font (Outfit or Barlow Condensed)."
+        },
+        "tint": {
+          "type": "string",
+          "pattern": "^#[0-9a-fA-F]{6}$",
+          "description": "Neutral; set tint, line, muted and mutedDark together."
+        },
+        "line": {
+          "type": "string",
+          "pattern": "^#[0-9a-fA-F]{6}$"
+        },
+        "muted": {
+          "type": "string",
+          "pattern": "^#[0-9a-fA-F]{6}$"
+        },
+        "mutedDark": {
+          "type": "string",
+          "pattern": "^#[0-9a-fA-F]{6}$"
+        },
+        "faint": {
+          "type": "string",
+          "pattern": "^#[0-9a-fA-F]{6}$",
+          "description": "Defaults to `muted`."
+        }
+      },
+      "required": [
+        "brand",
+        "ink",
+        "dark",
+        "bar",
+        "display"
+      ],
+      "additionalProperties": false
+    },
+    "VocabOverrides": {
+      "type": "object",
+      "description": "Wording overrides; any key left out keeps the default in src/copy/defaults.mjs (VOCAB).",
+      "properties": {
+        "rolesEyebrow": {
+          "type": "string"
+        },
+        "heroLead": {
+          "type": "string"
+        },
+        "rosterLead": {
+          "type": "string"
+        },
+        "staffPill": {
+          "type": "string"
+        },
+        "rolesHeadline": {
+          "type": "string"
+        },
+        "whoOptions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "whereOptions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "fixtureWord": {
+          "type": "string"
+        },
+        "assureRoles": {
+          "type": "string"
+        },
+        "eraHeadline": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "eraLead": {
+          "type": "string"
+        },
+        "eventStoryTitle": {
+          "type": "string"
+        },
+        "galleryHeadline": {
+          "type": "string"
+        },
+        "howTitle": {
+          "type": "string"
+        },
+        "diaryCheck": {
+          "type": "string"
+        },
+        "hospitalityTitle": {
+          "type": "string"
+        },
+        "hospitalityEyebrow": {
+          "type": "string"
+        },
+        "hospitalityHeadline": {
+          "type": "string"
+        },
+        "hospitalityLead": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "hospitalityBody": {
+          "type": "string"
+        },
+        "hospitalityMetrics": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Pair"
+          }
+        },
+        "eventStoryBody": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "quote": {
+          "type": "string"
+        },
+        "careerHeadline": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "waysLead": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "pastEvents": {
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "array",
+                "prefixItems": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "string"
+                  }
+                ],
+                "items": false,
+                "minItems": 3,
+                "maxItems": 3
+              }
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "peopleNoun": {
+          "type": "string"
+        },
+        "aboutLead": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "beyondUrl": {
+          "type": "string"
+        },
+        "beyondLinkText": {
+          "type": "string"
+        },
+        "beyondLead": {
+          "type": "string"
+        },
+        "squadEyebrow": {
+          "type": "string"
+        },
+        "squadHeadline": {
+          "type": "string"
+        },
+        "squadLead": {
+          "type": "string"
+        },
+        "squadLinkText": {
+          "type": "string"
+        },
+        "featuredEyebrow": {
+          "type": "string"
+        },
+        "featuredHeadline": {
+          "type": "string"
+        },
+        "legendNoun": {
+          "type": "string"
+        },
+        "legendsNoun": {
+          "type": "string"
+        },
+        "storyMetrics": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Pair"
+          }
+        },
+        "quoteEyebrow": {
+          "type": "string"
+        },
+        "quoteCite": {
+          "type": "string"
+        },
+        "profileQuote": {
+          "type": "string"
+        },
+        "formHeadline": {
+          "type": "string"
+        },
+        "officialLabel": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "officialLegendLabel": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "officialFooter": {
+          "type": "string"
+        },
+        "travelsFrom": {
+          "type": "string"
+        },
+        "aboutTitle": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "consentLine": {
+          "type": "string"
+        },
+        "officialSmall": {
+          "type": "string"
+        },
+        "currentNoun": {
+          "type": "string"
+        },
+        "navLabels": {
+          "type": "object",
+          "properties": {
+            "legends": {
+              "type": "string"
+            },
+            "ways": {
+              "type": "string"
+            },
+            "hospitality": {
+              "type": "string"
+            },
+            "about": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

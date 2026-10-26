@@ -1,0 +1,331 @@
+{
+  "people": [
+    {
+      "slug": "jo-marsh",
+      "name": "Jo Marsh",
+      "first": "Jo",
+      "role": "player",
+      "roleLabel": "Ex-player",
+      "era": "nineties",
+      "limited": false,
+      "hero": "media.example.com/people/northbridge/jo-marsh-hero.jpg",
+      "card": "media.example.com/people/northbridge/jo-marsh-card.jpg",
+      "gallery": [
+        "media.example.com/people/northbridge/jo-marsh-gallery-1.jpg",
+        "media.example.com/people/northbridge/jo-marsh-gallery-2.jpg",
+        "media.example.com/people/northbridge/jo-marsh-gallery-3.jpg"
+      ],
+      "pos": "Centre-back · Northbridge City 1991–2003 · Wales",
+      "short": "Centre-back · 1991–2003 · Wales captain",
+      "honour": "Club captain for six seasons",
+      "line": "The defender who held Northbridge together through promotion and relegation, and talks about steady leadership when the plan falls apart.",
+      "stats": [
+        [
+          "1991–2003",
+          "City years"
+        ],
+        [
+          "Centre-back",
+          "Position"
+        ],
+        [
+          "Wales",
+          "International"
+        ],
+        [
+          "Six seasons",
+          "As captain"
+        ]
+      ],
+      "bio": [
+        "Jo Marsh joined Northbridge City from the youth team and spent twelve seasons at the heart of the defence.",
+        "As captain she led the side through two promotions and one hard relegation, which shapes how she talks about rebuilding a team's confidence."
+      ],
+      "why": "Best for leadership offsites and client events that want an honest story about holding a group together.",
+      "timeline": [
+        [
+          "1991",
+          "First-team debut"
+        ],
+        [
+          "1997",
+          "Named club captain"
+        ],
+        [
+          "2003",
+          "Final season at the club"
+        ]
+      ],
+      "talks": [
+        "Leadership under pressure",
+        "Rebuilding confidence",
+        "Captaincy"
+      ],
+      "audiences": [
+        "Leadership teams",
+        "Sales kick-offs"
+      ],
+      "industries": [
+        "Finance",
+        "Construction"
+      ],
+      "formats": [
+        "keynote",
+        "hospitality",
+        "fan"
+      ],
+      "langs": "English, Welsh",
+      "travelsFrom": "Cardiff, UK",
+      "sameAs": [
+        "https://northbridgecity.example/legends/jo-marsh",
+        "https://www.example.org/wiki/Jo_Marsh"
+      ]
+    },
+    {
+      "slug": "ade-okafor",
+      "name": "Ade Okafor",
+      "first": "Ade",
+      "role": "manager",
+      "roleLabel": "Manager",
+      "era": "modern",
+      "limited": false,
+      "hero": "media.example.com/people/northbridge/ade-okafor-hero.jpg",
+      "card": "media.example.com/people/northbridge/ade-okafor-card.jpg",
+      "gallery": [
+        "media.example.com/people/northbridge/ade-okafor-gallery-1.jpg",
+        "media.example.com/people/northbridge/ade-okafor-gallery-2.jpg",
+        "media.example.com/people/northbridge/ade-okafor-gallery-3.jpg"
+      ],
+      "pos": "Head coach · Northbridge City 2015–2021",
+      "short": "Head coach · 2015–2021",
+      "honour": "Took the club up two divisions",
+      "line": "A coach who built a promotion side on a small budget, and explains how clear roles beat big spending.",
+      "stats": [
+        [
+          "2015–21",
+          "As head coach"
+        ],
+        [
+          "Two",
+          "Promotions"
+        ],
+        [
+          "Academy",
+          "Graduates given debuts"
+        ],
+        [
+          "Analytics",
+          "Early adopter"
+        ]
+      ],
+      "bio": [
+        "Ade Okafor coached Northbridge City for six seasons and gave first-team debuts to more academy players than any coach before him.",
+        "His sessions focus on clear roles, honest feedback and using data without losing the human side of a team."
+      ],
+      "why": "Best for management teams planning change on a tight budget.",
+      "timeline": [
+        [
+          "2015",
+          "Appointed head coach"
+        ],
+        [
+          "2018",
+          "First promotion"
+        ],
+        [
+          "2021",
+          "Second promotion"
+        ]
+      ],
+      "talks": [
+        "Clear roles",
+        "Feedback cultures",
+        "Data and judgement"
+      ],
+      "audiences": [
+        "Managers",
+        "Graduate programmes"
+      ],
+      "industries": [
+        "Technology",
+        "Retail"
+      ],
+      "formats": [
+        "keynote",
+        "workshop",
+        "virtual"
+      ],
+      "langs": "English",
+      "sameAs": [
+        "https://northbridgecity.example/staff/ade-okafor"
+      ]
+    },
+    {
+      "slug": "priya-natt",
+      "name": "Priya Natt",
+      "first": "Priya",
+      "role": "women",
+      "roleLabel": "Women's team",
+      "era": "modern",
+      "limited": true,
+      "hero": "media.example.com/people/northbridge/priya-natt-hero.jpg",
+      "card": "media.example.com/people/northbridge/priya-natt-card.jpg",
+      "gallery": [
+        "media.example.com/people/northbridge/priya-natt-gallery-1.jpg",
+        "media.example.com/people/northbridge/priya-natt-gallery-2.jpg",
+        "media.example.com/people/northbridge/priya-natt-gallery-3.jpg"
+      ],
+      "pos": "Forward · Northbridge City Women 2016–present",
+      "short": "Forward · 2016–present",
+      "honour": "Record goalscorer for the women's team",
+      "line": "The women's team's record scorer, who balances a playing career with coaching the next generation.",
+      "stats": [
+        [
+          "2016–",
+          "City Women"
+        ],
+        [
+          "Forward",
+          "Position"
+        ],
+        [
+          "Record",
+          "Club goalscorer"
+        ],
+        [
+          "Coach",
+          "Youth licence"
+        ]
+      ],
+      "bio": [
+        "Priya Natt has led the line for Northbridge City Women since 2016 and holds the club's scoring record.",
+        "Away from matchdays she coaches girls' teams in the city and talks about building habits that last."
+      ],
+      "why": "Best for schools, youth programmes and brands that want an active, current player.",
+      "timeline": [
+        [
+          "2016",
+          "Joins Northbridge City Women"
+        ],
+        [
+          "2020",
+          "Breaks the club scoring record"
+        ]
+      ],
+      "talks": [
+        "Building habits",
+        "Women in sport"
+      ],
+      "audiences": [
+        "Schools",
+        "Brand activations"
+      ],
+      "industries": [
+        "Education",
+        "Sportswear"
+      ],
+      "formats": [
+        "fan",
+        "brand",
+        "clinic"
+      ],
+      "langs": "English, Punjabi",
+      "sameAs": [
+        "https://northbridgecity.example/women/priya-natt"
+      ]
+    },
+    {
+      "slug": "sam-hollis",
+      "name": "Sam Hollis",
+      "first": "Sam",
+      "role": "player",
+      "roleLabel": "Ex-player",
+      "era": "modern",
+      "limited": false,
+      "hero": "media.example.com/people/northbridge/sam-hollis-hero.jpg",
+      "card": "media.example.com/people/northbridge/sam-hollis-card.jpg",
+      "gallery": [
+        "media.example.com/people/northbridge/sam-hollis-gallery-1.jpg",
+        "media.example.com/people/northbridge/sam-hollis-gallery-2.jpg",
+        "media.example.com/people/northbridge/sam-hollis-gallery-3.jpg"
+      ],
+      "pos": "Midfielder · Northbridge City 2012–2019",
+      "short": "Midfielder · 2012–2019",
+      "honour": "Player of the season twice",
+      "line": "A box-to-box midfielder who now runs a community football project, and talks about teamwork outside the dressing room.",
+      "stats": [
+        [
+          "2012–19",
+          "City years"
+        ],
+        [
+          "Midfield",
+          "Position"
+        ],
+        [
+          "Twice",
+          "Player of the season"
+        ],
+        [
+          "Community",
+          "Project founder"
+        ]
+      ],
+      "bio": [
+        "Sam Hollis played over two hundred games in midfield and was voted player of the season twice.",
+        "Since retiring he has run a community football project, which gives him practical stories about teamwork and volunteering."
+      ],
+      "why": "Best for corporate volunteering days and community partnerships.",
+      "timeline": [
+        [
+          "2012",
+          "Signs for Northbridge City"
+        ],
+        [
+          "2019",
+          "Retires and founds a community project"
+        ]
+      ],
+      "talks": [
+        "Teamwork",
+        "Community impact"
+      ],
+      "audiences": [
+        "Volunteering days",
+        "Partnership launches"
+      ],
+      "industries": [
+        "Charity",
+        "Public sector"
+      ],
+      "formats": [
+        "keynote",
+        "fan",
+        "workshop"
+      ],
+      "langs": "English"
+    }
+  ],
+  "images": {
+    "media.example.com/people/northbridge/jo-marsh-hero.jpg": "https://media.example.com/people/northbridge/jo-marsh-hero.jpg",
+    "media.example.com/people/northbridge/jo-marsh-card.jpg": "https://media.example.com/people/northbridge/jo-marsh-card.jpg",
+    "media.example.com/people/northbridge/jo-marsh-gallery-1.jpg": "https://media.example.com/people/northbridge/jo-marsh-gallery-1.jpg",
+    "media.example.com/people/northbridge/jo-marsh-gallery-2.jpg": "https://media.example.com/people/northbridge/jo-marsh-gallery-2.jpg",
+    "media.example.com/people/northbridge/jo-marsh-gallery-3.jpg": "https://media.example.com/people/northbridge/jo-marsh-gallery-3.jpg",
+    "media.example.com/people/northbridge/ade-okafor-hero.jpg": "https://media.example.com/people/northbridge/ade-okafor-hero.jpg",
+    "media.example.com/people/northbridge/ade-okafor-card.jpg": "https://media.example.com/people/northbridge/ade-okafor-card.jpg",
+    "media.example.com/people/northbridge/ade-okafor-gallery-1.jpg": "https://media.example.com/people/northbridge/ade-okafor-gallery-1.jpg",
+    "media.example.com/people/northbridge/ade-okafor-gallery-2.jpg": "https://media.example.com/people/northbridge/ade-okafor-gallery-2.jpg",
+    "media.example.com/people/northbridge/ade-okafor-gallery-3.jpg": "https://media.example.com/people/northbridge/ade-okafor-gallery-3.jpg",
+    "media.example.com/people/northbridge/priya-natt-hero.jpg": "https://media.example.com/people/northbridge/priya-natt-hero.jpg",
+    "media.example.com/people/northbridge/priya-natt-card.jpg": "https://media.example.com/people/northbridge/priya-natt-card.jpg",
+    "media.example.com/people/northbridge/priya-natt-gallery-1.jpg": "https://media.example.com/people/northbridge/priya-natt-gallery-1.jpg",
+    "media.example.com/people/northbridge/priya-natt-gallery-2.jpg": "https://media.example.com/people/northbridge/priya-natt-gallery-2.jpg",
+    "media.example.com/people/northbridge/priya-natt-gallery-3.jpg": "https://media.example.com/people/northbridge/priya-natt-gallery-3.jpg",
+    "media.example.com/people/northbridge/sam-hollis-hero.jpg": "https://media.example.com/people/northbridge/sam-hollis-hero.jpg",
+    "media.example.com/people/northbridge/sam-hollis-card.jpg": "https://media.example.com/people/northbridge/sam-hollis-card.jpg",
+    "media.example.com/people/northbridge/sam-hollis-gallery-1.jpg": "https://media.example.com/people/northbridge/sam-hollis-gallery-1.jpg",
+    "media.example.com/people/northbridge/sam-hollis-gallery-2.jpg": "https://media.example.com/people/northbridge/sam-hollis-gallery-2.jpg",
+    "media.example.com/people/northbridge/sam-hollis-gallery-3.jpg": "https://media.example.com/people/northbridge/sam-hollis-gallery-3.jpg"
+  }
+}

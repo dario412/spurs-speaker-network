@@ -1,0 +1,19 @@
+{
+  "order": [
+    "northbridge",
+    "eastvale"
+  ],
+  "rootSite": "northbridge",
+  "redirects": {
+    "north-bridge": "northbridge"
+  },
+  "domains": {
+    "northbridge": {
+      "primary": "northbridgecityspeakers.example",
+      "aliases": [
+        "www.northbridgecityspeakers.example"
+      ],
+      "live": false
+    }
+  }
+}

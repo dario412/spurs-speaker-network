@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:peptalk-appearances:content:registry",
+  "title": "Registry",
+  "$ref": "#/$defs/Registry",
+  "$defs": {
+    "Registry": {
+      "type": "object",
+      "properties": {
+        "order": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+          },
+          "uniqueItems": true,
+          "description": "Every site slug in landing-page order, inactive sites included."
+        },
+        "rootSite": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+          "description": "Where `/` on the hub redirects; must be an active site. Absent: `/` serves the PepTalk landing page and `/all` answers 301 to `/`; set: the landing page stays at `/all`."
+        },
+        "redirects": {
+          "type": "object",
+          "propertyNames": {
+            "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+          },
+          "additionalProperties": {
+            "type": "string",
+            "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+          },
+          "description": "Old slug -> new slug; pages and Open Graph cards answer 301."
+        },
+        "indexable": {
+          "type": "boolean",
+          "description": "Hub pages (the landing page, `/terms`, `/privacy`) may be indexed. Previews never index.",
+          "default": false
+        },
+        "domains": {
+          "type": "object",
+          "propertyNames": {
+            "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+          },
+          "additionalProperties": {
+            "$ref": "#/$defs/SiteDomain"
+          },
+          "description": "Per-site domains, keyed by a slug in `order` (docs/domains.md). A site with a domain is also served at the root of its own host; each host belongs to one site and never the hub’s host. Unpublished sites’ domains are ignored."
+        }
+      },
+      "required": [
+        "order",
+        "redirects"
+      ],
+      "additionalProperties": false
+    },
+    "SiteDomain": {
+      "type": "object",
+      "properties": {
+        "primary": {
+          "type": "string",
+          "pattern": "^(?=.{1,253}$)(?:(?!-)[a-z0-9-]{1,63}(?<!-)\\.)+(?:[a-z]{2,63}|xn--[a-z0-9-]{1,59})$",
+          "description": "The canonical host: lowercase, no scheme, port, path or trailing dot."
+        },
+        "aliases": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^(?=.{1,253}$)(?:(?!-)[a-z0-9-]{1,63}(?<!-)\\.)+(?:[a-z]{2,63}|xn--[a-z0-9-]{1,59})$"
+          },
+          "uniqueItems": true,
+          "description": "Extra hosts that answer 301 to `primary`, keeping path and query. `[]` for none."
+        },
+        "live": {
+          "type": "boolean",
+          "description": "`true` once DNS and TLS work: the hub folder answers 301 to the domain, and canonical URLs use it."
+        }
+      },
+      "required": [
+        "primary",
+        "aliases",
+        "live"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

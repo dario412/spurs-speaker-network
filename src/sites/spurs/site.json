@@ -1,0 +1,196 @@
+{
+  "slug": "spurs",
+  "short": "Spurs",
+  "orgName": "Tottenham Hotspur",
+  "platform": "Spurs Speaker Network",
+  "platformShort": "Speaker Network",
+  "tagline": "The official Tottenham Hotspur speaker network",
+  "entity": "The Spurs Speaker Network is the official Tottenham Hotspur speaker booking service, operated by PepTalk.",
+  "motto": "To Dare Is To Do",
+  "copyright": "Tottenham Hotspur Football &amp; Athletic Co. Ltd.",
+  "heroTitle": [
+    "Welcome to the official",
+    "Spurs speaker network."
+  ],
+  "waysTitle": "Ways to book",
+  "stadium": "Tottenham Hotspur Stadium",
+  "marks": {
+    "crest": "https://upload.wikimedia.org/wikipedia/en/thumb/b/b4/Tottenham_Hotspur.svg/960px-Tottenham_Hotspur.svg.png",
+    "wordmark": "https://resources.thfc.pulselive.com/thfc/document/2025/09/11/7f611588-e6a6-4daa-a09c-d08078b6ba9a/logo.svg"
+  },
+  "navMark": "wordmark",
+  "crestOnLight": true,
+  "crestOn": {
+    "bar": "white",
+    "brand": "white",
+    "dark": "white"
+  },
+  "theme": {
+    "brand": "#000a3c",
+    "ink": "#000a3c",
+    "dark": "#000a3c",
+    "bar": "#000a3c",
+    "display": "'Outfit',helvetica,sans-serif"
+  },
+  "cspHosts": [
+    "https://upload.wikimedia.org",
+    "https://resources.thfc.pulselive.com"
+  ],
+  "featured": [
+    "sandro",
+    "dele-alli",
+    "gareth-bale",
+    "harry-redknapp",
+    "ledley-king",
+    "clive-allen"
+  ],
+  "home": {
+    "hero": {
+      "image": "2206513784",
+      "name": "Sandro",
+      "line": "Midfielder · 2010–2014"
+    },
+    "inset": {
+      "image": "109857999",
+      "name": "Harry Redknapp",
+      "line": "Manager · 2008–2012"
+    },
+    "eraImage": "2229588812",
+    "storyImage": "2290706689",
+    "hospitalityImage": "2290101699",
+    "activeEra": "pochettino"
+  },
+  "vocab": {
+    "rosterLead": "Filter by role or era, or search by name or topic.",
+    "heroLead": "Book keynotes, firesides, meet &amp; greets and more, all in one place.",
+    "eraLead": "From the old Lane to the new stadium, find the Spurs side you remember and book the people who built it.",
+    "eventStoryTitle": "Example booking: partner dinner, 300 guests",
+    "eventStoryBody": "A former head coach and two former players hosted a partner dinner at Tottenham Hotspur Stadium: welcome, Q&amp;A and photos. (Illustrative example.)",
+    "galleryHeadline": "In Lilywhite &amp; beyond",
+    "careerHeadline": "Spurs career",
+    "hospitalityEyebrow": "At Tottenham Hotspur Stadium",
+    "hospitalityLead": "Add a Spurs speaker to your Premium lounge or box at Tottenham Hotspur Stadium.",
+    "hospitalityBody": "A speaker welcomes your guests, hosts a pre-match Q&amp;A, visits tables for photos and shares half-time insight in your lounge or box.",
+    "staffPill": "Backroom staff",
+    "assureRoles": "Players, head coaches and staff",
+    "squadEyebrow": "First team",
+    "squadHeadline": "Current first team",
+    "squadLead": "Current players are available for brand work, fan events and hospitality, subject to the fixture list and training schedule.",
+    "rolesEyebrow": "Players · Managers · Staff",
+    "rolesHeadline": "Find a speaker by role",
+    "legendNoun": "speaker",
+    "legendsNoun": "speakers",
+    "navLabels": {
+      "legends": "Speakers"
+    },
+    "featuredEyebrow": "Speakers",
+    "featuredHeadline": "Featured this season",
+    "officialLabel": "Official Tottenham Hotspur speaker network",
+    "officialLegendLabel": "Official Spurs speaker",
+    "officialSmall": "Official Tottenham Hotspur",
+    "formHeadline": "Request a speaker",
+    "hospitalityTitle": "Matchday hospitality",
+    "aboutTitle": "About the Spurs Speaker Network",
+    "quoteEyebrow": "Client feedback",
+    "beyondLead": "Browse football and sports speakers on PepTalk.",
+    "waysLead": "Here is how you can book Spurs speakers."
+  },
+  "formats": {
+    "clinic": {
+      "desc": "Grassroots and community days led by former players and coaches."
+    },
+    "hospitality": {
+      "short": "A speaker hosts your guests in your lounge or box.",
+      "desc": "Hosts your guests before and after kick-off in your lounge or box."
+    }
+  },
+  "style": {
+    "buttonRadius": "0",
+    "headingCase": "none",
+    "cardRadius": "0",
+    "buttonCase": "none",
+    "buttonClip": true
+  },
+  "homeLayout": {
+    "waysAfterRoles": true,
+    "hideEras": true
+  },
+  "faqOverrides": {
+    "cost": {
+      "q": "How much does it cost to book a speaker?",
+      "a": "Fees depend on the person, the format, the date and travel. Share your brief and the PepTalk bookings team will come back with an indicative fee."
+    },
+    "travel": {
+      "q": "Can speakers travel outside London or abroad?",
+      "a": "Yes, most speakers travel across the UK and internationally. Virtual formats are available too."
+    },
+    "leadTime": "Six to eight weeks is ideal. Availability depends on fixtures, media commitments and, for some speakers, current roles in football."
+  },
+  "roles": [
+    {
+      "key": "player",
+      "label": "Ex-players",
+      "blurb": "Former first-team players from every era.",
+      "image": "2262988448",
+      "singular": "Former player"
+    },
+    {
+      "key": "manager",
+      "label": "Managers & head coaches",
+      "blurb": "Leadership, team-building and big decisions under pressure.",
+      "image": "677839962",
+      "singular": "Former manager"
+    },
+    {
+      "key": "staff",
+      "label": "Backroom staff",
+      "blurb": "Coaches, sports scientists, analysts and the people behind the scenes at Hotspur Way.",
+      "image": "112744638",
+      "singular": "Coach"
+    },
+    {
+      "key": "women",
+      "label": "Spurs Women",
+      "blurb": "Current and former Spurs Women players.",
+      "image": "2152589168",
+      "singular": "Spurs Women player"
+    },
+    {
+      "key": "squad",
+      "label": "First team",
+      "blurb": "Today's first-team players, arranged with the club around the fixture list.",
+      "image": "2299553766",
+      "singular": "Current player"
+    }
+  ],
+  "eras": [
+    {
+      "key": "whl",
+      "label": "White Hart Lane classics",
+      "blurb": "Favourites from the old Lane"
+    },
+    {
+      "key": "redknapp",
+      "label": "Redknapp years",
+      "blurb": "Redknapp · Sandro · Van der Vaart"
+    },
+    {
+      "key": "pochettino",
+      "label": "Pochettino era",
+      "blurb": "Pochettino · Dele · Dembélé · Vertonghen"
+    },
+    {
+      "key": "new-stadium",
+      "label": "Tottenham Hotspur Stadium",
+      "blurb": "N17's next chapter"
+    }
+  ],
+  "eventSpaces": {
+    "heading": "Your next event. Our iconic stadium.",
+    "copy": "Explore spaces for meetings, conferences and celebrations at Tottenham Hotspur Stadium. Enquire and book directly with the stadium’s events team.",
+    "image": "2290101699",
+    "imageAlt": "Tottenham Hotspur Stadium",
+    "buttonText": "Explore event spaces",
+    "url": "https://www.tottenhamhotspurstadium.com/venue-hire/"
+  }
+}

@@ -1,0 +1,26 @@
+node_modules/
+.DS_Store
+*.log
+
+# Secrets: never commit an env file except the documented template
+.env
+.env.*
+!.env.example
+
+# Build output (next build, the test builds and any other NEXT_DIST_DIR) and Vercel's local link
+.next/
+.next*/
+next-env.d.ts
+*.tsbuildinfo
+.vercel/
+
+# Local tool output: visual baselines and diffs, performance runs
+.visual/
+.perf/
+
+# Research output and site packs (docs/adding-a-site.md, docs/site-packs.md)
+research/
+*.site-pack.zip
+
+# Local agent and editor settings
+.claude/settings.local.json

@@ -1,0 +1,195 @@
+{
+  "$comment": "Example Airtable people sync config (docs/airtable-cms.md). Every id is a placeholder: replace fld…/tbl…/app… with your base's IDs (Airtable: Manage fields -> Field ID, or GET /v0/meta/bases/{baseId}/tables). `name` is only used to read CSV exports in the dry run. The token never goes here: set AIRTABLE_TOKEN.",
+  "baseId": "appEXAMPLE0000000",
+  "tableId": "tblPEOPLE00000000",
+  "sites": {
+    "field": {
+      "id": "fldSITE0000000000",
+      "name": "Site",
+      "type": "select"
+    },
+    "values": {
+      "spurs": "Tottenham Hotspur"
+    }
+  },
+  "publish": {
+    "status": {
+      "field": {
+        "id": "fldSTATUS00000000",
+        "name": "Publish status",
+        "type": "select"
+      },
+      "values": [
+        "Published"
+      ]
+    },
+    "consent": {
+      "id": "fldCONSENT0000000",
+      "name": "Consent",
+      "type": "checkbox"
+    },
+    "archived": {
+      "id": "fldARCHIVED000000",
+      "name": "Archived",
+      "type": "checkbox"
+    }
+  },
+  "fields": {
+    "slug": {
+      "id": "fldSLUG0000000000",
+      "name": "Slug",
+      "type": "text"
+    },
+    "name": {
+      "id": "fldNAME0000000000",
+      "name": "Display name",
+      "type": "text"
+    },
+    "first": {
+      "id": "fldFIRST000000000",
+      "name": "First name",
+      "type": "text"
+    },
+    "role": {
+      "id": "fldROLE0000000000",
+      "name": "Role",
+      "type": "select",
+      "map": {
+        "Ex-player": "player",
+        "Manager": "manager",
+        "Backroom staff": "staff",
+        "Women's team": "women",
+        "First team": "squad"
+      }
+    },
+    "roleLabel": {
+      "id": "fldROLELABEL00000",
+      "name": "Role label",
+      "type": "text"
+    },
+    "era": {
+      "id": "fldERA00000000000",
+      "name": "Era key",
+      "type": "text"
+    },
+    "limited": {
+      "id": "fldLIMITED0000000",
+      "name": "Limited availability",
+      "type": "checkbox"
+    },
+    "pos": {
+      "id": "fldPOS00000000000",
+      "name": "Position line",
+      "type": "text"
+    },
+    "short": {
+      "id": "fldSHORT000000000",
+      "name": "Card line",
+      "type": "text"
+    },
+    "honour": {
+      "id": "fldHONOUR00000000",
+      "name": "Headline honour",
+      "type": "text"
+    },
+    "line": {
+      "id": "fldLINE0000000000",
+      "name": "Positioning line",
+      "type": "text"
+    },
+    "stats": {
+      "id": "fldSTATS000000000",
+      "name": "Stats",
+      "type": "pairs"
+    },
+    "bio": {
+      "id": "fldBIO00000000000",
+      "name": "Bio",
+      "type": "paragraphs"
+    },
+    "why": {
+      "id": "fldWHY00000000000",
+      "name": "Best for",
+      "type": "text"
+    },
+    "timeline": {
+      "id": "fldTIMELINE000000",
+      "name": "Timeline",
+      "type": "pairs"
+    },
+    "talks": {
+      "id": "fldTALKS000000000",
+      "name": "Talks about",
+      "type": "list"
+    },
+    "audiences": {
+      "id": "fldAUDIENCES00000",
+      "name": "Great for",
+      "type": "list"
+    },
+    "industries": {
+      "id": "fldINDUSTRIES0000",
+      "name": "Industries",
+      "type": "list"
+    },
+    "formats": {
+      "id": "fldFORMATS0000000",
+      "name": "Formats",
+      "type": "list",
+      "map": {
+        "Keynote": "keynote",
+        "Hospitality host": "hospitality",
+        "Brand partnership": "brand",
+        "Coaching clinic": "clinic",
+        "Fan event": "fan",
+        "Workshop": "workshop",
+        "Virtual": "virtual"
+      }
+    },
+    "langs": {
+      "id": "fldLANGS000000000",
+      "name": "Languages",
+      "type": "text"
+    },
+    "travelsFrom": {
+      "id": "fldTRAVELS0000000",
+      "name": "Travels from",
+      "type": "text"
+    },
+    "sameAs": {
+      "id": "fldSAMEAS00000000",
+      "name": "Official profiles",
+      "type": "urls"
+    }
+  },
+  "images": {
+    "hosts": [
+      "https://media.example.com"
+    ],
+    "hero": {
+      "id": "fldHERO0000000000",
+      "name": "Hero image URL",
+      "type": "url"
+    },
+    "card": {
+      "id": "fldCARD0000000000",
+      "name": "Card image URL",
+      "type": "url"
+    },
+    "gallery": {
+      "id": "fldGALLERY0000000",
+      "name": "Gallery image URLs",
+      "type": "urls"
+    }
+  },
+  "order": {
+    "id": "fldORDER000000000",
+    "name": "Display order",
+    "type": "number"
+  },
+  "failClosed": {
+    "maxInvalidRatio": 0.1,
+    "minPeople": 1
+  },
+  "maxPages": 50
+}

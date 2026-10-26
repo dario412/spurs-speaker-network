@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:peptalk-appearances:content:legal",
+  "title": "LegalDoc",
+  "$ref": "#/$defs/LegalDoc",
+  "$defs": {
+    "LegalDoc": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "enum": [
+            "terms",
+            "privacy"
+          ]
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Page heading."
+        },
+        "lastUpdated": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "\"Last updated\" text from the source, or null."
+        },
+        "body": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Markdown body (safe subset, see docs/content-model.md → Legal pages)."
+        },
+        "meta": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "Frontmatter bookkeeping (`source`, `status`, …); never rendered."
+        }
+      },
+      "required": [
+        "kind",
+        "title",
+        "lastUpdated",
+        "body",
+        "meta"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

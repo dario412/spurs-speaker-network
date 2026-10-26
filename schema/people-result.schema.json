@@ -1,0 +1,277 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:peptalk-appearances:content:people-result",
+  "title": "PeopleResult",
+  "$ref": "#/$defs/PeopleResult",
+  "$defs": {
+    "FormatKey": {
+      "enum": [
+        "keynote",
+        "hospitality",
+        "brand",
+        "clinic",
+        "fan",
+        "workshop",
+        "virtual"
+      ],
+      "description": "One of the seven booking formats (src/copy/defaults.mjs)."
+    },
+    "ImageId": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "A key of the site’s `images` map: a Getty id today (\"2206513784\"), the URL’s host and path for R2 images (\"media.example.com/people/a.jpg\"). `null` only on `status: \"shell\"` sites (a labelled placeholder renders)."
+    },
+    "Images": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string",
+        "pattern": "^https://",
+        "format": "uri"
+      },
+      "description": "Image id -> https URL. Every id a person or slot references must be here; URLs must be on a host allowed by next/image and the CSP (Getty, the site’s hosts, IMAGE_HOSTS_EXTRA)."
+    },
+    "Pair": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "string"
+        }
+      ],
+      "items": false,
+      "minItems": 2,
+      "maxItems": 2,
+      "description": "`[value, caption]` or `[year, text]`."
+    },
+    "PeopleResult": {
+      "type": "object",
+      "description": "What a PeopleProvider returns for one site (hidden people included; switches are applied afterwards).",
+      "properties": {
+        "people": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Person"
+          },
+          "description": "Every person, in display order. Slugs unique."
+        },
+        "images": {
+          "$ref": "#/$defs/Images"
+        }
+      },
+      "required": [
+        "people",
+        "images"
+      ],
+      "additionalProperties": false
+    },
+    "Person": {
+      "type": "object",
+      "properties": {
+        "slug": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+          "description": "URL segment of the profile (`/<site>/legends/<slug>`). Unique within the site; keep it stable."
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Display name."
+        },
+        "first": {
+          "type": "string",
+          "minLength": 1,
+          "description": "First name, used in \"Check Thierry’s availability\"."
+        },
+        "active": {
+          "type": "boolean",
+          "description": "`false` hides the profile and removes the person from every list. A hidden person cannot be featured.",
+          "default": true
+        },
+        "role": {
+          "$ref": "#/$defs/RoleKey"
+        },
+        "roleLabel": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Role line on cards, e.g. \"Ex-player · Goalkeeping coach\"."
+        },
+        "era": {
+          "type": "string",
+          "minLength": 1,
+          "description": "An `eras[].key` of the site."
+        },
+        "limited": {
+          "type": "boolean",
+          "description": "Limited availability (current playing or major job; always true for `squad`). Shows the amber pill."
+        },
+        "hero": {
+          "$ref": "#/$defs/ImageId"
+        },
+        "card": {
+          "$ref": "#/$defs/ImageId"
+        },
+        "gallery": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ImageId"
+          },
+          "minItems": 3,
+          "maxItems": 3,
+          "description": "Exactly three image ids."
+        },
+        "pos": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Position line, e.g. \"Striker · Arsenal 1999–2007 · France\"."
+        },
+        "short": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Card line."
+        },
+        "honour": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Headline honour."
+        },
+        "line": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Positioning line on the profile."
+        },
+        "stats": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Pair"
+          },
+          "minItems": 4,
+          "maxItems": 4,
+          "description": "Exactly four `[value, caption]` pairs; stable facts only."
+        },
+        "bio": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1,
+          "description": "Paragraphs of original copy (no quotes, no contested numbers)."
+        },
+        "why": {
+          "type": "string",
+          "minLength": 1,
+          "description": "\"Best for\" paragraph."
+        },
+        "timeline": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Pair"
+          },
+          "minItems": 1,
+          "description": "`[year, text]` entries, oldest first."
+        },
+        "talks": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1,
+          "description": "Talk topics."
+        },
+        "audiences": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1,
+          "description": "Audiences (\"Great for\")."
+        },
+        "industries": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1,
+          "description": "Industries."
+        },
+        "formats": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/FormatKey"
+          },
+          "description": "Booking formats offered, in display order."
+        },
+        "langs": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Languages, as display text (\"English, French\")."
+        },
+        "travelsFrom": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Defaults to the site’s `vocab.travelsFrom`."
+        },
+        "sameAs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^https://",
+            "format": "uri"
+          },
+          "maxItems": 10,
+          "uniqueItems": true,
+          "description": "Up to 10 official profiles elsewhere (club page, Wikipedia, Wikidata, verified socials). Emitted as `Person.sameAs` in JSON-LD.",
+          "default": []
+        }
+      },
+      "required": [
+        "slug",
+        "name",
+        "first",
+        "role",
+        "roleLabel",
+        "era",
+        "limited",
+        "hero",
+        "card",
+        "gallery",
+        "pos",
+        "short",
+        "honour",
+        "line",
+        "stats",
+        "bio",
+        "why",
+        "timeline",
+        "talks",
+        "audiences",
+        "industries",
+        "formats",
+        "langs"
+      ],
+      "additionalProperties": false
+    },
+    "RoleKey": {
+      "enum": [
+        "player",
+        "manager",
+        "staff",
+        "women",
+        "squad"
+      ],
+      "description": "Role group: drives roster filters and homepage tiles."
+    }
+  }
+}

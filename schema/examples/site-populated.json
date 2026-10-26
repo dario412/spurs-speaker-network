@@ -1,0 +1,442 @@
+{
+  "slug": "northbridge",
+  "short": "Northbridge",
+  "orgName": "Northbridge City FC",
+  "platform": "Northbridge City Speakers",
+  "platformShort": "City Speakers",
+  "tagline": "Official Northbridge City speaker and appearance bookings",
+  "entity": "Northbridge City Speakers is the official Northbridge City FC speaker booking service, operated by PepTalk.",
+  "motto": null,
+  "copyright": "Northbridge City Football Club Limited",
+  "heroTitle": [
+    "Book a Northbridge",
+    "City legend"
+  ],
+  "waysTitle": "Ways to bring Northbridge City to your event",
+  "stadium": "Riverside Park",
+  "marks": {
+    "crest": null,
+    "wordmark": "https://brand.northbridgecity.example/wordmark.svg"
+  },
+  "navMark": "wordmark",
+  "crestFallback": "NCFC",
+  "theme": {
+    "brand": "#1d4ed8",
+    "ink": "#0f172a",
+    "dark": "#0b1220",
+    "bar": "#1e3a8a",
+    "display": "'Barlow Condensed', Outfit, helvetica, sans-serif"
+  },
+  "style": {
+    "headingCase": "uppercase"
+  },
+  "cspHosts": [
+    "https://brand.northbridgecity.example"
+  ],
+  "orgType": "SportsTeam",
+  "tracking": {
+    "gtmId": "GTM-NB12345"
+  },
+  "consent": {
+    "required": true
+  },
+  "featured": [
+    "jo-marsh",
+    "ade-okafor",
+    "priya-natt"
+  ],
+  "home": {
+    "hero": {
+      "image": "media.example.com/people/northbridge/jo-marsh-hero.jpg",
+      "name": "Jo Marsh",
+      "line": "Club captain 1997–2003"
+    },
+    "inset": {
+      "image": "media.example.com/people/northbridge/ade-okafor-card.jpg",
+      "name": "Ade Okafor",
+      "line": "Head coach 2015–2021"
+    },
+    "eraImage": "1000000001",
+    "storyImage": "1000000002",
+    "hospitalityImage": "1000000001",
+    "activeEra": "modern"
+  },
+  "homeLayout": {
+    "waysAfterRoles": true
+  },
+  "vocab": {
+    "legendNoun": "speaker",
+    "legendsNoun": "speakers",
+    "navLabels": {
+      "legends": "Speakers"
+    }
+  },
+  "faqOverrides": {
+    "cost": "Fees depend on the format, date and travel. Send an enquiry and we will come back with options."
+  },
+  "roles": [
+    {
+      "key": "player",
+      "label": "Ex-players",
+      "blurb": "Captains, cup heroes and fan favourites"
+    },
+    {
+      "key": "manager",
+      "label": "Managers",
+      "blurb": "The coaches who built the teams"
+    },
+    {
+      "key": "women",
+      "label": "City Women",
+      "blurb": "Stars of the women's team"
+    }
+  ],
+  "eras": [
+    {
+      "key": "nineties",
+      "label": "The nineties",
+      "blurb": "Promotion, relegation and the cup run"
+    },
+    {
+      "key": "modern",
+      "label": "Modern era",
+      "blurb": "Two promotions and a new stadium"
+    }
+  ],
+  "people": [
+    {
+      "slug": "jo-marsh",
+      "name": "Jo Marsh",
+      "first": "Jo",
+      "role": "player",
+      "roleLabel": "Ex-player",
+      "era": "nineties",
+      "limited": false,
+      "hero": "media.example.com/people/northbridge/jo-marsh-hero.jpg",
+      "card": "media.example.com/people/northbridge/jo-marsh-card.jpg",
+      "gallery": [
+        "media.example.com/people/northbridge/jo-marsh-gallery-1.jpg",
+        "media.example.com/people/northbridge/jo-marsh-gallery-2.jpg",
+        "media.example.com/people/northbridge/jo-marsh-gallery-3.jpg"
+      ],
+      "pos": "Centre-back · Northbridge City 1991–2003 · Wales",
+      "short": "Centre-back · 1991–2003 · Wales",
+      "honour": "Club captain for six seasons",
+      "line": "The defender who held Northbridge together through promotion and relegation, and talks about steady leadership when the plan falls apart.",
+      "stats": [
+        [
+          "1991–2003",
+          "City years"
+        ],
+        [
+          "Centre-back",
+          "Position"
+        ],
+        [
+          "Wales",
+          "International"
+        ],
+        [
+          "Six seasons",
+          "As captain"
+        ]
+      ],
+      "bio": [
+        "Jo Marsh joined Northbridge City from the youth team and spent twelve seasons at the heart of the defence.",
+        "As captain she led the side through two promotions and one hard relegation, which shapes how she talks about rebuilding a team's confidence."
+      ],
+      "why": "Best for leadership offsites and client events that want an honest story about holding a group together.",
+      "timeline": [
+        [
+          "1991",
+          "First-team debut"
+        ],
+        [
+          "1997",
+          "Named club captain"
+        ],
+        [
+          "2003",
+          "Final season at the club"
+        ]
+      ],
+      "talks": [
+        "Leadership under pressure",
+        "Rebuilding confidence",
+        "Captaincy"
+      ],
+      "audiences": [
+        "Leadership teams",
+        "Sales kick-offs"
+      ],
+      "industries": [
+        "Finance",
+        "Construction"
+      ],
+      "formats": [
+        "keynote",
+        "hospitality",
+        "fan"
+      ],
+      "langs": "English, Welsh",
+      "travelsFrom": "Cardiff, UK",
+      "sameAs": [
+        "https://northbridgecity.example/legends/jo-marsh",
+        "https://www.example.org/wiki/Jo_Marsh"
+      ]
+    },
+    {
+      "slug": "ade-okafor",
+      "name": "Ade Okafor",
+      "first": "Ade",
+      "role": "manager",
+      "roleLabel": "Manager",
+      "era": "modern",
+      "limited": false,
+      "hero": "media.example.com/people/northbridge/ade-okafor-hero.jpg",
+      "card": "media.example.com/people/northbridge/ade-okafor-card.jpg",
+      "gallery": [
+        "media.example.com/people/northbridge/ade-okafor-gallery-1.jpg",
+        "media.example.com/people/northbridge/ade-okafor-gallery-2.jpg",
+        "media.example.com/people/northbridge/ade-okafor-gallery-3.jpg"
+      ],
+      "pos": "Head coach · Northbridge City 2015–2021",
+      "short": "Head coach · 2015–2021",
+      "honour": "Took the club up two divisions",
+      "line": "A coach who built a promotion side on a small budget, and explains how clear roles beat big spending.",
+      "stats": [
+        [
+          "2015–21",
+          "As head coach"
+        ],
+        [
+          "Two",
+          "Promotions"
+        ],
+        [
+          "Academy",
+          "Graduates given debuts"
+        ],
+        [
+          "Analytics",
+          "Early adopter"
+        ]
+      ],
+      "bio": [
+        "Ade Okafor coached Northbridge City for six seasons and gave first-team debuts to more academy players than any coach before him.",
+        "His sessions focus on clear roles, honest feedback and using data without losing the human side of a team."
+      ],
+      "why": "Best for management teams planning change on a tight budget.",
+      "timeline": [
+        [
+          "2015",
+          "Appointed head coach"
+        ],
+        [
+          "2018",
+          "First promotion"
+        ],
+        [
+          "2021",
+          "Second promotion"
+        ]
+      ],
+      "talks": [
+        "Clear roles",
+        "Feedback cultures",
+        "Data and judgement"
+      ],
+      "audiences": [
+        "Managers",
+        "Graduate programmes"
+      ],
+      "industries": [
+        "Technology",
+        "Retail"
+      ],
+      "formats": [
+        "keynote",
+        "workshop",
+        "virtual"
+      ],
+      "langs": "English",
+      "sameAs": [
+        "https://northbridgecity.example/staff/ade-okafor"
+      ]
+    },
+    {
+      "slug": "priya-natt",
+      "name": "Priya Natt",
+      "first": "Priya",
+      "role": "women",
+      "roleLabel": "Women's team",
+      "era": "modern",
+      "limited": true,
+      "hero": "media.example.com/people/northbridge/priya-natt-hero.jpg",
+      "card": "media.example.com/people/northbridge/priya-natt-card.jpg",
+      "gallery": [
+        "media.example.com/people/northbridge/priya-natt-gallery-1.jpg",
+        "media.example.com/people/northbridge/priya-natt-gallery-2.jpg",
+        "media.example.com/people/northbridge/priya-natt-gallery-3.jpg"
+      ],
+      "pos": "Forward · Northbridge City Women 2016–present",
+      "short": "Forward · 2016–present",
+      "honour": "Record goalscorer for the women's team",
+      "line": "The women's team's record scorer, who balances a playing career with coaching the next generation.",
+      "stats": [
+        [
+          "2016–",
+          "City Women"
+        ],
+        [
+          "Forward",
+          "Position"
+        ],
+        [
+          "Record",
+          "Club goalscorer"
+        ],
+        [
+          "Coach",
+          "Youth licence"
+        ]
+      ],
+      "bio": [
+        "Priya Natt has led the line for Northbridge City Women since 2016 and holds the club's scoring record.",
+        "Away from matchdays she coaches girls' teams in the city and talks about building habits that last."
+      ],
+      "why": "Best for schools, youth programmes and brands that want an active, current player.",
+      "timeline": [
+        [
+          "2016",
+          "Joins Northbridge City Women"
+        ],
+        [
+          "2020",
+          "Breaks the club scoring record"
+        ]
+      ],
+      "talks": [
+        "Building habits",
+        "Women in sport"
+      ],
+      "audiences": [
+        "Schools",
+        "Brand activations"
+      ],
+      "industries": [
+        "Education",
+        "Sportswear"
+      ],
+      "formats": [
+        "fan",
+        "brand",
+        "clinic"
+      ],
+      "langs": "English, Punjabi",
+      "sameAs": [
+        "https://northbridgecity.example/women/priya-natt"
+      ]
+    },
+    {
+      "slug": "tom-rees",
+      "name": "Tom Rees",
+      "first": "Tom",
+      "active": false,
+      "role": "player",
+      "roleLabel": "Ex-player",
+      "era": "nineties",
+      "limited": false,
+      "hero": "media.example.com/people/northbridge/tom-rees-hero.jpg",
+      "card": "media.example.com/people/northbridge/tom-rees-card.jpg",
+      "gallery": [
+        "media.example.com/people/northbridge/tom-rees-gallery-1.jpg",
+        "media.example.com/people/northbridge/tom-rees-gallery-2.jpg",
+        "media.example.com/people/northbridge/tom-rees-gallery-3.jpg"
+      ],
+      "pos": "Winger · Northbridge City 1994–1999",
+      "short": "Winger · 1994–1999",
+      "honour": "Cup final scorer",
+      "line": "A winger from the club's cup run, kept on file while his availability is confirmed.",
+      "stats": [
+        [
+          "1994–99",
+          "City years"
+        ],
+        [
+          "Winger",
+          "Position"
+        ],
+        [
+          "Cup final",
+          "Scorer"
+        ],
+        [
+          "Ninety",
+          "Appearances"
+        ]
+      ],
+      "bio": [
+        "Tom Rees played on the wing for five seasons and scored in the club's only cup final."
+      ],
+      "why": "Best for fan events and supporters' club dinners.",
+      "timeline": [
+        [
+          "1994",
+          "Signs from non-league"
+        ]
+      ],
+      "talks": [
+        "Cup runs"
+      ],
+      "audiences": [
+        "Supporters' clubs"
+      ],
+      "industries": [
+        "Hospitality"
+      ],
+      "formats": [
+        "fan"
+      ],
+      "langs": "English"
+    }
+  ],
+  "images": {
+    "media.example.com/people/northbridge/jo-marsh-hero.jpg": "https://media.example.com/people/northbridge/jo-marsh-hero.jpg",
+    "media.example.com/people/northbridge/jo-marsh-card.jpg": "https://media.example.com/people/northbridge/jo-marsh-card.jpg",
+    "media.example.com/people/northbridge/jo-marsh-gallery-1.jpg": "https://media.example.com/people/northbridge/jo-marsh-gallery-1.jpg",
+    "media.example.com/people/northbridge/jo-marsh-gallery-2.jpg": "https://media.example.com/people/northbridge/jo-marsh-gallery-2.jpg",
+    "media.example.com/people/northbridge/jo-marsh-gallery-3.jpg": "https://media.example.com/people/northbridge/jo-marsh-gallery-3.jpg",
+    "media.example.com/people/northbridge/ade-okafor-hero.jpg": "https://media.example.com/people/northbridge/ade-okafor-hero.jpg",
+    "media.example.com/people/northbridge/ade-okafor-card.jpg": "https://media.example.com/people/northbridge/ade-okafor-card.jpg",
+    "media.example.com/people/northbridge/ade-okafor-gallery-1.jpg": "https://media.example.com/people/northbridge/ade-okafor-gallery-1.jpg",
+    "media.example.com/people/northbridge/ade-okafor-gallery-2.jpg": "https://media.example.com/people/northbridge/ade-okafor-gallery-2.jpg",
+    "media.example.com/people/northbridge/ade-okafor-gallery-3.jpg": "https://media.example.com/people/northbridge/ade-okafor-gallery-3.jpg",
+    "media.example.com/people/northbridge/priya-natt-hero.jpg": "https://media.example.com/people/northbridge/priya-natt-hero.jpg",
+    "media.example.com/people/northbridge/priya-natt-card.jpg": "https://media.example.com/people/northbridge/priya-natt-card.jpg",
+    "media.example.com/people/northbridge/priya-natt-gallery-1.jpg": "https://media.example.com/people/northbridge/priya-natt-gallery-1.jpg",
+    "media.example.com/people/northbridge/priya-natt-gallery-2.jpg": "https://media.example.com/people/northbridge/priya-natt-gallery-2.jpg",
+    "media.example.com/people/northbridge/priya-natt-gallery-3.jpg": "https://media.example.com/people/northbridge/priya-natt-gallery-3.jpg",
+    "media.example.com/people/northbridge/tom-rees-hero.jpg": "https://media.example.com/people/northbridge/tom-rees-hero.jpg",
+    "media.example.com/people/northbridge/tom-rees-card.jpg": "https://media.example.com/people/northbridge/tom-rees-card.jpg",
+    "media.example.com/people/northbridge/tom-rees-gallery-1.jpg": "https://media.example.com/people/northbridge/tom-rees-gallery-1.jpg",
+    "media.example.com/people/northbridge/tom-rees-gallery-2.jpg": "https://media.example.com/people/northbridge/tom-rees-gallery-2.jpg",
+    "media.example.com/people/northbridge/tom-rees-gallery-3.jpg": "https://media.example.com/people/northbridge/tom-rees-gallery-3.jpg",
+    "1000000001": "https://media.gettyimages.com/id/1000000001/photo/example-stadium.jpg?s=612x612&w=0&k=20&c=example",
+    "1000000002": "https://media.gettyimages.com/id/1000000002/photo/example-crowd.jpg?s=612x612&w=0&k=20&c=example"
+  },
+  "licences": {
+    "images": {
+      "media.example.com/people/northbridge/jo-marsh-hero.jpg": {
+        "url": "https://media.example.com/people/northbridge/jo-marsh-hero.jpg",
+        "note": "Club photo library, licence ref NC-2026-014",
+        "approvedAt": "2026-10-19"
+      }
+    },
+    "marks": {}
+  },
+  "verification": {
+    "pages": {},
+    "people": {}
+  }
+}

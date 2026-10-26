@@ -1,0 +1,4308 @@
+[
+  {
+    "slug": "sandro",
+    "name": "Sandro",
+    "first": "Sandro",
+    "role": "player",
+    "roleLabel": "Ex-player",
+    "era": "redknapp",
+    "limited": false,
+    "hero": "2206513784",
+    "gallery": [
+      "2206620002",
+      "2205961977",
+      "2206619310"
+    ],
+    "card": "2206619310",
+    "pos": "Defensive midfielder · Tottenham Hotspur 2010–2014 · Brazil",
+    "short": "Midfielder · 2010–2014 · Brazil",
+    "honour": "Brazil international",
+    "line": "The Brazilian enforcer N17 adopted as its own. Big energy, a bigger smile, and a story about starting again far from home.",
+    "stats": [
+      [
+        "2010–14",
+        "Spurs years"
+      ],
+      [
+        "Midfield",
+        "Position"
+      ],
+      [
+        "Brazil",
+        "International"
+      ],
+      [
+        "Former players XI",
+        "Still turning out"
+      ]
+    ],
+    "bio": [
+      "Sandro arrived from Internacional in 2010 and quickly became one of the Lane's favourite players: a ball-winner who played with his heart on his sleeve and celebrated every tackle as if it were a goal.",
+      "His Spurs years were also shaped by serious injury. Coming back from it, and later from a move away, gives him a grounded, funny and honest take on resilience, belonging and staying hungry.",
+      "He still pulls on the shirt for the Spurs former players team, and the crowd's reaction shows he never really left."
+    ],
+    "why": "Best for audiences who want energy and warmth: kick-offs, client dinners and international teams adapting to a new environment.",
+    "timeline": [
+      [
+        "2010",
+        "Joins Tottenham Hotspur from Internacional"
+      ],
+      [
+        "2010–13",
+        "Becomes a fixture in the Spurs midfield"
+      ],
+      [
+        "2014",
+        "Moves on after four seasons in N17"
+      ],
+      [
+        "Today",
+        "Turns out for the Spurs former players team and works with fans and partners"
+      ]
+    ],
+    "talks": [
+      "Resilience",
+      "Coming back from injury",
+      "Moving countries",
+      "Crowd energy",
+      "Team spirit"
+    ],
+    "audiences": [
+      "Sales kick-offs",
+      "International teams",
+      "Fan & member events",
+      "Client hospitality"
+    ],
+    "industries": [
+      "Financial services",
+      "Hospitality",
+      "Consumer brands",
+      "Tech"
+    ],
+    "formats": [
+      "keynote",
+      "hospitality",
+      "brand",
+      "virtual"
+    ],
+    "langs": "English, Portuguese"
+  },
+  {
+    "slug": "dele-alli",
+    "name": "Dele Alli",
+    "first": "Dele",
+    "role": "player",
+    "roleLabel": "Ex-player",
+    "era": "pochettino",
+    "limited": true,
+    "hero": "2262990854",
+    "gallery": [
+      "2262988448",
+      "996383058",
+      "2263052423"
+    ],
+    "card": "2262990854",
+    "pos": "Attacking midfielder · Tottenham Hotspur 2015–2022 · England",
+    "short": "Midfielder · 2015–2022 · England",
+    "honour": "PFA Young Player of the Year ×2",
+    "line": "From League One to a World Cup semi-final in three years. A candid voice on pressure, fame and what it takes to rebuild.",
+    "stats": [
+      [
+        "2015–22",
+        "Spurs years"
+      ],
+      [
+        "PFA YPOTY ×2",
+        "2016 & 2017"
+      ],
+      [
+        "WC 2018",
+        "Semi-finalist"
+      ],
+      [
+        "UCL 2019",
+        "Finalist"
+      ]
+    ],
+    "bio": [
+      "Dele joined from MK Dons in 2015 and was an instant hit: inventive, fearless and decisive in big games. He was named PFA Young Player of the Year twice and became a central figure in the side that reached the 2019 Champions League final.",
+      "With England he played at the 2018 World Cup, where the team reached the semi-finals.",
+      "Since leaving Spurs he has spoken openly about mental health and the pressure that comes with early success. Those conversations land with audiences far beyond football."
+    ],
+    "why": "Best for audiences who want honesty: wellbeing programmes, early-careers cohorts and leaders managing high-potential talent.",
+    "timeline": [
+      [
+        "2015",
+        "Signs from MK Dons"
+      ],
+      [
+        "2016 & 2017",
+        "PFA Young Player of the Year"
+      ],
+      [
+        "2018",
+        "World Cup semi-final with England"
+      ],
+      [
+        "2019",
+        "Champions League final with Spurs"
+      ],
+      [
+        "2022",
+        "Leaves Tottenham Hotspur"
+      ]
+    ],
+    "talks": [
+      "Pressure & performance",
+      "Mental health",
+      "Early success",
+      "Resetting",
+      "Big-game moments"
+    ],
+    "audiences": [
+      "Wellbeing weeks",
+      "Graduate & early careers",
+      "Leadership teams",
+      "Brand campaigns"
+    ],
+    "industries": [
+      "Health & wellbeing",
+      "Professional services",
+      "Media",
+      "Sportswear"
+    ],
+    "formats": [
+      "keynote",
+      "brand",
+      "hospitality",
+      "virtual"
+    ],
+    "langs": "English"
+  },
+  {
+    "slug": "mauricio-pochettino",
+    "name": "Mauricio Pochettino",
+    "first": "Mauricio",
+    "role": "manager",
+    "roleLabel": "Manager",
+    "era": "pochettino",
+    "limited": true,
+    "hero": "2265318812",
+    "gallery": [
+      "1147388829",
+      "1153205022",
+      "2265318377"
+    ],
+    "card": "2265318812",
+    "pos": "Head coach · Tottenham Hotspur 2014–2019",
+    "short": "Head coach · 2014–2019",
+    "honour": "Led Spurs to the 2019 Champions League final",
+    "line": "The coach who built a young, hungry Spurs side and took it to a Champions League final. A masterclass in culture and belief.",
+    "stats": [
+      [
+        "2014–19",
+        "Spurs years"
+      ],
+      [
+        "UCL 2019",
+        "Finalist"
+      ],
+      [
+        "Top 4",
+        "Regular finishes"
+      ],
+      [
+        "Culture",
+        "Signature theme"
+      ]
+    ],
+    "bio": [
+      "Mauricio Pochettino arrived in 2014 and turned Spurs into one of Europe's most energetic, intense teams. He promoted young players, demanded relentless standards and built a squad with a deep sense of belonging.",
+      "His era brought regular Champions League football, a title challenge and the club's first Champions League final in 2019, reached after the unforgettable comeback in Amsterdam.",
+      "His later roles at the highest level of club and international football mean bookings are limited and planned well in advance."
+    ],
+    "why": "Best for senior leadership audiences interested in culture, developing talent and leading through belief.",
+    "timeline": [
+      [
+        "2014",
+        "Appointed head coach"
+      ],
+      [
+        "2016–17",
+        "Leads a sustained Premier League title challenge"
+      ],
+      [
+        "2019",
+        "Champions League final after the semi-final comeback in Amsterdam"
+      ],
+      [
+        "2019",
+        "Leaves Tottenham Hotspur"
+      ]
+    ],
+    "talks": [
+      "Leadership",
+      "Building culture",
+      "Developing young talent",
+      "High standards",
+      "Belief"
+    ],
+    "audiences": [
+      "Executive teams",
+      "Leadership conferences",
+      "Partner summits",
+      "Coaching & HR"
+    ],
+    "industries": [
+      "Financial services",
+      "Consulting",
+      "Technology",
+      "Automotive"
+    ],
+    "formats": [
+      "keynote",
+      "workshop",
+      "virtual"
+    ],
+    "langs": "Spanish, English"
+  },
+  {
+    "slug": "harry-redknapp",
+    "name": "Harry Redknapp",
+    "first": "Harry",
+    "role": "manager",
+    "roleLabel": "Manager",
+    "era": "redknapp",
+    "limited": false,
+    "hero": "809665830",
+    "gallery": [
+      "138751275",
+      "109857999",
+      "677839962"
+    ],
+    "card": "809665830",
+    "pos": "Manager · Tottenham Hotspur 2008–2012",
+    "short": "Manager · 2008–2012",
+    "honour": "Took Spurs into the Champions League",
+    "line": "Took over a side bottom of the table and led it into the Champions League. Football's great storyteller.",
+    "stats": [
+      [
+        "2008–12",
+        "Spurs years"
+      ],
+      [
+        "Bottom → UCL",
+        "The turnaround"
+      ],
+      [
+        "UCL QF",
+        "2010–11"
+      ],
+      [
+        "After-dinner",
+        "Signature format"
+      ]
+    ],
+    "bio": [
+      "Harry Redknapp took charge in autumn 2008 with Spurs at the foot of the table. Within two seasons the club had finished in the top four and reached the Champions League, going on to a quarter-final in its first campaign.",
+      "His man-management, built on trust, humour and getting the best out of big personalities, is the core of his talks.",
+      "He is one of football's best-loved storytellers, with a natural gift for a room and a lifetime of dressing-room stories."
+    ],
+    "why": "Best for after-dinner audiences, client entertaining and any team that needs a turnaround story.",
+    "timeline": [
+      [
+        "2008",
+        "Appointed Spurs manager with the club bottom of the league"
+      ],
+      [
+        "2010",
+        "Top-four finish and Champions League qualification"
+      ],
+      [
+        "2011",
+        "Champions League quarter-final"
+      ],
+      [
+        "2012",
+        "Leaves Tottenham Hotspur"
+      ]
+    ],
+    "talks": [
+      "Turnarounds",
+      "Man-management",
+      "Handling big personalities",
+      "Storytelling",
+      "Humour"
+    ],
+    "audiences": [
+      "Gala dinners",
+      "Client hospitality",
+      "Sales conferences",
+      "Awards nights"
+    ],
+    "industries": [
+      "Financial services",
+      "Property",
+      "Hospitality",
+      "Retail"
+    ],
+    "formats": [
+      "keynote",
+      "hospitality",
+      "brand",
+      "virtual"
+    ],
+    "langs": "English"
+  },
+  {
+    "slug": "ledley-king",
+    "name": "Ledley King",
+    "first": "Ledley",
+    "role": "player",
+    "roleLabel": "Ex-player · Ambassador",
+    "era": "whl",
+    "limited": false,
+    "hero": "2252547628",
+    "gallery": [
+      "1052957696",
+      "2257716456",
+      "2251020247"
+    ],
+    "card": "2252547628",
+    "pos": "Centre-back · one-club man · club ambassador",
+    "short": "Centre-back · one-club man · club ambassador",
+    "honour": "Former club captain",
+    "line": "Academy graduate, club captain and one-club man. Leadership and loyalty from someone who lived them.",
+    "stats": [
+      [
+        "One club",
+        "Whole career"
+      ],
+      [
+        "Captain",
+        "Club captain"
+      ],
+      [
+        "2008",
+        "League Cup winner"
+      ],
+      [
+        "Ambassador",
+        "Today"
+      ]
+    ],
+    "bio": [
+      "Ledley King came through the Spurs academy and spent his entire playing career at the club. He became one of the finest defenders of his generation and captained the side.",
+      "A chronic knee condition meant he often played without training between matches, a remarkable story of managing your body and your mindset to keep performing.",
+      "As captain he lifted the 2008 League Cup. Today he represents the club as an ambassador."
+    ],
+    "why": "Best for audiences exploring leadership, loyalty and sustained performance under constraint.",
+    "timeline": [
+      [
+        "1990s",
+        "Joins the Spurs academy"
+      ],
+      [
+        "1999",
+        "First-team debut"
+      ],
+      [
+        "2008",
+        "Captains Spurs to the League Cup"
+      ],
+      [
+        "2012",
+        "Retires as a one-club man"
+      ],
+      [
+        "Today",
+        "Club ambassador"
+      ]
+    ],
+    "talks": [
+      "Leadership",
+      "Loyalty",
+      "Performing through pain",
+      "Captaincy",
+      "Academy to first team"
+    ],
+    "audiences": [
+      "Leadership programmes",
+      "Partner events",
+      "Matchday hospitality",
+      "Community days"
+    ],
+    "industries": [
+      "Club partners",
+      "Professional services",
+      "Healthcare",
+      "Education"
+    ],
+    "formats": [
+      "keynote",
+      "hospitality",
+      "clinic",
+      "brand"
+    ],
+    "langs": "English"
+  },
+  {
+    "slug": "clive-allen",
+    "name": "Clive Allen",
+    "first": "Clive",
+    "role": "staff",
+    "roleLabel": "Ex-player · Coach",
+    "era": "whl",
+    "limited": false,
+    "hero": "2195539106",
+    "gallery": [
+      "112744638",
+      "2206557542",
+      "683281562"
+    ],
+    "card": "112744638",
+    "pos": "Striker 1984–1988 · later first-team coach",
+    "short": "Striker, then first-team coach",
+    "honour": "From the pitch to the dugout",
+    "line": "Scored a record 49 goals in one season, then went back to the training ground as a coach. From the pitch to the dugout.",
+    "stats": [
+      [
+        "49 goals",
+        "1986–87 season"
+      ],
+      [
+        "POTY",
+        "1987"
+      ],
+      [
+        "Striker",
+        "1984–88"
+      ],
+      [
+        "Coach",
+        "Later years"
+      ]
+    ],
+    "bio": [
+      "Clive Allen's 1986–87 season is one of the great individual campaigns in Spurs history: 49 goals in all competitions and both major Player of the Year awards.",
+      "He later returned to the club as a coach, working with the first team and briefly stepping in as caretaker, so he sees the game from both sides of the touchline.",
+      "That pairing of elite finishing and coaching experience makes him a strong speaker on focus, marginal gains and helping others perform."
+    ],
+    "why": "Best for audiences who want two angles on performance: the player who delivered and the coach who develops.",
+    "timeline": [
+      [
+        "1984",
+        "Joins Tottenham Hotspur"
+      ],
+      [
+        "1986–87",
+        "49 goals in a season; Player of the Year"
+      ],
+      [
+        "1988",
+        "Moves on as a player"
+      ],
+      [
+        "2000s",
+        "Returns as a coach, including a spell as caretaker"
+      ]
+    ],
+    "talks": [
+      "Focus & finishing",
+      "Coaching others",
+      "Marginal gains",
+      "Team culture",
+      "Behind the scenes"
+    ],
+    "audiences": [
+      "Sales teams",
+      "Coaching & L&D",
+      "Matchday hospitality",
+      "Supporter events"
+    ],
+    "industries": [
+      "Sales organisations",
+      "Professional services",
+      "Media",
+      "Retail"
+    ],
+    "formats": [
+      "keynote",
+      "hospitality",
+      "workshop",
+      "clinic"
+    ],
+    "langs": "English"
+  },
+  {
+    "slug": "glenn-hoddle",
+    "name": "Glenn Hoddle",
+    "first": "Glenn",
+    "role": "manager",
+    "roleLabel": "Ex-player · Manager",
+    "era": "whl",
+    "limited": false,
+    "hero": "1814954480",
+    "gallery": [
+      "2255593110",
+      "1662757",
+      "106522574"
+    ],
+    "card": "1155252229",
+    "pos": "Midfielder 1975–1987 · Manager 2001–2003 · England",
+    "short": "Midfielder, then manager · England",
+    "honour": "FA Cup winner 1981 & 1982",
+    "line": "The Lane's great artist, who came back to manage the club he grew up at. Vision, craft and seeing the game from both sides of the touchline.",
+    "stats": [
+      [
+        "1975–87",
+        "Playing years"
+      ],
+      [
+        "FA Cup ×2",
+        "1981 & 1982"
+      ],
+      [
+        "2001–03",
+        "Spurs manager"
+      ],
+      [
+        "England",
+        "Player & manager"
+      ]
+    ],
+    "bio": [
+      "Glenn Hoddle came through the Spurs youth system and became one of the most gifted English midfielders of his generation: a passer and goalscorer who could change a game with one touch. He won the FA Cup with Spurs in 1981 and again in 1982, scoring in the 1982 final and its replay.",
+      "He left for Monaco in 1987, winning the French title under Arsène Wenger, before moving into management with Swindon Town and Chelsea, then taking charge of England at the 1998 World Cup.",
+      "In 2001 he returned to White Hart Lane as manager and led Spurs to the 2002 League Cup final. Today he is a respected broadcaster, and his story of talent, leadership and recovering from a cardiac arrest in 2018 resonates well beyond football."
+    ],
+    "why": "Best for audiences interested in creativity, leadership and the jump from star performer to manager.",
+    "timeline": [
+      [
+        "1975",
+        "First-team debut after coming through the youth ranks"
+      ],
+      [
+        "1981 & 1982",
+        "Back-to-back FA Cup wins"
+      ],
+      [
+        "1987",
+        "Moves to Monaco"
+      ],
+      [
+        "2001",
+        "Returns as Tottenham Hotspur manager"
+      ],
+      [
+        "2002",
+        "Leads Spurs to the League Cup final"
+      ]
+    ],
+    "talks": [
+      "From star player to manager",
+      "Creativity under pressure",
+      "Leading former team-mates",
+      "Health and second chances",
+      "Vision and decision-making"
+    ],
+    "audiences": [
+      "Leadership conferences",
+      "Client hospitality",
+      "Gala dinners",
+      "Partner summits"
+    ],
+    "industries": [
+      "Financial services",
+      "Media",
+      "Professional services",
+      "Healthcare"
+    ],
+    "formats": [
+      "keynote",
+      "hospitality",
+      "brand",
+      "virtual"
+    ],
+    "langs": "English"
+  },
+  {
+    "slug": "pat-jennings",
+    "name": "Pat Jennings",
+    "first": "Pat",
+    "role": "staff",
+    "roleLabel": "Ex-player · Goalkeeping coach",
+    "era": "whl",
+    "limited": false,
+    "hero": "637426814",
+    "gallery": [
+      "961493202",
+      "693932669",
+      "1163049118"
+    ],
+    "card": "931556816",
+    "pos": "Goalkeeper 1964–1977 · later goalkeeping coach · Northern Ireland",
+    "short": "Goalkeeper, then goalkeeping coach",
+    "honour": "FWA Footballer of the Year 1973",
+    "line": "One of the greatest goalkeepers the game has seen, who later spent years passing on his craft to the next generation of Spurs keepers.",
+    "stats": [
+      [
+        "1964–77",
+        "Playing years"
+      ],
+      [
+        "FA Cup",
+        "1967"
+      ],
+      [
+        "UEFA Cup",
+        "1972"
+      ],
+      [
+        "Coach",
+        "Goalkeeping"
+      ]
+    ],
+    "bio": [
+      "Pat Jennings joined Spurs from Watford in 1964 and became one of the finest goalkeepers in world football, famous for his huge hands, calm authority and a habit of making the impossible look simple.",
+      "His Spurs years brought the 1967 FA Cup, two League Cups and the 1972 UEFA Cup, and he was named Football Writers' Footballer of the Year in 1973. Internationally he was a fixture for Northern Ireland, playing at the 1982 and 1986 World Cups.",
+      "After retiring he returned to Spurs as a goalkeeping coach, working with young keepers for many years. That makes him a rare voice on both sides of mastery: performing at the top, then teaching it."
+    ],
+    "why": "Best for audiences who value calm under pressure, longevity and mentoring the next generation.",
+    "timeline": [
+      [
+        "1964",
+        "Joins Tottenham Hotspur from Watford"
+      ],
+      [
+        "1967",
+        "FA Cup winner"
+      ],
+      [
+        "1972",
+        "UEFA Cup winner"
+      ],
+      [
+        "1973",
+        "FWA Footballer of the Year"
+      ],
+      [
+        "Later years",
+        "Returns to Spurs as a goalkeeping coach"
+      ]
+    ],
+    "talks": [
+      "Calm under pressure",
+      "Longevity",
+      "Mentoring young talent",
+      "Mastering your craft",
+      "Humility"
+    ],
+    "audiences": [
+      "Matchday hospitality",
+      "Supporter events",
+      "Coaching & L&D",
+      "Gala dinners"
+    ],
+    "industries": [
+      "Club partners",
+      "Professional services",
+      "Education",
+      "Hospitality"
+    ],
+    "formats": [
+      "hospitality",
+      "keynote",
+      "clinic",
+      "fan"
+    ],
+    "langs": "English"
+  },
+  {
+    "slug": "jermain-defoe",
+    "name": "Jermain Defoe",
+    "first": "Jermain",
+    "role": "player",
+    "roleLabel": "Ex-player",
+    "era": "redknapp",
+    "limited": false,
+    "hero": "187274187",
+    "gallery": [
+      "107379290",
+      "144305590",
+      "152631522"
+    ],
+    "card": "144307089",
+    "pos": "Striker · Tottenham Hotspur 2004–2008 & 2009–2014 · England",
+    "short": "Striker · 2004–2014 · England",
+    "honour": "Five goals in one Premier League game",
+    "line": "A natural finisher who came back for a second spell and never stopped scoring. Sharp on preparation, self-belief and giving back.",
+    "stats": [
+      [
+        "Two spells",
+        "2004–08 & 2009–14"
+      ],
+      [
+        "5 goals",
+        "v Wigan, Nov 2009"
+      ],
+      [
+        "WC 2010",
+        "England"
+      ],
+      [
+        "Striker",
+        "Position"
+      ]
+    ],
+    "bio": [
+      "Jermain Defoe joined Spurs from West Ham in 2004 and quickly showed why he was one of the sharpest finishers in the country. After a short spell at Portsmouth he returned in 2009, and later that year scored five times in a 9–1 win over Wigan Athletic.",
+      "He was part of the Redknapp side that reached the Champions League, and with England he played at the 2010 World Cup. His career later took him to Toronto, Sunderland, Bournemouth and Rangers.",
+      "He talks with real warmth about preparation, confidence and using a platform for good."
+    ],
+    "why": "Best for sales and performance audiences who want energy, a finisher's mindset and a story about purpose.",
+    "timeline": [
+      [
+        "2004",
+        "Joins Tottenham Hotspur from West Ham"
+      ],
+      [
+        "2008",
+        "Moves to Portsmouth"
+      ],
+      [
+        "2009",
+        "Returns to Spurs; scores five against Wigan"
+      ],
+      [
+        "2010",
+        "Plays at the World Cup with England"
+      ],
+      [
+        "2014",
+        "Leaves for Toronto FC"
+      ]
+    ],
+    "talks": [
+      "A finisher's mindset",
+      "Preparation and routine",
+      "Confidence and self-belief",
+      "Bouncing back",
+      "Purpose and giving back"
+    ],
+    "audiences": [
+      "Sales kick-offs",
+      "Client hospitality",
+      "Youth & community events",
+      "Brand campaigns"
+    ],
+    "industries": [
+      "Sales organisations",
+      "Sportswear",
+      "Consumer brands",
+      "Charity & community"
+    ],
+    "formats": [
+      "keynote",
+      "hospitality",
+      "brand",
+      "clinic"
+    ],
+    "langs": "English"
+  },
+  {
+    "slug": "gary-mabbutt",
+    "name": "Gary Mabbutt",
+    "first": "Gary",
+    "role": "player",
+    "roleLabel": "Ex-player · Captain",
+    "era": "whl",
+    "limited": false,
+    "hero": "1161276393",
+    "gallery": [
+      "667275842",
+      "571396641",
+      "1291577"
+    ],
+    "card": "940030290",
+    "pos": "Defender & midfielder · Tottenham Hotspur 1982–1998 · England",
+    "short": "Defender · 1982–1998 · England",
+    "honour": "Captain of the 1991 FA Cup winners",
+    "line": "Sixteen years at Spurs, a UEFA Cup and an FA Cup lifted as captain, all while managing type 1 diabetes. Leadership without excuses.",
+    "stats": [
+      [
+        "1982–98",
+        "Spurs years"
+      ],
+      [
+        "UEFA Cup",
+        "1984"
+      ],
+      [
+        "FA Cup",
+        "1991, as captain"
+      ],
+      [
+        "MBE",
+        "Services to football"
+      ]
+    ],
+    "bio": [
+      "Gary Mabbutt joined from Bristol Rovers in 1982 and stayed for sixteen seasons, playing across defence and midfield with the same commitment wherever he was asked to play. He was part of the side that won the UEFA Cup in 1984.",
+      "As captain he climbed the Wembley steps to lift the FA Cup in 1991. He did all of this while living with type 1 diabetes, and became a prominent advocate for people managing the condition.",
+      "Appointed MBE for his services to football, he remains closely connected to the club. His talks combine captaincy, consistency and an honest account of performing at the top while managing a lifelong health condition."
+    ],
+    "why": "Best for leadership and wellbeing audiences who want a story about consistency, resilience and leading by example.",
+    "timeline": [
+      [
+        "1982",
+        "Joins Tottenham Hotspur from Bristol Rovers"
+      ],
+      [
+        "1984",
+        "UEFA Cup winner"
+      ],
+      [
+        "1987",
+        "Plays in the FA Cup final"
+      ],
+      [
+        "1991",
+        "Lifts the FA Cup as captain"
+      ],
+      [
+        "1998",
+        "Retires after sixteen seasons at Spurs"
+      ]
+    ],
+    "talks": [
+      "Leading by example",
+      "Living with type 1 diabetes",
+      "Consistency",
+      "Captaincy",
+      "Overcoming setbacks"
+    ],
+    "audiences": [
+      "Leadership programmes",
+      "Wellbeing weeks",
+      "Matchday hospitality",
+      "Partner events"
+    ],
+    "industries": [
+      "Healthcare",
+      "Professional services",
+      "Club partners",
+      "Pharmaceuticals"
+    ],
+    "formats": [
+      "keynote",
+      "hospitality",
+      "workshop",
+      "virtual"
+    ],
+    "langs": "English"
+  },
+  {
+    "slug": "jan-vertonghen",
+    "name": "Jan Vertonghen",
+    "first": "Jan",
+    "role": "player",
+    "roleLabel": "Ex-player",
+    "era": "pochettino",
+    "limited": false,
+    "hero": "1129648779",
+    "gallery": [
+      "1124743469",
+      "1014926224",
+      "1188811831"
+    ],
+    "card": "1017556254",
+    "pos": "Centre-back · Tottenham Hotspur 2012–2020 · Belgium",
+    "short": "Centre-back · 2012–2020 · Belgium",
+    "honour": "Belgium's most-capped men's player",
+    "line": "The calm, ball-playing centre-back at the heart of Pochettino's Spurs. A thoughtful voice on partnerships, consistency and coming back from setbacks.",
+    "stats": [
+      [
+        "2012–20",
+        "Spurs years"
+      ],
+      [
+        "UCL 2019",
+        "Finalist"
+      ],
+      [
+        "WC 2018",
+        "Third place"
+      ],
+      [
+        "Belgium",
+        "Most-capped man"
+      ]
+    ],
+    "bio": [
+      "Jan Vertonghen arrived from Ajax in 2012 and became one of the most dependable defenders in the Premier League: composed on the ball, smart without it and a leader in the back line.",
+      "His partnership with fellow Belgian Toby Alderweireld underpinned the Pochettino era, including the 2019 run to the Champions League final. With Belgium he helped the national side finish third at the 2018 World Cup and became the country's most-capped men's player.",
+      "After leaving Spurs in 2020 he played for Benfica and Anderlecht. He speaks thoughtfully about trust between team-mates, long-term consistency and returning from injury."
+    ],
+    "why": "Best for audiences exploring partnership, trust and quiet, consistent leadership.",
+    "timeline": [
+      [
+        "2012",
+        "Joins Tottenham Hotspur from Ajax"
+      ],
+      [
+        "2018",
+        "Third place at the World Cup with Belgium"
+      ],
+      [
+        "2019",
+        "Champions League final with Spurs"
+      ],
+      [
+        "2020",
+        "Leaves for Benfica"
+      ],
+      [
+        "Later",
+        "Becomes Belgium's most-capped men's player"
+      ]
+    ],
+    "talks": [
+      "Partnership and trust",
+      "Consistency",
+      "Quiet leadership",
+      "Coming back from injury",
+      "Playing abroad"
+    ],
+    "audiences": [
+      "Leadership teams",
+      "International teams",
+      "Client hospitality",
+      "Partner summits"
+    ],
+    "industries": [
+      "Financial services",
+      "Technology",
+      "Logistics",
+      "Consulting"
+    ],
+    "formats": [
+      "keynote",
+      "hospitality",
+      "virtual"
+    ],
+    "langs": "English, Dutch, French"
+  },
+  {
+    "slug": "bethany-england",
+    "name": "Bethany England",
+    "first": "Beth",
+    "role": "women",
+    "roleLabel": "Spurs Women · Striker",
+    "era": "new-stadium",
+    "limited": true,
+    "hero": "1247076775",
+    "gallery": [
+      "2152719896",
+      "2148601126",
+      "2274119656"
+    ],
+    "card": "1465366484",
+    "pos": "Striker · Tottenham Hotspur Women 2023– · England",
+    "short": "Striker · Spurs Women · England",
+    "honour": "Captained Spurs in the 2024 FA Cup final",
+    "line": "The England striker who led Spurs Women's attack and wore the armband on their first Women's FA Cup final day. Drive, standards and backing yourself.",
+    "stats": [
+      [
+        "2023",
+        "Joined from Chelsea"
+      ],
+      [
+        "FA Cup final",
+        "2024"
+      ],
+      [
+        "Captain",
+        "Spurs Women"
+      ],
+      [
+        "England",
+        "International"
+      ]
+    ],
+    "bio": [
+      "Bethany England joined Tottenham Hotspur Women from Chelsea in January 2023 and immediately gave the side a cutting edge, scoring regularly and bringing a winning mentality from her years at the top of the WSL.",
+      "In 2024 she helped Spurs reach the Women's FA Cup final for the first time, wearing the captain's armband at Wembley. She has represented England at senior level.",
+      "Her story of moving to a club with big ambitions and taking responsibility for driving them on makes her a strong voice on leadership, high standards and the growth of the women's game."
+    ],
+    "why": "Best for audiences who want energy and ambition: women's networks, sales teams and brands investing in the women's game.",
+    "timeline": [
+      [
+        "2023",
+        "Joins Tottenham Hotspur Women from Chelsea"
+      ],
+      [
+        "2023–24",
+        "Leads the Spurs attack"
+      ],
+      [
+        "2024",
+        "Captains Spurs in the Women's FA Cup final at Wembley"
+      ],
+      [
+        "Today",
+        "Professional footballer and advocate for the women's game"
+      ]
+    ],
+    "talks": [
+      "Backing yourself",
+      "Leadership and the armband",
+      "Raising standards",
+      "Growth of the women's game",
+      "Changing clubs, keeping ambition"
+    ],
+    "audiences": [
+      "Women's networks",
+      "Sales kick-offs",
+      "Brand campaigns",
+      "Youth & community events"
+    ],
+    "industries": [
+      "Consumer brands",
+      "Sportswear",
+      "Financial services",
+      "Media"
+    ],
+    "formats": [
+      "keynote",
+      "brand",
+      "clinic",
+      "virtual"
+    ],
+    "langs": "English"
+  },
+  {
+    "slug": "gareth-bale",
+    "name": "Gareth Bale",
+    "first": "Gareth",
+    "role": "player",
+    "roleLabel": "Ex-player · Broadcaster",
+    "era": "redknapp",
+    "limited": false,
+    "hero": "167130458",
+    "gallery": [
+      "169057002",
+      "163457609",
+      "2257576460"
+    ],
+    "card": "162657582",
+    "pos": "Winger · Tottenham Hotspur 2007–2013 & 2020–21 · Wales",
+    "short": "Winger · 2007–2013 · Wales",
+    "honour": "PFA Players' Player of the Year ×2",
+    "line": "The teenage left-back who became the best player in the league in a Spurs shirt. A story about patience, reinvention and handling the biggest stage.",
+    "stats": [
+      [
+        "2007–13",
+        "First spell"
+      ],
+      [
+        "PFA ×2",
+        "2011 & 2013"
+      ],
+      [
+        "5× UCL",
+        "With Real Madrid"
+      ],
+      [
+        "Wales",
+        "Record goalscorer"
+      ]
+    ],
+    "bio": [
+      "Gareth Bale joined Spurs from Southampton in 2007 as a teenage left-back, and his early months in N17 were far from easy. Moved further forward, he was transformed, and a second-half hat-trick at San Siro against Inter in 2010 announced him to the whole of Europe.",
+      "By 2013 he was the most feared attacker in the Premier League, collecting the PFA and FWA awards before a world-record move to Real Madrid, where he won the Champions League five times. He came back to Spurs on loan for the 2020–21 season, and the welcome said everything about how fans remember him.",
+      "With Wales he became the national team's record goalscorer and led a golden generation to a European Championship semi-final and a first World Cup in decades. Since retiring in 2023 he has become a calm, thoughtful presence on Champions League broadcasts."
+    ],
+    "why": "Best for audiences who want a world-class performer on reinvention: leadership offsites, flagship client events and brand moments that need a global name.",
+    "timeline": [
+      [
+        "2007",
+        "Joins Tottenham Hotspur from Southampton"
+      ],
+      [
+        "2010",
+        "Hat-trick against Inter at San Siro"
+      ],
+      [
+        "2013",
+        "Wins the PFA and FWA awards; moves to Real Madrid"
+      ],
+      [
+        "2020",
+        "Returns to Spurs on a season-long loan"
+      ],
+      [
+        "2023",
+        "Retires; moves into broadcasting"
+      ]
+    ],
+    "talks": [
+      "Reinvention",
+      "Patience before the breakthrough",
+      "Performing on the biggest stage",
+      "Leading a national team",
+      "Life after elite sport"
+    ],
+    "audiences": [
+      "Leadership offsites",
+      "Flagship client events",
+      "Brand campaigns",
+      "Fan & member events"
+    ],
+    "industries": [
+      "Financial services",
+      "Sportswear",
+      "Golf & leisure",
+      "Media"
+    ],
+    "formats": [
+      "keynote",
+      "hospitality",
+      "brand",
+      "virtual"
+    ],
+    "langs": "English"
+  },
+  {
+    "slug": "robbie-keane",
+    "name": "Robbie Keane",
+    "first": "Robbie",
+    "role": "player",
+    "roleLabel": "Ex-player · Manager",
+    "era": "whl",
+    "limited": true,
+    "hero": "2206513143",
+    "gallery": [
+      "1052957076",
+      "2206095621",
+      "1052957106"
+    ],
+    "card": "79965678",
+    "pos": "Striker · Tottenham Hotspur 2002–2011 · Republic of Ireland",
+    "short": "Striker · 2002–2011 · Ireland",
+    "honour": "2008 League Cup winner",
+    "line": "Cartwheel celebrations, a Wembley trophy and a goalscoring record for his country. Now a manager with a winner’s view on building teams.",
+    "stats": [
+      [
+        "2002–11",
+        "Spurs years"
+      ],
+      [
+        "2008",
+        "League Cup winner"
+      ],
+      [
+        "Ireland",
+        "Record goalscorer"
+      ],
+      [
+        "3× MLS Cup",
+        "LA Galaxy"
+      ]
+    ],
+    "bio": [
+      "Robbie Keane arrived from Leeds United in 2002 and became the heartbeat of the Spurs attack, famous for his work rate, his finishing and the cartwheel celebration that every young fan copied in the playground.",
+      "He was part of the side that beat Chelsea at Wembley to win the 2008 League Cup, the club's first major trophy in nearly a decade. After a brief move to Liverpool he returned to N17, and later won three MLS Cups with LA Galaxy. For the Republic of Ireland he is the record goalscorer and the most-capped men's player.",
+      "He has since moved into coaching and management, including a league title with Maccabi Tel Aviv, and is a regular for the Spurs former players team at the stadium."
+    ],
+    "why": "Best for sales and leadership audiences who want a born competitor on winning habits, coming back stronger and building a team culture.",
+    "timeline": [
+      [
+        "2002",
+        "Joins Tottenham Hotspur from Leeds United"
+      ],
+      [
+        "2008",
+        "Wins the League Cup at Wembley"
+      ],
+      [
+        "2009",
+        "Returns to Spurs after a spell at Liverpool"
+      ],
+      [
+        "2011",
+        "Joins LA Galaxy; goes on to win three MLS Cups"
+      ],
+      [
+        "Today",
+        "Manager and Spurs former players team regular"
+      ]
+    ],
+    "talks": [
+      "Winning habits",
+      "Coming back stronger",
+      "From player to manager",
+      "Competitive drive",
+      "Team culture"
+    ],
+    "audiences": [
+      "Sales kick-offs",
+      "Leadership programmes",
+      "Client hospitality",
+      "Fan & member events"
+    ],
+    "industries": [
+      "Sales organisations",
+      "Professional services",
+      "Hospitality",
+      "Sportswear"
+    ],
+    "formats": [
+      "keynote",
+      "hospitality",
+      "fan",
+      "virtual"
+    ],
+    "langs": "English"
+  },
+  {
+    "slug": "peter-crouch",
+    "name": "Peter Crouch",
+    "first": "Peter",
+    "role": "player",
+    "roleLabel": "Ex-player · Broadcaster",
+    "era": "redknapp",
+    "limited": false,
+    "hero": "107109878",
+    "gallery": [
+      "98869573",
+      "103633638",
+      "1182719424"
+    ],
+    "card": "98393646",
+    "pos": "Striker · Tottenham Hotspur 2009–2011 · England",
+    "short": "Striker · 2009–2011 · England",
+    "honour": "Goal that sealed Spurs’ first Champions League place",
+    "line": "The header that took Spurs into the Champions League, and a second career as one of football’s funniest storytellers.",
+    "stats": [
+      [
+        "2009–11",
+        "Spurs years"
+      ],
+      [
+        "2010",
+        "Winner at Man City"
+      ],
+      [
+        "UCL 2011",
+        "Quarter-finalist"
+      ],
+      [
+        "Broadcaster",
+        "TV, podcast, books"
+      ]
+    ],
+    "bio": [
+      "Peter Crouch joined Spurs from Portsmouth in 2009, reuniting with Harry Redknapp. In May 2010 he headed the winner at Manchester City that secured fourth place and Champions League football for the first time.",
+      "In that first European campaign he scored a hat-trick against Young Boys in the qualifying round and the goal that won the last-16 first leg against AC Milan at San Siro, as Spurs reached the quarter-finals. He moved on to Stoke City in 2011.",
+      "Since retiring he has built a hugely popular media career across television, podcasting and books, with a self-deprecating style that makes him one of the most natural hosts in the game."
+    ],
+    "why": "Best for audiences who want laughter with substance: conferences, awards nights, client dinners and internal comms moments that need warmth.",
+    "timeline": [
+      [
+        "2009",
+        "Joins Tottenham Hotspur from Portsmouth"
+      ],
+      [
+        "2010",
+        "Header at Man City seals Champions League qualification"
+      ],
+      [
+        "2010",
+        "Hat-trick against Young Boys in the play-off"
+      ],
+      [
+        "2011",
+        "Winner against AC Milan at San Siro; joins Stoke City"
+      ],
+      [
+        "Today",
+        "Broadcaster, podcaster and author"
+      ]
+    ],
+    "talks": [
+      "Not fitting the mould",
+      "Humour and resilience",
+      "Big-moment pressure",
+      "Reinventing yourself",
+      "Storytelling"
+    ],
+    "audiences": [
+      "Conferences",
+      "Awards evenings",
+      "Client hospitality",
+      "Internal comms events"
+    ],
+    "industries": [
+      "Media",
+      "Consumer brands",
+      "Tech",
+      "Financial services"
+    ],
+    "formats": [
+      "keynote",
+      "hospitality",
+      "brand",
+      "fan",
+      "virtual"
+    ],
+    "langs": "English"
+  },
+  {
+    "slug": "michael-dawson",
+    "name": "Michael Dawson",
+    "first": "Michael",
+    "role": "player",
+    "roleLabel": "Ex-player",
+    "era": "redknapp",
+    "limited": false,
+    "hero": "158852934",
+    "gallery": [
+      "108843962",
+      "474430963",
+      "2205964319"
+    ],
+    "card": "185416849",
+    "pos": "Centre-back · Tottenham Hotspur 2005–2014 · England",
+    "short": "Centre-back · 2005–2014 · England",
+    "honour": "2008 League Cup winner",
+    "line": "Nine years of total commitment at the back. A grounded voice on leadership, consistency and putting the team first.",
+    "stats": [
+      [
+        "2005–14",
+        "Spurs years"
+      ],
+      [
+        "2008",
+        "League Cup winner"
+      ],
+      [
+        "Captain",
+        "Led the side"
+      ],
+      [
+        "WC 2010",
+        "England squad"
+      ]
+    ],
+    "bio": [
+      "Michael Dawson joined Spurs from Nottingham Forest in 2005 and quickly became a dressing-room leader: a no-nonsense centre-back who threw himself in front of everything and never hid on a bad day.",
+      "He started the 2008 League Cup final win over Chelsea, was part of the Redknapp side that reached the Champions League, and was called into England's squad for the 2010 World Cup. He later captained the club before moving on to Hull City in 2014.",
+      "Fans still sing his name, and he remains a familiar face for the Spurs former players team and in the media, talking with honesty and humour about the game."
+    ],
+    "why": "Best for leadership and team-development audiences who value reliability, effort and leading by example.",
+    "timeline": [
+      [
+        "2005",
+        "Joins Tottenham Hotspur from Nottingham Forest"
+      ],
+      [
+        "2008",
+        "Starts the League Cup final win at Wembley"
+      ],
+      [
+        "2010",
+        "Called into England’s World Cup squad"
+      ],
+      [
+        "2014",
+        "Joins Hull City after nine years in N17"
+      ],
+      [
+        "Today",
+        "Spurs former players team regular and media work"
+      ]
+    ],
+    "talks": [
+      "Leading by example",
+      "Consistency",
+      "Team before self",
+      "Handling setbacks",
+      "Dressing-room culture"
+    ],
+    "audiences": [
+      "Leadership programmes",
+      "Team away days",
+      "Matchday hospitality",
+      "Community days"
+    ],
+    "industries": [
+      "Construction",
+      "Professional services",
+      "Logistics",
+      "Club partners"
+    ],
+    "formats": [
+      "keynote",
+      "hospitality",
+      "clinic",
+      "fan"
+    ],
+    "langs": "English"
+  },
+  {
+    "slug": "benoit-assou-ekotto",
+    "name": "Benoît Assou-Ekotto",
+    "first": "Benoît",
+    "role": "player",
+    "roleLabel": "Ex-player",
+    "era": "redknapp",
+    "limited": false,
+    "hero": "168017570",
+    "gallery": [
+      "150725849",
+      "150725828",
+      "2205972757"
+    ],
+    "card": "149865960",
+    "pos": "Left-back · Tottenham Hotspur 2006–2015 · Cameroon",
+    "short": "Left-back · 2006–2015 · Cameroon",
+    "honour": "Cameroon World Cup player",
+    "line": "The cult-hero left-back who always said exactly what he thought. Refreshing, funny and unlike any other footballer you will meet.",
+    "stats": [
+      [
+        "2006–15",
+        "Spurs years"
+      ],
+      [
+        "Left-back",
+        "Position"
+      ],
+      [
+        "WC 2010 & 2014",
+        "Cameroon"
+      ],
+      [
+        "Cult hero",
+        "Fan favourite"
+      ]
+    ],
+    "bio": [
+      "Benoît Assou-Ekotto joined Spurs from Lens in 2006 and became one of the most distinctive figures of the Redknapp era: a calm, attacking left-back with a trademark hairstyle and the occasional thunderous long-range strike.",
+      "He represented Cameroon at the 2010 and 2014 World Cups. Off the pitch he became famous for refreshingly frank interviews about life as a professional footballer, which made him a genuine cult hero with supporters.",
+      "He still turns out for the Spurs former players team, and his straight-talking perspective on work, identity and doing things your own way lands with audiences well beyond football."
+    ],
+    "why": "Best for audiences who want authenticity: culture and inclusion sessions, creative teams and events that reward a different point of view.",
+    "timeline": [
+      [
+        "2006",
+        "Joins Tottenham Hotspur from Lens"
+      ],
+      [
+        "2010",
+        "Plays at the World Cup for Cameroon"
+      ],
+      [
+        "2010–12",
+        "First-choice left-back in the Redknapp side"
+      ],
+      [
+        "2014",
+        "Second World Cup with Cameroon"
+      ],
+      [
+        "Today",
+        "Spurs former players team regular"
+      ]
+    ],
+    "talks": [
+      "Being yourself",
+      "Work and identity",
+      "Thinking differently",
+      "Belonging",
+      "Honesty in teams"
+    ],
+    "audiences": [
+      "Culture & inclusion events",
+      "Creative teams",
+      "Fan & member events",
+      "Client hospitality"
+    ],
+    "industries": [
+      "Creative & media",
+      "Tech",
+      "Fashion",
+      "Consumer brands"
+    ],
+    "formats": [
+      "keynote",
+      "hospitality",
+      "fan",
+      "virtual"
+    ],
+    "langs": "English, French"
+  },
+  {
+    "slug": "rafael-van-der-vaart",
+    "name": "Rafael van der Vaart",
+    "first": "Rafael",
+    "role": "player",
+    "roleLabel": "Ex-player · Broadcaster",
+    "era": "redknapp",
+    "limited": false,
+    "hero": "935369596",
+    "gallery": [
+      "143564487",
+      "1229942628",
+      "107783239"
+    ],
+    "card": "2282393054",
+    "pos": "Attacking midfielder · Tottenham Hotspur 2010–2012 · Netherlands",
+    "short": "Midfielder · 2010–2012 · Netherlands",
+    "honour": "2010 World Cup finalist",
+    "line": "The deadline-day signing who lit up White Hart Lane. Craft, confidence and a big-game temperament from a World Cup finalist.",
+    "stats": [
+      [
+        "2010–12",
+        "Spurs years"
+      ],
+      [
+        "Deadline day",
+        "2010 signing"
+      ],
+      [
+        "WC 2010",
+        "Finalist"
+      ],
+      [
+        "No. 11",
+        "Fan favourite"
+      ]
+    ],
+    "bio": [
+      "Rafael van der Vaart arrived from Real Madrid on transfer deadline day in 2010, weeks after playing in the World Cup final for the Netherlands, and immediately became the creative heartbeat of Harry Redknapp's side.",
+      "Clever, combative and decisive, he scored regularly from midfield and loved the north London derby, including a role in the comeback win at the Emirates in November 2010. He returned to Hamburg in 2012 and later played in Spain and Denmark.",
+      "Since retiring he has become a well-known football analyst on Dutch television, and he remains a hugely popular figure whenever he returns to N17."
+    ],
+    "why": "Best for audiences who want flair with conviction: client hospitality, international teams and creative or product leaders.",
+    "timeline": [
+      [
+        "2010",
+        "Plays in the World Cup final with the Netherlands"
+      ],
+      [
+        "2010",
+        "Joins Spurs from Real Madrid on deadline day"
+      ],
+      [
+        "2010",
+        "Part of the comeback derby win at the Emirates"
+      ],
+      [
+        "2012",
+        "Returns to Hamburg"
+      ],
+      [
+        "Today",
+        "TV football analyst"
+      ]
+    ],
+    "talks": [
+      "Creativity under pressure",
+      "Big-game temperament",
+      "Joining a new team",
+      "Confidence",
+      "Playing across Europe"
+    ],
+    "audiences": [
+      "Client hospitality",
+      "International teams",
+      "Product & creative leaders",
+      "Fan & member events"
+    ],
+    "industries": [
+      "Tech",
+      "Financial services",
+      "Hospitality",
+      "Media"
+    ],
+    "formats": [
+      "keynote",
+      "hospitality",
+      "brand",
+      "virtual"
+    ],
+    "langs": "Dutch, English, German"
+  },
+  {
+    "slug": "mousa-dembele",
+    "name": "Mousa Dembélé",
+    "first": "Mousa",
+    "role": "player",
+    "roleLabel": "Ex-player",
+    "era": "pochettino",
+    "limited": false,
+    "hero": "1055281210",
+    "gallery": [
+      "1053310074",
+      "636085166",
+      "630617846"
+    ],
+    "card": "1055507366",
+    "pos": "Central midfielder · Tottenham Hotspur 2012–2019 · Belgium",
+    "short": "Midfielder · 2012–2019 · Belgium",
+    "honour": "World Cup third place, 2018",
+    "line": "The quiet genius at the centre of Pochettino’s Spurs. Balance, calm and the art of making the hard things look simple.",
+    "stats": [
+      [
+        "2012–19",
+        "Spurs years"
+      ],
+      [
+        "2016–17",
+        "Runners-up"
+      ],
+      [
+        "WC 2018",
+        "Third place"
+      ],
+      [
+        "Midfield",
+        "Position"
+      ]
+    ],
+    "bio": [
+      "Mousa Dembélé joined Spurs from Fulham in 2012 and became one of the most admired midfielders of his generation: almost impossible to dispossess, physically powerful and remarkably calm with the ball at his feet.",
+      "He was central to the Pochettino side that challenged for the title, finishing second in 2016–17, and teammates and opponents alike spoke of him with something close to awe. With Belgium he won a bronze medal at the 2018 World Cup.",
+      "He left for China in January 2019 and has since retired. He is famously private and understated, which gives his reflections on composure and teamwork real weight."
+    ],
+    "why": "Best for smaller, high-trust rooms: leadership dinners, coaching cohorts and teams who value composure over noise.",
+    "timeline": [
+      [
+        "2012",
+        "Joins Tottenham Hotspur from Fulham"
+      ],
+      [
+        "2016",
+        "Part of the side that challenges for the title"
+      ],
+      [
+        "2017",
+        "Premier League runners-up"
+      ],
+      [
+        "2018",
+        "World Cup bronze with Belgium"
+      ],
+      [
+        "2019",
+        "Leaves for Guangzhou R&F"
+      ]
+    ],
+    "talks": [
+      "Composure under pressure",
+      "Making it look simple",
+      "Quiet leadership",
+      "Team balance",
+      "Mastery"
+    ],
+    "audiences": [
+      "Leadership dinners",
+      "Coaching cohorts",
+      "Client hospitality",
+      "International teams"
+    ],
+    "industries": [
+      "Financial services",
+      "Professional services",
+      "Tech",
+      "Luxury"
+    ],
+    "formats": [
+      "hospitality",
+      "keynote",
+      "virtual"
+    ],
+    "langs": "English, Dutch, French"
+  },
+  {
+    "slug": "aaron-lennon",
+    "name": "Aaron Lennon",
+    "first": "Aaron",
+    "role": "player",
+    "roleLabel": "Ex-player",
+    "era": "redknapp",
+    "limited": false,
+    "hero": "107841422",
+    "gallery": [
+      "2282376960",
+      "2205969754",
+      "2205999233"
+    ],
+    "card": "98781436",
+    "pos": "Winger · Tottenham Hotspur 2005–2015 · England",
+    "short": "Winger · 2005–2015 · England",
+    "honour": "2008 League Cup winner",
+    "line": "A decade of blistering pace down the right. A grounded, generous voice on speed, longevity and looking after yourself.",
+    "stats": [
+      [
+        "2005–15",
+        "Spurs years"
+      ],
+      [
+        "2008",
+        "League Cup winner"
+      ],
+      [
+        "WC 2006 & 2010",
+        "England"
+      ],
+      [
+        "Winger",
+        "Position"
+      ]
+    ],
+    "bio": [
+      "Aaron Lennon joined Spurs from Leeds United as a teenager in 2005 and spent a decade terrorising full-backs with his pace and directness on the right wing.",
+      "He started the 2008 League Cup final win over Chelsea and was a key outlet in the Redknapp side that reached the Champions League. With England he went to both the 2006 and 2010 World Cups.",
+      "After leaving for Everton in 2015 he played on at Burnley and abroad. Today he is a regular for the Spurs former players team, where the crowd's reaction shows how fondly he is remembered."
+    ],
+    "why": "Best for audiences who want a down-to-earth story about speed, longevity and staying yourself through the highs and lows.",
+    "timeline": [
+      [
+        "2005",
+        "Joins Tottenham Hotspur from Leeds United"
+      ],
+      [
+        "2006",
+        "Goes to the World Cup with England"
+      ],
+      [
+        "2008",
+        "Starts the League Cup final win at Wembley"
+      ],
+      [
+        "2010",
+        "Second World Cup with England"
+      ],
+      [
+        "2015",
+        "Joins Everton after a decade at Spurs"
+      ]
+    ],
+    "talks": [
+      "Speed and decisiveness",
+      "Longevity",
+      "Staying grounded",
+      "Youth to first team",
+      "Looking after yourself"
+    ],
+    "audiences": [
+      "Youth & community events",
+      "Team away days",
+      "Matchday hospitality",
+      "Fan & member events"
+    ],
+    "industries": [
+      "Education",
+      "Sportswear",
+      "Healthcare",
+      "Club partners"
+    ],
+    "formats": [
+      "hospitality",
+      "clinic",
+      "fan",
+      "brand"
+    ],
+    "langs": "English"
+  },
+  {
+    "slug": "paul-robinson",
+    "name": "Paul Robinson",
+    "first": "Paul",
+    "role": "player",
+    "roleLabel": "Ex-player",
+    "era": "whl",
+    "limited": false,
+    "hero": "661286288",
+    "gallery": [
+      "73620048",
+      "832515280",
+      "661286816"
+    ],
+    "card": "662447094",
+    "pos": "Goalkeeper · Tottenham Hotspur 2004–2008 · England",
+    "short": "Goalkeeper · 2004–2008 · England",
+    "honour": "2008 League Cup winner",
+    "line": "England’s number one and a Wembley winner with Spurs. Straight talk on pressure, mistakes and the loneliest position on the pitch.",
+    "stats": [
+      [
+        "2004–08",
+        "Spurs years"
+      ],
+      [
+        "2008",
+        "League Cup winner"
+      ],
+      [
+        "WC 2006",
+        "England No. 1"
+      ],
+      [
+        "1 goal",
+        "v Watford, 2007"
+      ]
+    ],
+    "bio": [
+      "Paul Robinson joined Spurs from Leeds United in 2004 and was the club's first-choice goalkeeper through the Martin Jol years, when White Hart Lane got used to European nights again.",
+      "He was England's number one at the 2006 World Cup, kept goal in the 2008 League Cup final win over Chelsea, and even scored for Spurs, with a huge free-kick from his own half that bounced over the Watford goalkeeper in 2007.",
+      "He later played for Blackburn Rovers and Burnley. Goalkeeping teaches you to live with public mistakes and move on fast, and he talks about that with refreshing candour."
+    ],
+    "why": "Best for audiences dealing with pressure and accountability: finance, operations and leadership teams where one error is very visible.",
+    "timeline": [
+      [
+        "2004",
+        "Joins Tottenham Hotspur from Leeds United"
+      ],
+      [
+        "2006",
+        "England’s number one at the World Cup"
+      ],
+      [
+        "2007",
+        "Scores from his own half against Watford"
+      ],
+      [
+        "2008",
+        "Wins the League Cup at Wembley; joins Blackburn Rovers"
+      ]
+    ],
+    "talks": [
+      "Handling pressure",
+      "Bouncing back from mistakes",
+      "Accountability",
+      "Concentration",
+      "Communication from the back"
+    ],
+    "audiences": [
+      "Finance teams",
+      "Operations & risk teams",
+      "Matchday hospitality",
+      "Supporter events"
+    ],
+    "industries": [
+      "Financial services",
+      "Insurance",
+      "Energy",
+      "Logistics"
+    ],
+    "formats": [
+      "keynote",
+      "hospitality",
+      "clinic",
+      "fan"
+    ],
+    "langs": "English"
+  },
+  {
+    "slug": "ossie-ardiles",
+    "name": "Ossie Ardiles",
+    "first": "Ossie",
+    "role": "manager",
+    "roleLabel": "Ex-player · Manager",
+    "era": "whl",
+    "limited": false,
+    "hero": "2165397710",
+    "gallery": [
+      "462704992",
+      "480758782",
+      "1453611123"
+    ],
+    "card": "453164686",
+    "pos": "Midfielder 1978–1988 · Manager 1993–1994 · Argentina",
+    "short": "Midfielder, then manager · Argentina",
+    "honour": "World Cup winner 1978 · FA Cup winner 1981",
+    "line": "The World Cup winner who swapped Buenos Aires for N17 and became part of the club's soul. A story of courage, craft and making a new home.",
+    "stats": [
+      [
+        "1978–88",
+        "Playing years"
+      ],
+      [
+        "World Cup",
+        "Winner 1978"
+      ],
+      [
+        "FA Cup",
+        "1981"
+      ],
+      [
+        "1993–94",
+        "Spurs manager"
+      ]
+    ],
+    "bio": [
+      "Ossie Ardiles arrived at White Hart Lane in the summer of 1978, weeks after winning the World Cup with Argentina. Signing two world champions alongside Ricky Villa was one of the boldest moves in English football at the time, and Ardiles quickly won the crowd over with his quick feet, intelligence and appetite for the game.",
+      "He was at the heart of the side that won the FA Cup in 1981, a final that gave the club and its supporters a song still sung today, and he was part of the squad that went on to European success in 1984. Few overseas players have meant as much to a club's identity.",
+      "He returned as manager in 1993 with a fearless, attack-first approach, and has remained close to the club ever since, including work as a Tottenham Hotspur ambassador and managing the Spurs former players team sides. He brings warmth, humour and a unique perspective on moving countries and leading with conviction."
+    ],
+    "why": "Best for audiences who want a global story: international teams, leadership events and client dinners that celebrate courage and culture.",
+    "timeline": [
+      [
+        "1978",
+        "Wins the World Cup with Argentina, then joins Tottenham Hotspur"
+      ],
+      [
+        "1981",
+        "FA Cup winner"
+      ],
+      [
+        "1988",
+        "Moves on after a decade at the club"
+      ],
+      [
+        "1993",
+        "Returns as Spurs manager"
+      ],
+      [
+        "Today",
+        "Club ambassador and the Spurs former players team manager"
+      ]
+    ],
+    "talks": [
+      "Moving countries",
+      "Courage to attack",
+      "Leading with conviction",
+      "Culture & belonging",
+      "World Cup stories"
+    ],
+    "audiences": [
+      "International teams",
+      "Leadership conferences",
+      "Client hospitality",
+      "Fan & member events"
+    ],
+    "industries": [
+      "Financial services",
+      "Hospitality",
+      "Travel",
+      "Consumer brands"
+    ],
+    "formats": [
+      "keynote",
+      "hospitality",
+      "fan",
+      "virtual"
+    ],
+    "langs": "Spanish, English"
+  },
+  {
+    "slug": "martin-jol",
+    "name": "Martin Jol",
+    "first": "Martin",
+    "role": "manager",
+    "roleLabel": "Manager",
+    "era": "whl",
+    "limited": false,
+    "hero": "76167738",
+    "gallery": [
+      "1234116072",
+      "1025099420",
+      "2250086142"
+    ],
+    "card": "1971231897",
+    "pos": "Head coach · Tottenham Hotspur 2004–2007 · Netherlands",
+    "short": "Head coach · 2004–2007",
+    "honour": "Back-to-back fifth-place finishes and a UEFA Cup quarter-final",
+    "line": "The big Dutchman who restored belief at White Hart Lane, built a young, attacking side and brought European nights back to N17.",
+    "stats": [
+      [
+        "2004–07",
+        "Spurs years"
+      ],
+      [
+        "5th ×2",
+        "2005–06 & 2006–07"
+      ],
+      [
+        "UEFA Cup",
+        "Quarter-final 2007"
+      ],
+      [
+        "Netherlands",
+        "Coach & player"
+      ]
+    ],
+    "bio": [
+      "Martin Jol came to Spurs in 2004 as part of a new coaching team and was handed the top job within months. A former Netherlands international who had played in England, he understood the league and quickly connected with supporters through his honesty and presence on the touchline.",
+      "He built an energetic, attacking team around young players who would become Spurs favourites, finishing fifth in consecutive Premier League seasons and taking the club back into Europe, where it reached the UEFA Cup quarter-finals in 2007.",
+      "After leaving in 2007 he managed at the top level in Germany, the Netherlands and England. His talks focus on rebuilding a team's confidence, backing young talent and keeping a dressing room together under scrutiny."
+    ],
+    "why": "Best for leadership audiences focused on rebuilding confidence, developing young talent and leading in the public eye.",
+    "timeline": [
+      [
+        "2004",
+        "Joins the Spurs coaching staff and is appointed head coach"
+      ],
+      [
+        "2006",
+        "Fifth-place Premier League finish"
+      ],
+      [
+        "2007",
+        "Second fifth-place finish; UEFA Cup quarter-final"
+      ],
+      [
+        "2007",
+        "Leaves Tottenham Hotspur"
+      ],
+      [
+        "Later",
+        "Manages Hamburg, Ajax and Fulham"
+      ]
+    ],
+    "talks": [
+      "Rebuilding confidence",
+      "Backing young talent",
+      "Leading under scrutiny",
+      "Team culture",
+      "European nights"
+    ],
+    "audiences": [
+      "Leadership teams",
+      "Partner summits",
+      "Client hospitality",
+      "Coaching & HR"
+    ],
+    "industries": [
+      "Professional services",
+      "Financial services",
+      "Logistics",
+      "Technology"
+    ],
+    "formats": [
+      "keynote",
+      "hospitality",
+      "workshop"
+    ],
+    "langs": "Dutch, English"
+  },
+  {
+    "slug": "chris-hughton",
+    "name": "Chris Hughton",
+    "first": "Chris",
+    "role": "staff",
+    "roleLabel": "Ex-player · Coach",
+    "era": "whl",
+    "limited": false,
+    "hero": "458897506",
+    "gallery": [
+      "2178201726",
+      "1001528724",
+      "2002391717"
+    ],
+    "card": "662291580",
+    "pos": "Full-back 1979–1990 · Spurs coach 1993–2007 · Republic of Ireland",
+    "short": "Full-back, then long-serving coach",
+    "honour": "FA Cup winner 1981 & 1982 · UEFA Cup winner 1984",
+    "line": "Academy product, cup winner and then the coach who served Spurs for well over a decade. Leadership with calm, integrity and a lot of quiet strength.",
+    "stats": [
+      [
+        "1979–90",
+        "Playing years"
+      ],
+      [
+        "FA Cup ×2",
+        "1981 & 1982"
+      ],
+      [
+        "UEFA Cup",
+        "1984"
+      ],
+      [
+        "1993–2007",
+        "Spurs coach"
+      ]
+    ],
+    "bio": [
+      "Chris Hughton came through the Spurs youth system and became a dependable, attacking full-back in one of the club's most successful sides, winning the FA Cup in 1981 and 1982 and the UEFA Cup in 1984. At international level he represented the Republic of Ireland.",
+      "After his playing days he returned to Spurs as a coach and stayed for well over a decade, working with the reserves and the first team and serving a long line of managers. Few people have seen the inside of the club from so many angles.",
+      "He went on to manage at the highest level, winning promotion to the Premier League more than once and later leading a national team. He is widely respected for his composure and integrity, and speaks thoughtfully on leadership, inclusion and building trust."
+    ],
+    "why": "Best for audiences who value calm, principled leadership: management development, inclusion programmes and coaching cultures.",
+    "timeline": [
+      [
+        "1979",
+        "First-team debut after coming through the youth system"
+      ],
+      [
+        "1981 & 1982",
+        "Back-to-back FA Cup wins"
+      ],
+      [
+        "1984",
+        "UEFA Cup winner"
+      ],
+      [
+        "1993",
+        "Returns to Spurs as a coach"
+      ],
+      [
+        "2007",
+        "Leaves the coaching staff to begin a management career"
+      ]
+    ],
+    "talks": [
+      "Calm leadership",
+      "Building trust",
+      "Inclusion in football",
+      "Serving many managers",
+      "From player to coach"
+    ],
+    "audiences": [
+      "Management development",
+      "Inclusion & diversity events",
+      "Coaching & L&D",
+      "Partner events"
+    ],
+    "industries": [
+      "Professional services",
+      "Public sector",
+      "Education",
+      "Financial services"
+    ],
+    "formats": [
+      "keynote",
+      "workshop",
+      "hospitality",
+      "virtual"
+    ],
+    "langs": "English"
+  },
+  {
+    "slug": "steffen-freund",
+    "name": "Steffen Freund",
+    "first": "Steffen",
+    "role": "staff",
+    "roleLabel": "Ex-player · Assistant coach",
+    "era": "whl",
+    "limited": false,
+    "hero": "2262581355",
+    "gallery": [
+      "650759364",
+      "525674788",
+      "161615446"
+    ],
+    "card": "1223998",
+    "pos": "Midfielder 1998–2003 · Assistant head coach 2012–2014 · Germany",
+    "short": "Midfielder, then assistant coach · Germany",
+    "honour": "League Cup winner 1999 · European champion with Germany",
+    "line": "The German terrier the Lane adored, who came back as assistant head coach. Energy, standards and an insider view of elite coaching.",
+    "stats": [
+      [
+        "1998–2003",
+        "Playing years"
+      ],
+      [
+        "League Cup",
+        "1999"
+      ],
+      [
+        "Euro 96",
+        "Winner with Germany"
+      ],
+      [
+        "2012–14",
+        "Assistant head coach"
+      ]
+    ],
+    "bio": [
+      "Steffen Freund arrived from Borussia Dortmund at the end of 1998 already a European champion with Germany and an established player at one of Europe's leading clubs. At White Hart Lane he became a cult hero for his relentless running, tackling and visible passion, and he was part of the side that won the League Cup at Wembley in 1999.",
+      "He returned to the club in 2012 as assistant head coach, working on the training ground and touchline with the first team, so he has experienced Spurs both as a player and from inside the coaching staff.",
+      "Today he is a familiar face in the Spurs former players team line-ups and in football broadcasting. He speaks with energy and humour about work rate, adapting to a new culture and the detail behind elite coaching."
+    ],
+    "why": "Best for audiences who want energy and standards: sales kick-offs, team away-days and coaching-focused sessions.",
+    "timeline": [
+      [
+        "1996",
+        "Wins the European Championship with Germany"
+      ],
+      [
+        "1998",
+        "Joins Tottenham Hotspur from Borussia Dortmund"
+      ],
+      [
+        "1999",
+        "League Cup winner"
+      ],
+      [
+        "2003",
+        "Moves on after five seasons"
+      ],
+      [
+        "2012",
+        "Returns as assistant head coach"
+      ]
+    ],
+    "talks": [
+      "Work rate & standards",
+      "Adapting to a new culture",
+      "Inside elite coaching",
+      "Team spirit",
+      "Winning mentality"
+    ],
+    "audiences": [
+      "Sales kick-offs",
+      "Team away-days",
+      "Coaching & L&D",
+      "Supporter events"
+    ],
+    "industries": [
+      "Automotive",
+      "Sales organisations",
+      "Technology",
+      "Sportswear"
+    ],
+    "formats": [
+      "keynote",
+      "clinic",
+      "hospitality",
+      "fan"
+    ],
+    "langs": "German, English"
+  },
+  {
+    "slug": "steve-perryman",
+    "name": "Steve Perryman",
+    "first": "Steve",
+    "role": "player",
+    "roleLabel": "Ex-player · Captain",
+    "era": "whl",
+    "limited": false,
+    "hero": "2179788590",
+    "gallery": [
+      "954281126",
+      "2277985297",
+      "1341281268"
+    ],
+    "card": "2219311575",
+    "pos": "Midfielder & defender 1969–1986 · club captain · England",
+    "short": "Midfielder & defender · 1969–1986 · captain",
+    "honour": "Spurs' record appearance maker · FA Cup-winning captain",
+    "line": "No one has played more games for Spurs. The captain who lifted the FA Cup twice and the definitive voice on loyalty and leadership.",
+    "stats": [
+      [
+        "1969–86",
+        "Playing years"
+      ],
+      [
+        "Record",
+        "Most Spurs appearances"
+      ],
+      [
+        "FA Cup ×2",
+        "Captain, 1981 & 1982"
+      ],
+      [
+        "FWA 1982",
+        "Footballer of the Year"
+      ]
+    ],
+    "bio": [
+      "Steve Perryman joined Spurs as a teenager and made his first-team debut in 1969. Over the next seventeen years he played more games for the club than anyone in its history, first as a tireless midfielder and later as a defender.",
+      "He won the League Cup and the UEFA Cup in the early 1970s, then captained the side that lifted the FA Cup in 1981 and 1982. In 1982 the Football Writers' Association named him Footballer of the Year, and he won his England cap that same year.",
+      "He later returned to Spurs as assistant manager, briefly taking charge as caretaker, and built a long coaching career that included years in Japanese football. He speaks with authority on captaincy, consistency and what loyalty really looks like over a career."
+    ],
+    "why": "Best for audiences exploring leadership and longevity: leadership programmes, long-service awards and club partner dinners.",
+    "timeline": [
+      [
+        "1969",
+        "First-team debut"
+      ],
+      [
+        "1972",
+        "UEFA Cup winner"
+      ],
+      [
+        "1981 & 1982",
+        "Captains Spurs to back-to-back FA Cups"
+      ],
+      [
+        "1982",
+        "FWA Footballer of the Year"
+      ],
+      [
+        "1993",
+        "Returns as assistant manager"
+      ]
+    ],
+    "talks": [
+      "Captaincy",
+      "Loyalty & longevity",
+      "Consistency",
+      "Leading through change",
+      "Coaching abroad"
+    ],
+    "audiences": [
+      "Leadership programmes",
+      "Long-service & awards events",
+      "Matchday hospitality",
+      "Supporter events"
+    ],
+    "industries": [
+      "Professional services",
+      "Financial services",
+      "Manufacturing",
+      "Public sector"
+    ],
+    "formats": [
+      "keynote",
+      "hospitality",
+      "fan",
+      "virtual"
+    ],
+    "langs": "English"
+  },
+  {
+    "slug": "ricky-villa",
+    "name": "Ricky Villa",
+    "first": "Ricky",
+    "role": "player",
+    "roleLabel": "Ex-player",
+    "era": "whl",
+    "limited": false,
+    "hero": "536403726",
+    "gallery": [
+      "536403296",
+      "517210620",
+      "1388943295"
+    ],
+    "card": "2219311644",
+    "pos": "Midfielder · Tottenham Hotspur 1978–1983 · Argentina",
+    "short": "Midfielder · 1978–1983 · Argentina",
+    "honour": "Scored the winner in the 1981 FA Cup final replay",
+    "line": "Scorer of the most famous goal in Spurs history. A story about bouncing back from a bad day on the biggest stage.",
+    "stats": [
+      [
+        "1978–83",
+        "Spurs years"
+      ],
+      [
+        "1981",
+        "FA Cup winner"
+      ],
+      [
+        "Two goals",
+        "In the 1981 replay"
+      ],
+      [
+        "Argentina",
+        "1978 World Cup squad"
+      ]
+    ],
+    "bio": [
+      "Ricky Villa joined Spurs from Argentina in 1978 alongside Ossie Ardiles, part of the World Cup-winning squad and one of the first overseas stars of the modern English game.",
+      "His defining moment came in 1981. Substituted in the first FA Cup final against Manchester City, he was given another chance in the replay and scored twice, including a dribbling solo winner that is still regarded as one of the greatest goals ever scored at Wembley.",
+      "After leaving Spurs he played and coached in the Americas, and he remains a beloved figure in N17 whenever he returns. His story is a natural fit for any audience thinking about setbacks, second chances and seizing the moment."
+    ],
+    "why": "Best for audiences who need a bounce-back story: sales teams after a tough quarter, resilience programmes and celebratory dinners.",
+    "timeline": [
+      [
+        "1978",
+        "Joins Tottenham Hotspur from Argentina with Ossie Ardiles"
+      ],
+      [
+        "1981",
+        "Substituted in the FA Cup final, then scores twice in the replay to win it"
+      ],
+      [
+        "1983",
+        "Leaves for a new chapter in the Americas"
+      ],
+      [
+        "Today",
+        "Returns to N17 as a celebrated guest"
+      ]
+    ],
+    "talks": [
+      "Second chances",
+      "Seizing the moment",
+      "Moving countries",
+      "Handling setbacks",
+      "Big-game stories"
+    ],
+    "audiences": [
+      "Sales conferences",
+      "Resilience programmes",
+      "Gala dinners",
+      "Fan & member events"
+    ],
+    "industries": [
+      "Sales organisations",
+      "Financial services",
+      "Hospitality",
+      "Media"
+    ],
+    "formats": [
+      "keynote",
+      "hospitality",
+      "fan",
+      "virtual"
+    ],
+    "langs": "Spanish, English"
+  },
+  {
+    "slug": "david-ginola",
+    "name": "David Ginola",
+    "first": "David",
+    "role": "player",
+    "roleLabel": "Ex-player",
+    "era": "whl",
+    "limited": false,
+    "hero": "2276928876",
+    "gallery": [
+      "2262586117",
+      "650759314",
+      "1213280544"
+    ],
+    "card": "928178662",
+    "pos": "Winger · Tottenham Hotspur 1997–2000 · France",
+    "short": "Winger · 1997–2000 · France",
+    "honour": "PFA and FWA Player of the Year 1999",
+    "line": "Flair, style and the 1999 double of player awards. The Lane's great entertainer on confidence, creativity and owning the stage.",
+    "stats": [
+      [
+        "1997–2000",
+        "Spurs years"
+      ],
+      [
+        "PFA & FWA",
+        "Player of the Year 1999"
+      ],
+      [
+        "League Cup",
+        "1999"
+      ],
+      [
+        "France",
+        "International"
+      ]
+    ],
+    "bio": [
+      "David Ginola joined Spurs from Newcastle in the summer of 1997 and became one of the most thrilling players ever to grace White Hart Lane, a winger who could beat defenders for fun and lift a crowd with a single run.",
+      "His 1998–99 season was exceptional. He helped Spurs win the League Cup at Wembley and was named Player of the Year by both his fellow professionals and the football writers, a rare double for a player outside the title-winning sides.",
+      "Since retiring he has worked across broadcasting, fashion and brand campaigns, and he remains a natural on stage. He talks with charm about confidence, creativity and expressing yourself under pressure."
+    ],
+    "why": "Best for brand launches, creative industries and client events that want star quality and a touch of French flair.",
+    "timeline": [
+      [
+        "1997",
+        "Joins Tottenham Hotspur from Newcastle United"
+      ],
+      [
+        "1999",
+        "League Cup winner at Wembley"
+      ],
+      [
+        "1999",
+        "PFA Players’ Player and FWA Footballer of the Year"
+      ],
+      [
+        "2000",
+        "Leaves for Aston Villa"
+      ],
+      [
+        "Today",
+        "Broadcaster and brand ambassador"
+      ]
+    ],
+    "talks": [
+      "Confidence",
+      "Creativity under pressure",
+      "Personal brand",
+      "Entertaining a crowd",
+      "Style & substance"
+    ],
+    "audiences": [
+      "Brand launches",
+      "Creative & marketing teams",
+      "Gala dinners",
+      "Client hospitality"
+    ],
+    "industries": [
+      "Fashion & beauty",
+      "Luxury & lifestyle",
+      "Media",
+      "Hospitality"
+    ],
+    "formats": [
+      "keynote",
+      "brand",
+      "hospitality",
+      "fan"
+    ],
+    "langs": "French, English"
+  },
+  {
+    "slug": "jenna-schillaci",
+    "name": "Jenna Schillaci",
+    "first": "Jenna",
+    "role": "women",
+    "roleLabel": "Spurs Women · Former captain",
+    "era": "pochettino",
+    "limited": false,
+    "hero": "1166819821",
+    "gallery": [
+      "1139476212",
+      "1193408466",
+      "1193383714"
+    ],
+    "card": "1173203160",
+    "pos": "Captain · Tottenham Hotspur Women · broadcaster",
+    "short": "Former captain · broadcaster",
+    "honour": "Captained Spurs into the Women’s Super League",
+    "line": "The long-serving captain who led Spurs Women up the pyramid and into the WSL. Now one of the game's familiar broadcasting voices.",
+    "stats": [
+      [
+        "Captain",
+        "Tottenham Hotspur Women"
+      ],
+      [
+        "2019",
+        "Promotion to the WSL"
+      ],
+      [
+        "Rise",
+        "Through the pyramid"
+      ],
+      [
+        "Broadcaster",
+        "Today"
+      ]
+    ],
+    "bio": [
+      "Jenna Schillaci spent many seasons at Tottenham Hotspur and became the captain of a side that climbed the women's football pyramid step by step, at a time when the women's game was still fighting for resources and recognition.",
+      "That journey culminated in promotion to the Women's Super League in 2019, and she led the team into its first top-flight season, helping lay the foundations the club has built on since.",
+      "Since hanging up her boots she has become a familiar face presenting and analysing women's football on television. She speaks with clarity about leadership in a growing organisation, perseverance and the changing landscape of the women's game."
+    ],
+    "why": "Best for audiences championing growth and inclusion: women's networks, scale-up teams and International Women's Day events.",
+    "timeline": [
+      [
+        "2010s",
+        "Becomes a mainstay and then captain of Tottenham Hotspur Ladies"
+      ],
+      [
+        "2017",
+        "Promotion into the second tier"
+      ],
+      [
+        "2019",
+        "Promotion to the Women’s Super League"
+      ],
+      [
+        "2019–20",
+        "Captains Spurs in their first WSL season"
+      ],
+      [
+        "Today",
+        "Broadcaster and presenter"
+      ]
+    ],
+    "talks": [
+      "Leading a growing team",
+      "Perseverance",
+      "Growth of the women’s game",
+      "Captaincy",
+      "Building foundations"
+    ],
+    "audiences": [
+      "Women's networks",
+      "International Women's Day",
+      "Scale-up teams",
+      "Fan & member events"
+    ],
+    "industries": [
+      "Media",
+      "Technology",
+      "Financial services",
+      "Sportswear"
+    ],
+    "formats": [
+      "keynote",
+      "hospitality",
+      "brand",
+      "virtual"
+    ],
+    "langs": "English"
+  },
+  {
+    "slug": "kerys-harrop",
+    "name": "Kerys Harrop",
+    "first": "Kerys",
+    "role": "women",
+    "roleLabel": "Spurs Women",
+    "era": "new-stadium",
+    "limited": false,
+    "hero": "1479304555",
+    "gallery": [
+      "1484501475",
+      "1476345803",
+      "1479356271"
+    ],
+    "card": "1249495261",
+    "pos": "Defender · Tottenham Hotspur Women · WSL Hall of Fame",
+    "short": "Defender · WSL Hall of Fame",
+    "honour": "Barclays WSL Hall of Fame 2026",
+    "line": "A WSL original and Hall of Famer who brought top-flight know-how to Spurs' first years in the league. Consistency, leadership and doing the basics brilliantly.",
+    "stats": [
+      [
+        "2019",
+        "Joins Spurs"
+      ],
+      [
+        "WSL",
+        "Original since 2011"
+      ],
+      [
+        "Hall of Fame",
+        "2026"
+      ],
+      [
+        "Defender",
+        "Position"
+      ]
+    ],
+    "bio": [
+      "Kerys Harrop was one of the original players of the Women's Super League, establishing herself as a dependable defender at Birmingham City from the league's first season.",
+      "She joined Tottenham Hotspur in 2019 as the club stepped up to the top flight, bringing experience and organisation to a young squad and becoming a leader in the dressing room during Spurs' first years in the WSL.",
+      "In 2026 she was inducted into the Barclays WSL Hall of Fame in recognition of her contribution to the league. She speaks about consistency, professionalism through a period of rapid change, and leading by example."
+    ],
+    "why": "Best for audiences who value steady leadership: women's networks, team-building days and organisations going through growth.",
+    "timeline": [
+      [
+        "2011",
+        "Plays in the first Women’s Super League season"
+      ],
+      [
+        "2019",
+        "Joins Tottenham Hotspur as the club enters the WSL"
+      ],
+      [
+        "2019–20",
+        "Part of Spurs’ first WSL campaign"
+      ],
+      [
+        "2026",
+        "Inducted into the Barclays WSL Hall of Fame"
+      ]
+    ],
+    "talks": [
+      "Consistency",
+      "Leading by example",
+      "Professionalism through change",
+      "Growth of the women’s game",
+      "Defending as a team"
+    ],
+    "audiences": [
+      "Women's networks",
+      "Team-building days",
+      "Fan & member events",
+      "Partner events"
+    ],
+    "industries": [
+      "Professional services",
+      "Financial services",
+      "Education",
+      "Sportswear"
+    ],
+    "formats": [
+      "keynote",
+      "clinic",
+      "hospitality",
+      "virtual"
+    ],
+    "langs": "English"
+  },
+  {
+    "slug": "micky-van-de-ven",
+    "name": "Micky van de Ven",
+    "first": "Micky",
+    "role": "squad",
+    "roleLabel": "Current squad · Club captain",
+    "era": "new-stadium",
+    "limited": true,
+    "hero": "2295626035",
+    "gallery": [
+      "2294910959",
+      "2296097920",
+      "2299299167"
+    ],
+    "card": "2294917085",
+    "pos": "Centre-back · Spurs since 2023 · Netherlands",
+    "short": "Centre-back · Club captain · Netherlands",
+    "honour": "Club captain, 2026–27",
+    "line": "The club captain with a sprinter's engine. A Dutch centre-back who leads from the front and talks about standards, speed and taking responsibility.",
+    "stats": [
+      [
+        "2023",
+        "Joined from Wolfsburg"
+      ],
+      [
+        "Captain",
+        "Club captain 2026–27"
+      ],
+      [
+        "UEL 2025",
+        "Europa League winner"
+      ],
+      [
+        "Netherlands",
+        "International"
+      ]
+    ],
+    "bio": [
+      "Micky van de Ven arrived from Wolfsburg in 2023 and quickly became one of the most recognisable defenders in the Premier League, known for recovery pace that turns last-ditch moments into routine ones.",
+      "He was part of the side that won the 2025 Europa League final in Bilbao, and in August 2026 he was named club captain at the head of a five-man leadership group."
+    ],
+    "why": "Best for leadership audiences and client events that want the current captain: standards, accountability and leading a dressing room in public.",
+    "timeline": [
+      [
+        "2023",
+        "Joins Tottenham Hotspur from VfL Wolfsburg"
+      ],
+      [
+        "2025",
+        "Wins the Europa League in Bilbao"
+      ],
+      [
+        "2026",
+        "Named club captain for 2026–27"
+      ]
+    ],
+    "talks": [
+      "Leadership & captaincy",
+      "Setting standards",
+      "Speed of decision-making",
+      "Recovering from setbacks",
+      "Representing a club"
+    ],
+    "audiences": [
+      "Leadership teams",
+      "Partner summits",
+      "Matchday hospitality",
+      "Brand campaigns"
+    ],
+    "industries": [
+      "Club partners",
+      "Financial services",
+      "Automotive",
+      "Technology"
+    ],
+    "formats": [
+      "brand",
+      "fan",
+      "hospitality",
+      "keynote"
+    ],
+    "langs": "Dutch, English"
+  },
+  {
+    "slug": "pedro-porro",
+    "name": "Pedro Porro",
+    "first": "Pedro",
+    "role": "squad",
+    "roleLabel": "Current squad · Vice-captain group",
+    "era": "new-stadium",
+    "limited": true,
+    "hero": "2292625282",
+    "gallery": [
+      "2293755117",
+      "2293807089",
+      "2295626146"
+    ],
+    "card": "2292154906",
+    "pos": "Right-back · Spurs since 2023 · Spain",
+    "short": "Right-back · World Cup winner · Spain",
+    "honour": "2026 FIFA World Cup winner",
+    "line": "A world champion in N17. The attacking full-back who came home from the 2026 World Cup with a winners' medal and the energy to match.",
+    "stats": [
+      [
+        "2023",
+        "Joined from Sporting CP"
+      ],
+      [
+        "WC 2026",
+        "World Cup winner"
+      ],
+      [
+        "UEL 2025",
+        "Europa League winner"
+      ],
+      [
+        "Spain",
+        "International"
+      ]
+    ],
+    "bio": [
+      "Pedro Porro joined from Sporting CP in 2023 and made the right flank his own: an attacking full-back who loves to drive forward and deliver from wide.",
+      "He won the Europa League with Spurs in 2025 and the following summer joined the club's short list of World Cup winners as part of Spain's 2026 squad. He is one of the five players in the 2026–27 leadership group."
+    ],
+    "why": "Best for audiences who want a winner's story told with warmth: sales kick-offs, Spanish-speaking teams and partner events.",
+    "timeline": [
+      [
+        "2023",
+        "Joins Tottenham Hotspur from Sporting CP"
+      ],
+      [
+        "2025",
+        "Wins the Europa League with Spurs"
+      ],
+      [
+        "2026",
+        "Wins the FIFA World Cup with Spain"
+      ],
+      [
+        "2026",
+        "Named in the club's leadership group"
+      ]
+    ],
+    "talks": [
+      "Winning mentality",
+      "Club and country",
+      "Attacking with purpose",
+      "Teamwork across cultures",
+      "Big-tournament pressure"
+    ],
+    "audiences": [
+      "Sales kick-offs",
+      "International teams",
+      "Fan & member events",
+      "Brand campaigns"
+    ],
+    "industries": [
+      "Consumer brands",
+      "Sportswear",
+      "Financial services",
+      "Travel"
+    ],
+    "formats": [
+      "brand",
+      "fan",
+      "hospitality"
+    ],
+    "langs": "Spanish, English"
+  },
+  {
+    "slug": "james-maddison",
+    "name": "James Maddison",
+    "first": "James",
+    "role": "squad",
+    "roleLabel": "Current squad · Vice-captain group",
+    "era": "new-stadium",
+    "limited": true,
+    "hero": "2296605311",
+    "gallery": [
+      "2299088878",
+      "2296065416",
+      "2295626410"
+    ],
+    "card": "2295626164",
+    "pos": "Attacking midfielder · Spurs since 2023 · England",
+    "short": "Playmaker · England international",
+    "honour": "England international",
+    "line": "The No. 10 with the personality to match the shirt. Creative, funny and candid about confidence, comebacks and carrying a dressing room.",
+    "stats": [
+      [
+        "2023",
+        "Joined from Leicester City"
+      ],
+      [
+        "No. 10",
+        "Spurs playmaker"
+      ],
+      [
+        "England",
+        "International"
+      ],
+      [
+        "Leader",
+        "2026–27 leadership group"
+      ]
+    ],
+    "bio": [
+      "James Maddison came through Coventry City's academy, made his name at Norwich and Leicester, and joined Spurs in 2023 as the side's creative heartbeat.",
+      "An England international and one of the club's five captains for 2026–27, he is one of the most natural communicators in the squad, on and off the pitch."
+    ],
+    "why": "Best for audiences who want personality: brand content, fan events and teams that need a lift.",
+    "timeline": [
+      [
+        "2023",
+        "Joins Tottenham Hotspur from Leicester City"
+      ],
+      [
+        "2023",
+        "Takes the No. 10 shirt"
+      ],
+      [
+        "2026",
+        "Named in the club's leadership group"
+      ]
+    ],
+    "talks": [
+      "Confidence & creativity",
+      "Coming back stronger",
+      "Leadership by personality",
+      "Handling pressure",
+      "Content & fan culture"
+    ],
+    "audiences": [
+      "Brand campaigns",
+      "Fan & member events",
+      "Sales kick-offs",
+      "Client hospitality"
+    ],
+    "industries": [
+      "Consumer brands",
+      "Gaming & media",
+      "Sportswear",
+      "Hospitality"
+    ],
+    "formats": [
+      "brand",
+      "fan",
+      "hospitality",
+      "virtual"
+    ],
+    "langs": "English"
+  },
+  {
+    "slug": "ben-davies",
+    "name": "Ben Davies",
+    "first": "Ben",
+    "role": "squad",
+    "roleLabel": "Current squad · Vice-captain group",
+    "era": "new-stadium",
+    "limited": true,
+    "hero": "2291706715",
+    "gallery": [
+      "2289799069",
+      "2291645316",
+      "2291624004"
+    ],
+    "card": "2291635310",
+    "pos": "Defender · Spurs since 2014 · Wales",
+    "short": "Defender · Longest-serving player · Wales",
+    "honour": "Wales international; Spurs since 2014",
+    "line": "The squad's longest-serving player. More than a decade in Lilywhite, a Wales stalwart, and the steady voice every dressing room needs.",
+    "stats": [
+      [
+        "2014",
+        "Joined from Swansea City"
+      ],
+      [
+        "Since 2014",
+        "Longest-serving player"
+      ],
+      [
+        "Wales",
+        "International"
+      ],
+      [
+        "Leader",
+        "2026–27 leadership group"
+      ]
+    ],
+    "bio": [
+      "Ben Davies signed from his boyhood club Swansea City in 2014 and has been part of every chapter since, from White Hart Lane to the new stadium, across several head coaches and generations of team-mates.",
+      "A long-serving Wales international, he reached the semi-finals of Euro 2016 with his country. He remains part of the club's leadership group for 2026–27."
+    ],
+    "why": "Best for audiences interested in loyalty, consistency and being the dependable one: long-service awards, leadership programmes and partner events.",
+    "timeline": [
+      [
+        "2014",
+        "Joins Tottenham Hotspur from Swansea City"
+      ],
+      [
+        "2016",
+        "Euro 2016 semi-final with Wales"
+      ],
+      [
+        "2019",
+        "Moves with the club into Tottenham Hotspur Stadium"
+      ],
+      [
+        "2026",
+        "Named in the club's leadership group"
+      ]
+    ],
+    "talks": [
+      "Loyalty & longevity",
+      "Being a team player",
+      "Adapting to change",
+      "Leading quietly",
+      "Club and country"
+    ],
+    "audiences": [
+      "Leadership programmes",
+      "Long-service & awards events",
+      "Community days",
+      "Matchday hospitality"
+    ],
+    "industries": [
+      "Professional services",
+      "Club partners",
+      "Education",
+      "Healthcare"
+    ],
+    "formats": [
+      "hospitality",
+      "fan",
+      "keynote",
+      "brand"
+    ],
+    "langs": "English"
+  },
+  {
+    "slug": "archie-gray",
+    "name": "Archie Gray",
+    "first": "Archie",
+    "role": "squad",
+    "roleLabel": "Current squad · Vice-captain group",
+    "era": "new-stadium",
+    "limited": true,
+    "hero": "2299304438",
+    "gallery": [
+      "2296296709",
+      "2299569469",
+      "2295626150"
+    ],
+    "card": "2299304117",
+    "pos": "Midfielder · Spurs since 2024 · England",
+    "short": "Midfielder · Europa League winner · England U21",
+    "honour": "2025 Europa League winner",
+    "line": "A young leader already. Europa League winner, European Under-21 champion and part of the leadership group before his 21st birthday.",
+    "stats": [
+      [
+        "2024",
+        "Joined from Leeds United"
+      ],
+      [
+        "UEL 2025",
+        "Europa League winner"
+      ],
+      [
+        "U21 Euro 2025",
+        "European champion"
+      ],
+      [
+        "Leader",
+        "2026–27 leadership group"
+      ]
+    ],
+    "bio": [
+      "Archie Gray joined from Leeds United in 2024 and adapted quickly, playing in midfield and across the back line as the team needed.",
+      "He won the Europa League with Spurs and the European Under-21 Championship with England in 2025, was recognised by supporters in the 2025–26 Player of the Season awards, and was named in the club's leadership group for 2026–27."
+    ],
+    "why": "Best for early-careers and graduate audiences: versatility, maturity beyond your years and stepping up early.",
+    "timeline": [
+      [
+        "2024",
+        "Joins Tottenham Hotspur from Leeds United"
+      ],
+      [
+        "2025",
+        "Wins the Europa League with Spurs"
+      ],
+      [
+        "2025",
+        "Wins the European Under-21 Championship with England"
+      ],
+      [
+        "2026",
+        "Named in the club's leadership group"
+      ]
+    ],
+    "talks": [
+      "Stepping up early",
+      "Versatility",
+      "Learning from senior players",
+      "Young leadership",
+      "Family & football"
+    ],
+    "audiences": [
+      "Graduate & early careers",
+      "Schools & academies",
+      "Fan & member events",
+      "Brand campaigns"
+    ],
+    "industries": [
+      "Education",
+      "Professional services",
+      "Sportswear",
+      "Technology"
+    ],
+    "formats": [
+      "fan",
+      "brand",
+      "clinic",
+      "workshop"
+    ],
+    "langs": "English"
+  },
+  {
+    "slug": "dominic-solanke",
+    "name": "Dominic Solanke",
+    "first": "Dom",
+    "role": "squad",
+    "roleLabel": "Current squad",
+    "era": "new-stadium",
+    "limited": true,
+    "hero": "2299198706",
+    "gallery": [
+      "2299554071",
+      "2299553797",
+      "2299731123"
+    ],
+    "card": "2299876042",
+    "pos": "Striker · Spurs since 2024 · England",
+    "short": "Striker · Europa League winner · England",
+    "honour": "2025 Europa League winner",
+    "line": "The centre-forward who leads the line. An England striker with a story about persistence, from academy prodigy to the man who carries the attack.",
+    "stats": [
+      [
+        "2024",
+        "Joined from Bournemouth"
+      ],
+      [
+        "UEL 2025",
+        "Europa League winner"
+      ],
+      [
+        "U20 WC 2017",
+        "World Cup winner"
+      ],
+      [
+        "England",
+        "International"
+      ]
+    ],
+    "bio": [
+      "Dominic Solanke joined from AFC Bournemouth in August 2024 and became the focal point of the attack, a striker who works as hard for the team as he does in the box.",
+      "He started the 2025 Europa League final win in Bilbao. Earlier in his career he won the Under-20 World Cup with England in 2017, and he has represented England at senior level."
+    ],
+    "why": "Best for audiences interested in persistence and patience: teams in a rebuilding phase, sales audiences and youth programmes.",
+    "timeline": [
+      [
+        "2017",
+        "Wins the Under-20 World Cup with England"
+      ],
+      [
+        "2024",
+        "Joins Tottenham Hotspur from AFC Bournemouth"
+      ],
+      [
+        "2025",
+        "Starts the Europa League final win in Bilbao"
+      ]
+    ],
+    "talks": [
+      "Persistence",
+      "Working for the team",
+      "Handling expectation",
+      "Second chances",
+      "Leading the line"
+    ],
+    "audiences": [
+      "Sales kick-offs",
+      "Youth programmes",
+      "Fan & member events",
+      "Brand campaigns"
+    ],
+    "industries": [
+      "Sportswear",
+      "Consumer brands",
+      "Media",
+      "Financial services"
+    ],
+    "formats": [
+      "brand",
+      "fan",
+      "clinic"
+    ],
+    "langs": "English"
+  },
+  {
+    "slug": "richarlison",
+    "name": "Richarlison",
+    "first": "Richarlison",
+    "role": "squad",
+    "roleLabel": "Current squad",
+    "era": "new-stadium",
+    "limited": true,
+    "hero": "2300067352",
+    "gallery": [
+      "2291600578",
+      "2300044923",
+      "2300067695"
+    ],
+    "card": "2291062202",
+    "pos": "Forward · Spurs since 2022 · Brazil",
+    "short": "Forward · Olympic champion · Brazil",
+    "honour": "Olympic gold medallist (Tokyo 2020)",
+    "line": "All heart and plenty of fire. A Brazil forward and Olympic champion who brings energy, emotion and a genuine connection with fans.",
+    "stats": [
+      [
+        "2022",
+        "Joined from Everton"
+      ],
+      [
+        "Tokyo 2020",
+        "Olympic gold"
+      ],
+      [
+        "UEL 2025",
+        "Europa League winner"
+      ],
+      [
+        "Brazil",
+        "International"
+      ]
+    ],
+    "bio": [
+      "Richarlison joined from Everton in 2022, bringing the passion and work rate that have made him a fan favourite wherever he has played.",
+      "He won Olympic gold with Brazil at Tokyo 2020, played at the 2022 World Cup and started the 2025 Europa League final win. Off the pitch he is one of the squad's most natural connectors with supporters."
+    ],
+    "why": "Best for fan-facing and brand work that needs energy: activations, community events and Portuguese-speaking audiences.",
+    "timeline": [
+      [
+        "2021",
+        "Olympic gold with Brazil at Tokyo 2020"
+      ],
+      [
+        "2022",
+        "Joins Tottenham Hotspur from Everton"
+      ],
+      [
+        "2022",
+        "Plays at the World Cup with Brazil"
+      ],
+      [
+        "2025",
+        "Wins the Europa League with Spurs"
+      ]
+    ],
+    "talks": [
+      "Passion & energy",
+      "Representing your country",
+      "Connecting with fans",
+      "Resilience",
+      "Joy in the work"
+    ],
+    "audiences": [
+      "Fan & member events",
+      "Brand campaigns",
+      "Community days",
+      "International teams"
+    ],
+    "industries": [
+      "Consumer brands",
+      "Sportswear",
+      "Gaming & media",
+      "Telecoms"
+    ],
+    "formats": [
+      "brand",
+      "fan",
+      "hospitality"
+    ],
+    "langs": "Portuguese, English"
+  },
+  {
+    "slug": "andy-robertson",
+    "name": "Andy Robertson",
+    "first": "Andy",
+    "role": "squad",
+    "roleLabel": "Current squad",
+    "era": "new-stadium",
+    "limited": true,
+    "hero": "2295479368",
+    "gallery": [
+      "2294528863",
+      "2295471566",
+      "2295544566"
+    ],
+    "card": "2296097732",
+    "pos": "Left-back · Spurs since 2026 · Scotland",
+    "short": "Left-back · Scotland captain",
+    "honour": "Scotland captain",
+    "line": "Scotland's captain, now in Lilywhite. A left-back whose rise from Scottish amateur football to the top of the game is a masterclass in hunger.",
+    "stats": [
+      [
+        "2026",
+        "Joined from Liverpool"
+      ],
+      [
+        "Captain",
+        "Scotland captain"
+      ],
+      [
+        "PL ×2",
+        "Premier League winner"
+      ],
+      [
+        "Scotland",
+        "International"
+      ]
+    ],
+    "bio": [
+      "Andy Robertson joined Spurs in the summer of 2026 after nine years at Liverpool, where he won the Premier League twice and became one of the best-known full-backs in Europe.",
+      "Captain of Scotland, he worked his way up from Queen's Park through Dundee United and Hull City, a route that gives him a rare perspective on rejection, graft and making the most of a chance."
+    ],
+    "why": "Best for audiences who want a hunger-and-graft story: sales teams, career-changers and leadership events.",
+    "timeline": [
+      [
+        "2017",
+        "Joins Liverpool from Hull City"
+      ],
+      [
+        "2018",
+        "Named Scotland captain"
+      ],
+      [
+        "2026",
+        "Joins Tottenham Hotspur from Liverpool"
+      ]
+    ],
+    "talks": [
+      "Hunger & graft",
+      "Overcoming rejection",
+      "Captaincy",
+      "Consistency at the top",
+      "Making the most of a chance"
+    ],
+    "audiences": [
+      "Sales kick-offs",
+      "Leadership conferences",
+      "Client hospitality",
+      "Scottish audiences"
+    ],
+    "industries": [
+      "Financial services",
+      "Professional services",
+      "Retail",
+      "Hospitality"
+    ],
+    "formats": [
+      "keynote",
+      "hospitality",
+      "brand"
+    ],
+    "langs": "English"
+  },
+  {
+    "slug": "xavi-simons",
+    "name": "Xavi Simons",
+    "first": "Xavi",
+    "role": "squad",
+    "roleLabel": "Current squad",
+    "era": "new-stadium",
+    "limited": true,
+    "hero": "2271961716",
+    "gallery": [
+      "2271940180",
+      "2272036672",
+      "2271942853"
+    ],
+    "card": "2271942850",
+    "pos": "Attacking midfielder · Spurs since 2025 · Netherlands",
+    "short": "Playmaker · Netherlands international",
+    "honour": "Netherlands international",
+    "line": "A playmaker raised in two of football's great academies. Flair, fearlessness and a global following.",
+    "stats": [
+      [
+        "2025",
+        "Joined from RB Leipzig"
+      ],
+      [
+        "No. 7",
+        "Spurs playmaker"
+      ],
+      [
+        "Euro 2024",
+        "Semi-finalist"
+      ],
+      [
+        "Netherlands",
+        "International"
+      ]
+    ],
+    "bio": [
+      "Xavi Simons developed at Barcelona's La Masia and Paris Saint-Germain before starring in Eindhoven and Leipzig, then joined Spurs in August 2025.",
+      "A Netherlands international who reached the semi-finals of Euro 2024, he is one of the most creative players in the squad, with a big social following and a natural feel for content."
+    ],
+    "why": "Best for brand and content work aimed at younger, international audiences.",
+    "timeline": [
+      [
+        "2023",
+        "Breakthrough season at PSV Eindhoven"
+      ],
+      [
+        "2024",
+        "Euro 2024 semi-final with the Netherlands"
+      ],
+      [
+        "2025",
+        "Joins Tottenham Hotspur from RB Leipzig"
+      ]
+    ],
+    "talks": [
+      "Creativity",
+      "Growing up in elite academies",
+      "Fearlessness",
+      "Moving countries",
+      "Building a personal brand"
+    ],
+    "audiences": [
+      "Brand campaigns",
+      "Youth & student audiences",
+      "Fan & member events",
+      "International teams"
+    ],
+    "industries": [
+      "Sportswear",
+      "Fashion & lifestyle",
+      "Gaming & media",
+      "Technology"
+    ],
+    "formats": [
+      "brand",
+      "fan",
+      "virtual"
+    ],
+    "langs": "Dutch, Spanish, English"
+  },
+  {
+    "slug": "mohammed-kudus",
+    "name": "Mohammed Kudus",
+    "first": "Mohammed",
+    "role": "squad",
+    "roleLabel": "Current squad",
+    "era": "new-stadium",
+    "limited": true,
+    "hero": "2296603637",
+    "gallery": [
+      "2295545034",
+      "2299001346",
+      "2299876008"
+    ],
+    "card": "2299304129",
+    "pos": "Forward · Spurs since 2025 · Ghana",
+    "short": "Forward · Ghana international",
+    "honour": "Ghana international",
+    "line": "Close control, big moments and a huge following across Africa. A Ghana international who plays with joy.",
+    "stats": [
+      [
+        "2025",
+        "Joined from West Ham"
+      ],
+      [
+        "Forward",
+        "Position"
+      ],
+      [
+        "Ghana",
+        "International"
+      ],
+      [
+        "Ajax",
+        "Former club"
+      ]
+    ],
+    "bio": [
+      "Mohammed Kudus joined from West Ham United in July 2025, bringing dribbling, power and an eye for the spectacular to the attack.",
+      "A Ghana international who previously played for Ajax, he is one of the most popular African players in the Premier League, with strong appeal for partners targeting audiences in West Africa and the diaspora."
+    ],
+    "why": "Best for brand campaigns and fan activations with an international or African audience.",
+    "timeline": [
+      [
+        "2020",
+        "Moves to Ajax"
+      ],
+      [
+        "2023",
+        "Joins West Ham United"
+      ],
+      [
+        "2025",
+        "Joins Tottenham Hotspur from West Ham United"
+      ]
+    ],
+    "talks": [
+      "Self-expression",
+      "Moving countries",
+      "Representing Ghana",
+      "Confidence on the ball",
+      "Community"
+    ],
+    "audiences": [
+      "Brand campaigns",
+      "Fan & member events",
+      "International teams",
+      "Community days"
+    ],
+    "industries": [
+      "Consumer brands",
+      "Telecoms",
+      "Sportswear",
+      "Financial services"
+    ],
+    "formats": [
+      "brand",
+      "fan"
+    ],
+    "langs": "English"
+  },
+  {
+    "slug": "destiny-udogie",
+    "name": "Destiny Udogie",
+    "first": "Destiny",
+    "role": "squad",
+    "roleLabel": "Current squad",
+    "era": "new-stadium",
+    "limited": true,
+    "hero": "2295544785",
+    "gallery": [
+      "2293158510",
+      "2293205135",
+      "2299198366"
+    ],
+    "card": "2293204694",
+    "pos": "Left-back · Spurs since 2023 · Italy",
+    "short": "Left-back · Europa League winner · Italy",
+    "honour": "2025 Europa League winner",
+    "line": "Power, pace and a big smile. The Italy full-back who bombs forward and brings warmth to any room.",
+    "stats": [
+      [
+        "2022",
+        "Signed from Udinese"
+      ],
+      [
+        "2023",
+        "First Spurs season"
+      ],
+      [
+        "UEL 2025",
+        "Europa League winner"
+      ],
+      [
+        "Italy",
+        "International"
+      ]
+    ],
+    "bio": [
+      "Destiny Udogie signed from Udinese in 2022, spent a season back in Italy on loan and arrived in north London for 2023–24, quickly becoming a fixture at left-back.",
+      "An Italy international, he started the 2025 Europa League final win in Bilbao."
+    ],
+    "why": "Best for brand and fan work with a younger audience, and Italian-speaking partners.",
+    "timeline": [
+      [
+        "2022",
+        "Signs for Tottenham Hotspur from Udinese"
+      ],
+      [
+        "2023",
+        "First season in Lilywhite"
+      ],
+      [
+        "2025",
+        "Starts the Europa League final win"
+      ]
+    ],
+    "talks": [
+      "Energy & enthusiasm",
+      "Patience before a breakthrough",
+      "Moving countries",
+      "Team spirit",
+      "Pace & power"
+    ],
+    "audiences": [
+      "Fan & member events",
+      "Brand campaigns",
+      "Youth programmes",
+      "International teams"
+    ],
+    "industries": [
+      "Sportswear",
+      "Consumer brands",
+      "Fashion & lifestyle",
+      "Gaming & media"
+    ],
+    "formats": [
+      "brand",
+      "fan"
+    ],
+    "langs": "Italian, English"
+  },
+  {
+    "slug": "lucas-bergvall",
+    "name": "Lucas Bergvall",
+    "first": "Lucas",
+    "role": "squad",
+    "roleLabel": "Current squad",
+    "era": "new-stadium",
+    "limited": true,
+    "hero": "2291640928",
+    "gallery": [
+      "2292472862",
+      "2295626201",
+      "2299304297"
+    ],
+    "card": "2291679107",
+    "pos": "Midfielder · Spurs since 2024 · Sweden",
+    "short": "Midfielder · Sweden international",
+    "honour": "Sweden international",
+    "line": "A Swedish midfielder who arrived as a teenager and grew up in the Premier League spotlight.",
+    "stats": [
+      [
+        "2024",
+        "Joined from Djurgården"
+      ],
+      [
+        "Midfield",
+        "Position"
+      ],
+      [
+        "Sweden",
+        "International"
+      ],
+      [
+        "Teenage signing",
+        "Arrived aged 18"
+      ]
+    ],
+    "bio": [
+      "Lucas Bergvall joined from Djurgården in 2024 and made an immediate impression in his first season, earning a regular place in midfield while still a teenager.",
+      "A Sweden international, he brings composure on the ball and a calm, thoughtful voice that suits early-careers and youth audiences."
+    ],
+    "why": "Best for graduate, early-careers and youth audiences, and Scandinavian partners.",
+    "timeline": [
+      [
+        "2024",
+        "Joins Tottenham Hotspur from Djurgården"
+      ],
+      [
+        "2024",
+        "Premier League debut season"
+      ],
+      [
+        "2025",
+        "Established in the Spurs midfield"
+      ]
+    ],
+    "talks": [
+      "Learning fast",
+      "Moving abroad young",
+      "Composure",
+      "Earning your place",
+      "Growth mindset"
+    ],
+    "audiences": [
+      "Graduate & early careers",
+      "Schools & academies",
+      "Fan & member events",
+      "Nordic partners"
+    ],
+    "industries": [
+      "Technology",
+      "Education",
+      "Sportswear",
+      "Consumer brands"
+    ],
+    "formats": [
+      "fan",
+      "brand",
+      "clinic"
+    ],
+    "langs": "Swedish, English"
+  },
+  {
+    "slug": "rodrigo-bentancur",
+    "name": "Rodrigo Bentancur",
+    "first": "Rodrigo",
+    "role": "squad",
+    "roleLabel": "Current squad",
+    "era": "new-stadium",
+    "limited": true,
+    "hero": "2294945650",
+    "gallery": [
+      "2294528425",
+      "2296097776",
+      "2295446327"
+    ],
+    "card": "2294511726",
+    "pos": "Midfielder · Spurs since 2022 · Uruguay",
+    "short": "Midfielder · Europa League winner · Uruguay",
+    "honour": "2025 Europa League winner",
+    "line": "The experienced midfielder who keeps the team ticking. Boca-raised, Juventus-schooled, Uruguay through and through.",
+    "stats": [
+      [
+        "2022",
+        "Joined from Juventus"
+      ],
+      [
+        "UEL 2025",
+        "Europa League winner"
+      ],
+      [
+        "Uruguay",
+        "International"
+      ],
+      [
+        "Boca Juniors",
+        "Where it began"
+      ]
+    ],
+    "bio": [
+      "Rodrigo Bentancur came through at Boca Juniors, spent five seasons at Juventus and joined Spurs in January 2022.",
+      "A Uruguay international and a calm presence in midfield, he started the 2025 Europa League final win."
+    ],
+    "why": "Best for Spanish-speaking audiences and partner events interested in experience, game management and teamwork.",
+    "timeline": [
+      [
+        "2017",
+        "Joins Juventus from Boca Juniors"
+      ],
+      [
+        "2022",
+        "Joins Tottenham Hotspur from Juventus"
+      ],
+      [
+        "2025",
+        "Starts the Europa League final win"
+      ]
+    ],
+    "talks": [
+      "Experience",
+      "Game management",
+      "Teamwork",
+      "Playing in different leagues",
+      "Calm under pressure"
+    ],
+    "audiences": [
+      "Client hospitality",
+      "Spanish-speaking teams",
+      "Fan & member events",
+      "Partner events"
+    ],
+    "industries": [
+      "Financial services",
+      "Hospitality",
+      "Consumer brands",
+      "Travel"
+    ],
+    "formats": [
+      "hospitality",
+      "fan",
+      "brand"
+    ],
+    "langs": "Spanish, Italian"
+  },
+  {
+    "slug": "conor-gallagher",
+    "name": "Conor Gallagher",
+    "first": "Conor",
+    "role": "squad",
+    "roleLabel": "Current squad",
+    "era": "new-stadium",
+    "limited": true,
+    "hero": "2293877624",
+    "gallery": [
+      "2295435897",
+      "2295461613",
+      "2299198593"
+    ],
+    "card": "2296120044",
+    "pos": "Midfielder · Spurs since 2026 · England",
+    "short": "Midfielder · England international",
+    "honour": "England international",
+    "line": "Relentless in midfield. An England international from just down the road who brings energy and work rate to every minute.",
+    "stats": [
+      [
+        "2026",
+        "Joined from Atlético Madrid"
+      ],
+      [
+        "Midfield",
+        "Position"
+      ],
+      [
+        "England",
+        "International"
+      ],
+      [
+        "Euro 2024",
+        "England squad"
+      ]
+    ],
+    "bio": [
+      "Conor Gallagher came through Chelsea's academy, made his name on loan around the Football League and in the Premier League, and spent time with Atlético Madrid before joining Spurs in January 2026.",
+      "An England international who was part of the Euro 2024 squad, he is known for a high-energy, all-action style that makes him an easy fit for audiences who value effort."
+    ],
+    "why": "Best for audiences who value work rate: sales teams, kick-offs and grassroots or community programmes.",
+    "timeline": [
+      [
+        "2024",
+        "Part of England's Euro 2024 squad"
+      ],
+      [
+        "2024",
+        "Joins Atlético Madrid"
+      ],
+      [
+        "2026",
+        "Joins Tottenham Hotspur from Atlético Madrid"
+      ]
+    ],
+    "talks": [
+      "Work rate",
+      "Proving yourself on loan",
+      "Playing abroad",
+      "Energy",
+      "Team-first mentality"
+    ],
+    "audiences": [
+      "Sales kick-offs",
+      "Community days",
+      "Fan & member events",
+      "Brand campaigns"
+    ],
+    "industries": [
+      "Retail",
+      "Financial services",
+      "Sportswear",
+      "Construction & property"
+    ],
+    "formats": [
+      "brand",
+      "fan",
+      "hospitality"
+    ],
+    "langs": "English"
+  },
+  {
+    "slug": "sandro-tonali",
+    "name": "Sandro Tonali",
+    "first": "Sandro",
+    "role": "squad",
+    "roleLabel": "Current squad",
+    "era": "new-stadium",
+    "limited": true,
+    "hero": "2296602677",
+    "gallery": [
+      "2299088666",
+      "2299088855",
+      "2295626043"
+    ],
+    "card": "2295626327",
+    "pos": "Midfielder · Spurs since 2026 · Italy",
+    "short": "Midfielder · Italy international",
+    "honour": "Serie A winner with AC Milan",
+    "line": "The Italy midfielder with the quarterback's range of passing. A 2026 signing with a title already on his CV.",
+    "stats": [
+      [
+        "2026",
+        "Joined from Newcastle"
+      ],
+      [
+        "Serie A",
+        "Winner with AC Milan"
+      ],
+      [
+        "Italy",
+        "International"
+      ],
+      [
+        "Midfield",
+        "Position"
+      ]
+    ],
+    "bio": [
+      "Sandro Tonali came through at Brescia, won Serie A with AC Milan and moved to Newcastle United before joining Spurs in July 2026.",
+      "An Italy international, he controls games from deep with range of passing and tireless running."
+    ],
+    "why": "Best for Italian-speaking partners and hospitality audiences interested in craft and preparation.",
+    "timeline": [
+      [
+        "2020",
+        "Joins AC Milan from Brescia"
+      ],
+      [
+        "2022",
+        "Wins Serie A with AC Milan"
+      ],
+      [
+        "2023",
+        "Joins Newcastle United"
+      ],
+      [
+        "2026",
+        "Joins Tottenham Hotspur"
+      ]
+    ],
+    "talks": [
+      "Craft & preparation",
+      "Playing in different leagues",
+      "Composure",
+      "Leadership in midfield",
+      "Italian football culture"
+    ],
+    "audiences": [
+      "Client hospitality",
+      "Italian-speaking teams",
+      "Partner events",
+      "Fan & member events"
+    ],
+    "industries": [
+      "Automotive",
+      "Fashion & lifestyle",
+      "Hospitality",
+      "Financial services"
+    ],
+    "formats": [
+      "hospitality",
+      "brand",
+      "fan"
+    ],
+    "langs": "Italian, English"
+  },
+  {
+    "slug": "mathys-tel",
+    "name": "Mathys Tel",
+    "first": "Mathys",
+    "role": "squad",
+    "roleLabel": "Current squad",
+    "era": "new-stadium",
+    "limited": true,
+    "hero": "2294511764",
+    "gallery": [
+      "2293205006",
+      "2294514745",
+      "2299001040"
+    ],
+    "card": "2293255154",
+    "pos": "Forward · Spurs since 2025 · France",
+    "short": "Forward · France youth international",
+    "honour": "France youth international",
+    "line": "A young French forward with speed, skill and a big future. Rennes academy, Bayern Munich, now N17.",
+    "stats": [
+      [
+        "2025",
+        "Joined from Bayern Munich"
+      ],
+      [
+        "Forward",
+        "Position"
+      ],
+      [
+        "France",
+        "Youth international"
+      ],
+      [
+        "Rennes",
+        "Academy"
+      ]
+    ],
+    "bio": [
+      "Mathys Tel came through the Rennes academy, moved to Bayern Munich as a teenager and joined Spurs on loan in February 2025 before the move became permanent that summer.",
+      "Quick and direct, he is one of the younger forwards in the squad and a natural fit for youth and grassroots audiences."
+    ],
+    "why": "Best for youth, schools and grassroots audiences, and French-speaking partners.",
+    "timeline": [
+      [
+        "2022",
+        "Joins Bayern Munich from Rennes"
+      ],
+      [
+        "2025",
+        "Joins Tottenham Hotspur on loan"
+      ],
+      [
+        "2025",
+        "Move made permanent"
+      ]
+    ],
+    "talks": [
+      "Moving abroad young",
+      "Learning from world-class team-mates",
+      "Speed & confidence",
+      "Growth mindset",
+      "Patience"
+    ],
+    "audiences": [
+      "Schools & academies",
+      "Fan & member events",
+      "Youth programmes",
+      "Brand campaigns"
+    ],
+    "industries": [
+      "Sportswear",
+      "Gaming & media",
+      "Education",
+      "Consumer brands"
+    ],
+    "formats": [
+      "fan",
+      "clinic",
+      "brand"
+    ],
+    "langs": "French, English"
+  },
+  {
+    "slug": "drew-spence",
+    "name": "Drew Spence",
+    "first": "Drew",
+    "role": "squad",
+    "roleLabel": "Spurs Women · Captain",
+    "era": "new-stadium",
+    "limited": true,
+    "hero": "2295100345",
+    "gallery": [
+      "2297048984",
+      "2297402696",
+      "2297421133"
+    ],
+    "card": "2293457145",
+    "pos": "Midfielder · Spurs since 2022 · Jamaica",
+    "short": "Midfielder · Spurs Women captain · Jamaica",
+    "honour": "Spurs Women captain, 2026–27",
+    "line": "The captain at the heart of Spurs Women. Experience, calm and a career that spans the whole modern history of the WSL.",
+    "stats": [
+      [
+        "2022",
+        "Joined from Chelsea"
+      ],
+      [
+        "Captain",
+        "2026–27"
+      ],
+      [
+        "Jamaica",
+        "International"
+      ],
+      [
+        "Midfield",
+        "Position"
+      ]
+    ],
+    "bio": [
+      "Drew Spence spent well over a decade at Chelsea before joining Spurs in 2022, bringing experience from the earliest days of the Women's Super League.",
+      "A Jamaica international who helped her country qualify for the 2023 Women's World Cup, she was named Spurs Women captain for 2026–27."
+    ],
+    "why": "Best for women's sport, inclusion and leadership audiences, and partner events celebrating the growth of the women's game.",
+    "timeline": [
+      [
+        "2022",
+        "Joins Tottenham Hotspur from Chelsea"
+      ],
+      [
+        "2023",
+        "Women's World Cup qualification with Jamaica"
+      ],
+      [
+        "2026",
+        "Named Spurs Women captain"
+      ]
+    ],
+    "talks": [
+      "Leadership & captaincy",
+      "Growth of the women's game",
+      "Longevity",
+      "Representing your heritage",
+      "Mentoring younger players"
+    ],
+    "audiences": [
+      "International Women's Day",
+      "Leadership programmes",
+      "Inclusion networks",
+      "Fan & member events"
+    ],
+    "industries": [
+      "Financial services",
+      "Professional services",
+      "Club partners",
+      "Consumer brands"
+    ],
+    "formats": [
+      "keynote",
+      "fan",
+      "brand",
+      "hospitality"
+    ],
+    "langs": "English"
+  },
+  {
+    "slug": "eveliina-summanen",
+    "name": "Eveliina Summanen",
+    "first": "Eveliina",
+    "role": "squad",
+    "roleLabel": "Spurs Women · Current squad",
+    "era": "new-stadium",
+    "limited": true,
+    "hero": "2270058134",
+    "gallery": [
+      "2270058122",
+      "2270058976",
+      "2297049296"
+    ],
+    "card": "2297048944",
+    "pos": "Midfielder · Spurs since 2022 · Finland",
+    "short": "Midfielder · Finland international",
+    "honour": "Spurs Women's all-time WSL assist leader",
+    "line": "The creator-in-chief. A Finland international who has set up more WSL goals than anyone in Spurs Women's history.",
+    "stats": [
+      [
+        "2022",
+        "Joined in January"
+      ],
+      [
+        "No. 1",
+        "All-time WSL assists for Spurs"
+      ],
+      [
+        "Finland",
+        "International"
+      ],
+      [
+        "Midfield",
+        "Position"
+      ]
+    ],
+    "bio": [
+      "Eveliina Summanen joined Spurs in January 2022 and has become one of the most important players in the club's Women's Super League story.",
+      "A Finland international, she has provided more WSL assists than any other Spurs player, a record built on vision, set-piece delivery and consistency."
+    ],
+    "why": "Best for audiences interested in teamwork and making others better: collaboration workshops, Nordic partners and women's sport events.",
+    "timeline": [
+      [
+        "2022",
+        "Joins Tottenham Hotspur Women"
+      ],
+      [
+        "2025–26",
+        "Part of Spurs Women's best WSL campaign to date"
+      ],
+      [
+        "Today",
+        "Spurs Women's all-time WSL assist provider"
+      ]
+    ],
+    "talks": [
+      "Making others better",
+      "Vision & creativity",
+      "Consistency",
+      "Moving countries",
+      "Women's football"
+    ],
+    "audiences": [
+      "Women's sport events",
+      "Collaboration workshops",
+      "Fan & member events",
+      "Nordic partners"
+    ],
+    "industries": [
+      "Technology",
+      "Professional services",
+      "Consumer brands",
+      "Club partners"
+    ],
+    "formats": [
+      "fan",
+      "brand",
+      "workshop"
+    ],
+    "langs": "Finnish, Swedish"
+  },
+  {
+    "slug": "jessica-naz",
+    "name": "Jessica Naz",
+    "first": "Jess",
+    "role": "squad",
+    "roleLabel": "Spurs Women · Academy graduate",
+    "era": "new-stadium",
+    "limited": true,
+    "hero": "2250110112",
+    "gallery": [
+      "2250107071",
+      "2250511432",
+      "2250516219"
+    ],
+    "card": "2247677479",
+    "pos": "Forward · Spurs since childhood · England",
+    "short": "Forward · Academy graduate · Spurs centurion",
+    "honour": "Spurs centurion; Made in N17",
+    "line": "One of our own. Joined the club at 12, grew up with the women's team and wrote herself into its history as a centurion.",
+    "stats": [
+      [
+        "Age 12",
+        "Joined the club"
+      ],
+      [
+        "Academy",
+        "Made in N17"
+      ],
+      [
+        "Centurion",
+        "100 Spurs appearances"
+      ],
+      [
+        "Forward",
+        "Position"
+      ]
+    ],
+    "bio": [
+      "Jessica Naz joined Spurs as a 12-year-old and has been part of the women's team through its rise into the Women's Super League.",
+      "In April 2024 she became a Spurs centurion. Her path from academy to first team makes her a natural fit for grassroots, schools and community audiences."
+    ],
+    "why": "Best for grassroots, schools and community audiences, and partners investing in girls' football.",
+    "timeline": [
+      [
+        "Childhood",
+        "Joins the Spurs academy aged 12"
+      ],
+      [
+        "First team",
+        "Breaks into the women's first team"
+      ],
+      [
+        "2024",
+        "Becomes a Spurs centurion"
+      ]
+    ],
+    "talks": [
+      "Academy to first team",
+      "Growth of the women's game",
+      "Loyalty",
+      "Community",
+      "Belief"
+    ],
+    "audiences": [
+      "Schools & academies",
+      "Community days",
+      "Girls' football programmes",
+      "Fan & member events"
+    ],
+    "industries": [
+      "Education",
+      "Club partners",
+      "Consumer brands",
+      "Public sector"
+    ],
+    "formats": [
+      "fan",
+      "clinic",
+      "brand"
+    ],
+    "langs": "English"
+  }
+]
