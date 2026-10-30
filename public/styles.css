@@ -42,7 +42,7 @@
 }
 /* ==========================================================================================================
    Partner site ("matchday programme"): navy ink on Lilywhite paper, the club's display face, square corners,
-   and PepTalk gold for the one action that matters (Check availability). Theme variables per site come from
+   and the brand yellow for the one action that matters (Check availability). Theme variables per site come from
    /<slug>/site.css (lib/render/theme.ts): --brand, --ink, --dark, --bar, --display, --btn-radius, --card-radius.
    ========================================================================================================== */
 :root {
@@ -56,8 +56,9 @@
   --line: #e2e5ee;
   --field: #c5cadb;
   --tint: #f3f4f8;
-  --cta: #ffb93f;
-  --cta-hover: #f5a623;
+  --cta: #ffe100;
+  --cta-hover: #f2d600;
+  --signal: #50fa82;
   --on-navy: #c9cdea;
   --on-navy-soft: #aeb3cc;
   --navy-line: #2a3366;
@@ -128,8 +129,17 @@ textarea {
   left: 8px;
 }
 :focus-visible {
-  outline: 3px solid var(--cta);
+  outline: 3px solid var(--ink);
   outline-offset: 2px;
+}
+/* On navy surfaces the yellow reads; on white, navy does. */
+.util :focus-visible,
+.band :focus-visible,
+.c-hero :focus-visible,
+.p-hero :focus-visible,
+.help-tile :focus-visible,
+footer :focus-visible {
+  outline-color: var(--cta);
 }
 .concept {
   background: #fff6d6;
@@ -767,7 +777,7 @@ div.demo {
 }
 .rolelist a {
   display: grid;
-  grid-template-columns: 96px minmax(0, 1fr) 110px 44px;
+  grid-template-columns: 96px minmax(0, 1fr) 44px;
   gap: 28px;
   align-items: center;
   padding: 22px 0;
@@ -1514,7 +1524,7 @@ h2.count {
 }
 .p-hero .avail i,
 .side-head .avail i {
-  background: #3ccb7f;
+  background: var(--signal);
 }
 .kstats {
   display: grid;
@@ -2020,7 +2030,7 @@ dl.kstats div:first-child {
   color: #fff;
 }
 .seg input:focus-visible + span {
-  outline: 3px solid var(--cta);
+  outline: 3px solid var(--ink);
   outline-offset: 2px;
 }
 .enquiry-state {
@@ -2478,6 +2488,315 @@ dl.kstats div:first-child {
   }
   .btn,
   .rolelist .arrow {
+    transition: none;
+  }
+}
+
+/* ---- Design review round 1 (Paper comments) ---------------------------------------------------------------- */
+
+/* Hero headline: the last word cycles (site.json heroWords). The static first word keeps the line's width and is
+   what crawlers and screen readers get; the moving copies are aria-hidden. Timed for four words, 2.5s each. */
+.rot {
+  display: inline-grid;
+  vertical-align: bottom;
+}
+/* The yellow underline sits under each word, not the whole slot. */
+.rot-cycle span,
+.rot-word {
+  justify-self: start;
+  background: linear-gradient(var(--cta), var(--cta)) left 100% / 100% 0.14em no-repeat;
+  padding-bottom: 0.04em;
+}
+.rot-word {
+  background: none;
+}
+.rot > * {
+  grid-area: 1 / 1;
+}
+.rot-word {
+  color: transparent;
+}
+.rot-cycle {
+  display: inline-grid;
+}
+/* Every word in one grid cell: the slot is as wide as the longest word, so none is ever clipped. */
+.rot-cycle span {
+  grid-area: 1 / 1;
+  opacity: 0;
+  animation: rot-word 10s infinite both;
+}
+.rot-cycle span:nth-child(2) {
+  animation-delay: 2.5s;
+}
+.rot-cycle span:nth-child(3) {
+  animation-delay: 5s;
+}
+.rot-cycle span:nth-child(4) {
+  animation-delay: 7.5s;
+}
+@keyframes rot-word {
+  0% {
+    opacity: 0;
+    transform: translateY(0.3em);
+  }
+  3%,
+  22% {
+    opacity: 1;
+    transform: none;
+  }
+  25%,
+  100% {
+    opacity: 0;
+    transform: translateY(-0.3em);
+  }
+}
+
+/* Hero carousel: slides stacked over the first photo; lib/behaviour.ts shows one at a time. */
+.hero-media > .slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+.hero-media > .slide.on {
+  opacity: 1;
+}
+.carousel-ctl {
+  position: absolute;
+  right: 24px;
+  bottom: 48px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: #fff;
+  padding: 10px 10px 10px 16px;
+}
+.carousel-ctl[hidden] {
+  display: none;
+}
+.carousel-ctl .dots {
+  display: flex;
+  gap: 6px;
+}
+.carousel-ctl .dots i {
+  width: 8px;
+  height: 4px;
+  background: var(--on-navy);
+  transition: width 0.3s;
+}
+.carousel-ctl .dots i.on {
+  width: 22px;
+  background: var(--ink);
+}
+.carousel-ctl .num {
+  font: 600 13px / 1 var(--body);
+  font-variant-numeric: tabular-nums;
+}
+.carousel-ctl button {
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--line);
+  background: #fff;
+  font: 700 20px / 1 var(--body);
+  cursor: pointer;
+}
+.carousel-ctl .next {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: #fff;
+}
+
+/* Person cards: formats over a full-width profile button */
+.card .ft {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 14px;
+  padding: 16px 20px 20px;
+}
+.card .card-cta {
+  justify-content: space-between;
+  padding: 11px 16px;
+  font-size: 15px;
+}
+
+/* Ways to book: the closing "Not sure which?" tile */
+.way.way-help {
+  background: #fff;
+  border-top: 3px solid var(--signal);
+  padding: 28px;
+}
+
+/* How booking works, with the enquiry form beside the steps (home) */
+.how.with-form .wrap {
+  display: grid;
+  grid-template-columns: minmax(0, 520px) minmax(0, 1fr);
+  gap: 96px;
+  align-items: start;
+}
+.how-steps .disp {
+  font-size: 52px;
+  line-height: 1.04;
+  margin: 14px 0 40px;
+}
+.how.with-form .steps {
+  grid-template-columns: 1fr;
+  border-top: 0;
+}
+.how.with-form .steps li {
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr);
+  column-gap: 24px;
+  row-gap: 6px;
+  padding: 24px 0;
+  border-top: 1px solid var(--navy-line);
+}
+.how.with-form .steps .n {
+  font-size: 32px;
+  grid-row: span 2;
+}
+.enquiry-card {
+  background: #fff;
+  color: var(--ink);
+  padding: 40px;
+}
+.band .enquiry-card .disp {
+  color: var(--ink);
+  font-size: 28px;
+  letter-spacing: -0.015em;
+}
+.enquiry-card > p {
+  margin: 8px 0 22px;
+  color: var(--muted);
+  font-size: 16px;
+  line-height: 1.5;
+}
+.enquiry-card .enquiry {
+  padding: 0;
+  border: 0;
+}
+.enquiry label small {
+  font-weight: 400;
+  color: var(--muted);
+}
+
+/* Event spaces: the "already have a venue?" line */
+.es-venue {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+  width: 100%;
+  margin-top: 8px;
+  padding-top: 22px;
+  border-top: 1px solid #d3d7e3;
+}
+.es-venue b {
+  display: block;
+  font: 700 17px / 1.3 var(--body);
+}
+.es-venue span {
+  display: block;
+  margin-top: 4px;
+  font-size: 15px;
+  line-height: 1.45;
+  color: var(--muted);
+}
+.es-venue .more {
+  flex-shrink: 0;
+  font-size: 15px;
+}
+
+/* Footer contact details */
+.fcontact {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 18px;
+  font-style: normal;
+}
+.fcontact a {
+  font: 600 15px / 1.3 var(--body);
+}
+.fcontact a:hover {
+  text-decoration: underline;
+}
+.fc-hours {
+  font-size: 14px;
+  color: var(--muted);
+}
+
+/* Roster: role dropdown first, no visible counts */
+.role-select select {
+  border-color: var(--ink);
+  font-weight: 600;
+}
+.roster .grid {
+  margin-top: 32px;
+}
+.roster-help {
+  margin-top: 40px;
+  text-align: center;
+  font-size: 16px;
+  color: var(--muted);
+}
+.roster-help a {
+  color: var(--ink);
+  font-weight: 700;
+  border-bottom: 2px solid var(--ink);
+}
+
+/* About: the speakers introduction beside a photo */
+.about-intro .split {
+  align-items: center;
+}
+.about-intro .disp {
+  font-size: 48px;
+  line-height: 1.04;
+  margin: 14px 0 22px;
+}
+.about-intro .lead {
+  margin-bottom: 24px;
+}
+.about-intro .photo {
+  min-height: 520px;
+}
+
+@media (max-width: 980px) {
+  .how.with-form .wrap {
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+  .how-steps .disp,
+  .about-intro .disp {
+    font-size: 40px;
+  }
+  .enquiry-card {
+    padding: 28px 20px;
+  }
+  .about-intro .photo {
+    min-height: 360px;
+  }
+}
+@media (max-width: 760px) {
+  .es-venue {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .carousel-ctl {
+    right: 12px;
+    bottom: 12px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rot-cycle {
+    display: none;
+  }
+  .rot-word {
+    color: inherit;
+    background: linear-gradient(var(--cta), var(--cta)) left 100% / 100% 0.14em no-repeat;
+  }
+  .hero-media > .slide {
     transition: none;
   }
 }

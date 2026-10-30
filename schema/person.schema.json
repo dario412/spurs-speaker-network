@@ -7,6 +7,8 @@
     "FormatKey": {
       "enum": [
         "keynote",
+        "dinner",
+        "appearance",
         "hospitality",
         "brand",
         "clinic",
@@ -14,7 +16,7 @@
         "workshop",
         "virtual"
       ],
-      "description": "One of the seven booking formats (src/copy/defaults.mjs)."
+      "description": "One of the booking formats (src/copy/defaults.mjs)."
     },
     "ImageId": {
       "anyOf": [

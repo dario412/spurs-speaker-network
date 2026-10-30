@@ -10,7 +10,11 @@ const example = (name: string) => JSON.parse(readFileSync(new URL(`../../../sche
 const good = createMemoryProvider({
   registry: example('registry.json'),
   sites: [example('site-populated.json'), example('site-shell.json')],
-  legal: { terms: example('legal-terms.json'), privacy: example('legal-privacy.json') },
+  legal: {
+    terms: example('legal-terms.json'),
+    privacy: example('legal-privacy.json'),
+    accessibility: example('legal-accessibility.json'),
+  },
 });
 
 let calls = 0;

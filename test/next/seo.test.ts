@@ -4,9 +4,9 @@
 // people, switched-off pages).
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { legendChoice, rosterState, rosterUrl } from '../../lib/behaviour.ts';
+import { legendChoice, nextSlide, rosterState, rosterUrl } from '../../lib/behaviour.ts';
 import { createJsonProvider } from '../../lib/content/json-provider.ts';
-import type { Site } from '../../lib/content/types.ts';
+import type { FormatKey, Site } from '../../lib/content/types.ts';
 import { personAlt, slotAlt } from '../../lib/render/alt.ts';
 import { siteContext } from '../../lib/render/context.ts';
 import { sitePaths } from '../../lib/render/routes.ts';
@@ -130,7 +130,7 @@ test('sitemaps list only built, published, indexable pages', () => {
   );
   assert.deepEqual(
     hubSitemapEntries(true, true, '/all').map(entry => entry.path),
-    ['/all', '/terms', '/privacy'],
+    ['/all', '/terms', '/privacy', '/accessibility'],
   );
   const hubXml = urlsetXml(hubSitemapEntries(true, false), ORIGIN);
   assert.ok(hubXml.includes(`<loc>${ORIGIN}/</loc>`) && !hubXml.includes('/all<'), 'the hub sitemap lists / , never /all');
@@ -205,7 +205,7 @@ test('structured data for every page type validates against the schema.org types
         ctx,
         path: `/${site.slug}/ways-to-book`,
         name: 'Ways',
-        mainEntity: servicesNode(ctx, ['keynote', 'hospitality'], `${url}/ways-to-book`),
+        mainEntity: servicesNode(ctx, (Object.keys(ctx.FORMATS) as FormatKey[]).slice(0, 2), `${url}/ways-to-book`),
       }),
     };
     for (const [name, graph] of Object.entries(graphs)) assert.deepEqual(checkStructuredData(graph, `${site.slug} ${name}`), []);
@@ -282,22 +282,33 @@ test('alt text: the person and their position, or the slot caption', () => {
   assert.equal(slotAlt({ name: 'Sandro', line: 'Midfielder · 2010–2014' }), 'Sandro, Midfielder, 2010–2014');
 });
 
-test('bug: roster filters ignore unknown roles and eras from the URL instead of hiding every card', () => {
+test('bug: roster filters ignore unknown roles and topics from the URL instead of hiding every card', () => {
   const chips = [
     { filter: 'role', value: '' },
     { filter: 'role', value: 'player' },
-    { filter: 'era', value: '1990s' },
+    { filter: 'topic', value: 'leadership' },
     { filter: 'format', value: 'keynote' },
   ];
-  assert.deepEqual(rosterState('?role=player&era=1990s&q=kane', chips), { role: 'player', era: '1990s', format: '', q: 'kane' });
-  assert.deepEqual(rosterState('?role=goalkeeper&era=1800s', chips), { role: '', era: '', format: '', q: '' });
-  assert.deepEqual(rosterState('?format=keynote', chips), { role: '', era: '', format: 'keynote', q: '' });
-  assert.deepEqual(rosterState('?format=juggling', chips), { role: '', era: '', format: '', q: '' });
+  assert.deepEqual(rosterState('?role=player&topic=leadership&q=kane', chips), {
+    role: 'player',
+    topic: 'leadership',
+    format: '',
+    q: 'kane',
+  });
+  assert.deepEqual(rosterState('?role=goalkeeper&topic=juggling', chips), { role: '', topic: '', format: '', q: '' });
+  assert.deepEqual(rosterState('?format=keynote', chips), { role: '', topic: '', format: 'keynote', q: '' });
+  assert.deepEqual(rosterState('?format=juggling', chips), { role: '', topic: '', format: '', q: '' });
+});
+
+test('the home carousel steps through its slides and wraps at both ends', () => {
+  assert.equal(nextSlide(0, 1, 5), 1);
+  assert.equal(nextSlide(4, 1, 5), 0);
+  assert.equal(nextSlide(0, -1, 5), 4);
 });
 
 test('bug: updating the roster URL keeps the #fragment', () => {
-  assert.equal(rosterUrl({ role: 'player', era: '', q: '' }, '/spurs/legends', '#top'), '?role=player#top');
-  assert.equal(rosterUrl({ role: '', era: '', q: '' }, '/spurs/legends', ''), '/spurs/legends');
+  assert.equal(rosterUrl({ role: 'player', topic: '', q: '' }, '/spurs/legends', '#top'), '?role=player#top');
+  assert.equal(rosterUrl({ role: '', topic: '', q: '' }, '/spurs/legends', ''), '/spurs/legends');
 });
 
 test('bug: an unknown ?legend= no longer blanks the enquiry form’s person select', () => {

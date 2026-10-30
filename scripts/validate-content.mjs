@@ -13,13 +13,26 @@ import { licenceProblems, licenceStatus, licenceSummary } from '../src/sites/lic
 import { verificationProblems, verificationStatus, verificationSummary } from '../src/sites/verification.mjs';
 
 const ROLE_KEYS = new Set(['player', 'manager', 'staff', 'women', 'squad']);
-const FORMAT_KEYS = new Set(['keynote', 'hospitality', 'brand', 'clinic', 'fan', 'workshop', 'virtual']);
+const FORMAT_KEYS = new Set(['keynote', 'dinner', 'appearance', 'hospitality', 'brand', 'clinic', 'fan', 'workshop', 'virtual']);
+const CONTACT_KEYS = new Set(['email', 'phone', 'hours']);
 const VOCAB_KEYS = new Set([...Object.keys(VOCAB), 'officialSmall', 'currentNoun']);
 const NAV_KEYS = new Set(Object.keys(VOCAB.navLabels));
 const FAQ_KEYS = new Set(FAQ.map(entry => entry.key));
 export const SLUG = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 /** Top-level paths the app owns; a site with one of these slugs would be shadowed by (or shadow) them. */
-export const RESERVED_SLUGS = new Set(['all', 'api', 'health', 'og', 'fonts', 'peptalk', 'terms', 'privacy', 'robots', 'sitemap']);
+export const RESERVED_SLUGS = new Set([
+  'all',
+  'api',
+  'health',
+  'og',
+  'fonts',
+  'peptalk',
+  'terms',
+  'privacy',
+  'accessibility',
+  'robots',
+  'sitemap',
+]);
 const HEX = /^#[0-9a-f]{6}$/i;
 const HTTPS = /^https:\/\//;
 const REVIEW_NOTE = /\((?:verify|tbc)\b|\bTODO\b|\bTBC\b|lorem ipsum/i;
@@ -35,7 +48,7 @@ const SITE_KEYS = new Set([
   ...['slug', 'active', 'indexable', 'lang', 'pages', 'status', 'short', 'orgName', 'platform', 'platformShort', 'tagline'],
   ...['entity', 'motto', 'copyright', 'heroTitle', 'waysTitle', 'stadium', 'marks', 'navMark', 'crestOnLight', 'crestOn'],
   ...['crestFallback', 'theme', 'style', 'cspHosts', 'orgType', 'featured', 'home', 'homeLayout', 'demoHome', 'demoProfiles'],
-  ...['tracking', 'consent', 'eventSpaces'],
+  ...['tracking', 'consent', 'eventSpaces', 'heroWords', 'formatKeys', 'contact'],
   ...['vocab', 'formats', 'faqOverrides', 'roles', 'eras', 'people', 'images', 'licences', 'verification'],
   // Removed features with their own, clearer messages below.
   ...['stories', 'faq'],
@@ -119,7 +132,7 @@ export function validateSite(site) {
     if (object) {
       const keys = ['url', 'heading', 'copy', 'image', 'imageAlt', 'buttonText'];
       for (const [key, value] of Object.entries(config)) {
-        need(keys.includes(key), `eventSpaces.${key}`, 'is not an Event Spaces setting');
+        need([...keys, 'eyebrow'].includes(key), `eventSpaces.${key}`, 'is not an Event Spaces setting');
         need(typeof value === 'string' && (key === 'url' || text(value)), `eventSpaces.${key}`, 'must be text');
       }
       if (config.url) {
@@ -150,6 +163,35 @@ export function validateSite(site) {
     need(VOCAB_KEYS.has(key), `vocab.${key}`, 'is not a known wording key (see src/copy/defaults.mjs)');
   for (const key of Object.keys(site.vocab?.navLabels ?? {})) need(NAV_KEYS.has(key), `vocab.navLabels.${key}`, 'is not a nav label');
   for (const key of Object.keys(site.formats ?? {})) need(FORMAT_KEYS.has(key), `formats.${key}`, 'is not a format key');
+  if (site.formatKeys !== undefined)
+    need(
+      Array.isArray(site.formatKeys) &&
+        site.formatKeys.length > 0 &&
+        site.formatKeys.every(key => FORMAT_KEYS.has(key)) &&
+        new Set(site.formatKeys).size === site.formatKeys.length,
+      'formatKeys',
+      'must list known format keys, each once',
+    );
+  if (site.heroWords !== undefined)
+    need(
+      Array.isArray(site.heroWords) &&
+        site.heroWords.length >= 2 &&
+        site.heroWords.every(text) &&
+        typeof site.heroTitle?.[0] === 'string' &&
+        site.heroTitle[0].endsWith(` ${site.heroWords[0]}`),
+      'heroWords',
+      'must be two or more words, the first ending heroTitle[0]',
+    );
+  if (site.contact !== undefined) {
+    const contact = site.contact;
+    const object = contact !== null && typeof contact === 'object' && !Array.isArray(contact);
+    need(object, 'contact', 'must be an object');
+    if (object)
+      for (const [key, value] of Object.entries(contact)) {
+        need(CONTACT_KEYS.has(key), `contact.${key}`, 'is not a contact setting (email, phone, hours)');
+        need(text(value), `contact.${key}`, 'must be text');
+      }
+  }
   need(site.faq === undefined, 'faq', 'is not supported; override single entries with faqOverrides');
   for (const [key, value] of Object.entries(site.faqOverrides ?? {})) {
     need(FAQ_KEYS.has(key), `faqOverrides.${key}`, `is not an FAQ key (${[...FAQ_KEYS].join(', ')})`);
@@ -198,6 +240,12 @@ export function validateSite(site) {
     for (const key of ['talks', 'audiences', 'industries'])
       need(Array.isArray(person[key]) && person[key].length >= 1, `${p}.${key}`, 'needs entries');
     need(Array.isArray(person.formats) && person.formats.every(f => FORMAT_KEYS.has(f)), `${p}.formats`, 'has an unknown format');
+    if (Array.isArray(site.formatKeys) && Array.isArray(person.formats))
+      need(
+        person.formats.every(f => site.formatKeys.includes(f)),
+        `${p}.formats`,
+        'has a format this site does not offer (formatKeys)',
+      );
     image(person.hero, `${p}.hero`);
     image(person.card, `${p}.card`);
     need(Array.isArray(person.gallery) && person.gallery.length === 3, `${p}.gallery`, 'needs exactly 3 images');
@@ -215,6 +263,11 @@ export function validateSite(site) {
   need((site.featured ?? []).length >= 1, 'featured', 'needs at least one person');
   for (const key of ['hero', 'inset']) image(site.home?.[key]?.image, `home.${key}.image`);
   for (const key of ['eraImage', 'storyImage', 'hospitalityImage']) image(site.home?.[key], `home.${key}`);
+  for (const [i, slide] of (site.home?.slides ?? []).entries()) {
+    image(slide?.image, `home.slides[${i}].image`);
+    need(text(slide?.name) && text(slide?.line), `home.slides[${i}]`, 'needs a name and a line');
+  }
+  if (site.home?.aboutImage !== undefined) image(site.home.aboutImage, 'home.aboutImage');
   need(eraKeys.has(site.home?.activeEra), 'home.activeEra', 'is not one of this site’s eras');
   // Stories were removed from the product; a leftover array would otherwise sit in the file unnoticed.
   need(site.stories === undefined, 'stories', 'is no longer supported (stories were removed); delete the "stories" key');

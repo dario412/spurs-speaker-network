@@ -24,15 +24,17 @@ const EXAMPLE_DOMAINS = JSON.parse(readFileSync(join('schema', 'examples', 'regi
 const FLIPPED_DOMAINS = { spurs: { primary: 'spurslegends.example', aliases: ['www.spurslegends.example'], live: true } };
 
 async function exampleContent(): Promise<MemoryContent> {
-  const [registry, populated, shell, terms, privacy] = await Promise.all(
-    ['registry.json', 'site-populated.json', 'site-shell.json', 'legal-terms.json', 'legal-privacy.json'].map(example),
+  const [registry, populated, shell, terms, privacy, accessibility] = await Promise.all(
+    ['registry.json', 'site-populated.json', 'site-shell.json', 'legal-terms.json', 'legal-privacy.json', 'legal-accessibility.json'].map(
+      example,
+    ),
   );
   // A third, inactive site: a copy of the shell site switched off.
   const inactive = { ...shell, slug: 'westford', active: false, orgName: 'Westford Athletic' };
   return {
     registry: { ...registry, order: [...registry.order, 'westford'] },
     sites: [populated, shell, inactive],
-    legal: { terms, privacy },
+    legal: { terms, privacy, accessibility },
   };
 }
 

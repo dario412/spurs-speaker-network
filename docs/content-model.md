@@ -36,6 +36,7 @@ Terms (organisation, site, platform, person, legend, current player, hub) are de
 | `motto` | string \| null | Footer, if the organisation has an official one |
 | `copyright` | string | Rights holder's legal name, as on their site |
 | `heroTitle` | [string, string] | The two hero headline lines |
+| `heroWords` | string[]? | Words the last word of `heroTitle[0]` cycles through on the home hero (`["legend", "coach", "manager", "analyst"]`). The first must end `heroTitle[0]`: it is the word crawlers and screen readers get. The animation is timed for four words and stops for visitors who prefer reduced motion. |
 | `waysTitle` | string | "Ways to book" heading |
 | `stadium` | string | Venue used in copy ("Tottenham Hotspur Stadium", "the MotoGP paddock") |
 | `marks` | `{ crest, wordmark }` | https URLs; never redrawn or recoloured |
@@ -48,13 +49,15 @@ Terms (organisation, site, platform, person, legend, current player, hub) are de
 | `cspHosts` | string[] | Origins the marks load from (added to the image CSP) |
 | `orgType` | string | Structured-data type of the rights holder: `SportsTeam` (default, clubs) or `SportsOrganization` (leagues, associations, championships). Validated. |
 | `featured` | slug[] | People in "Featured this season": one or more active person slugs (six is an editorial convention, not a validation limit) |
-| `home` | object | `hero` / `inset` (`image`, `name`, `line`, optional `tag: "br"`), `eraImage`, `storyImage` (the homepage "Event story" picture), `hospitalityImage`, `activeEra` |
+| `home` | object | `hero` / `inset` (`image`, `name`, `line`, optional `tag: "br"`), `eraImage`, `storyImage` (the homepage "Event story" picture), `hospitalityImage`, `activeEra`; optional `slides` (more `{ image, name, line }` slots after `hero`: the hero photo becomes a carousel that advances every six seconds) and `aboutImage` (the photo beside the about page's speaker introduction) |
 | `homeLayout` | object | `waysAfterRoles`, `hideEras` |
 | `demoHome` / `demoProfiles` | boolean / slug[] | Render those pages as non-interactive demos |
 | `tracking` | `{ gtmId?, ga4Id? }`? | Analytics tags, **off by default**. `gtmId` must look like `GTM-XXXXXXX`, `ga4Id` like `G-XXXXXXXXXX`; nothing else is accepted. Loaded by the one shared tracking script (`public/tracking.js`, added only to that site's pages); the CSP allows Google's tag hosts only for sites with tags. A site without its own ids uses the `TRACKING_GTM_ID` environment fallback, if set. See [architecture.md → Tracking and consent](architecture.md#tracking-and-consent). |
 | `consent` | `{ required? }`? | `required: true` shows the consent banner and loads tags only after the visitor accepts (a first-party `pa_consent` cookie, six months). Default `false`: tags, if any, load straight away. **The banner's wording and whether a site needs it are placeholders: get legal review before switching tracking on for a site with visitors in the UK or EU.** |
 | `vocab` | object | Wording overrides (keys below) |
 | `formats` | object | Per-format overrides of `title`, `short`, `desc`, `items` |
+| `formatKeys` | string[]? | The formats the site offers, in display order (default: the seven original formats). Every person's `formats` must be in this list. Spurs offers `keynote`, `dinner` (after-dinner speaking), `appearance` (launches, shoots, Q&As, signings, guest visits), `workshop` and `virtual`. |
+| `contact` | `{ email?, phone?, hours? }`? | Contact details under the footer's brand column; each line shows only when set. Use real, confirmed details only. |
 | `faqOverrides` | object | Keyed by the FAQ entry's `key` in `src/copy/defaults.mjs`: `"cost": "new answer"` or `"cost": { "q": "…", "a": "…" }`. Placeholders: `{org}` is the organisation name; `{first|fallback}` is the person's first name on profiles and the fallback text on the about page. |
 | `roles` | array | `{ key, label, blurb, image, singular }`; `key` is one of `player`, `manager`, `staff`, `women`, `squad` (current players) |
 | `eras` | array | `{ key, label, blurb }` |
@@ -74,7 +77,7 @@ An array of people (legends and current players). With `PEOPLE_PROVIDER=airtable
 | `pos`, `short`, `honour`, `line` | Profile and card lines |
 | `stats` | Exactly four `[value, caption]` pairs; stable facts only |
 | `bio[]`, `why`, `timeline[[year, text]]` | Original copy, no quotes, no contested numbers |
-| `talks[]`, `audiences[]`, `industries[]`, `formats[]`, `langs` | `formats` use the seven format keys |
+| `talks[]`, `audiences[]`, `industries[]`, `formats[]`, `langs` | `formats` use the site's format keys (`site.json → formatKeys`); `talks` also feed the roster's topic filter |
 | `travelsFrom` | Optional; defaults to `vocab.travelsFrom` |
 | `sameAs` | Optional list of up to 10 https URLs of the person's official profiles elsewhere (their page on the organisation's site, Wikipedia, Wikidata, verified social accounts). Emitted as `Person.sameAs` in the profile's structured data, which ties the profile to the same real-world entity for search and answer engines. Empty by default; only add pages that are definitely about this person. Validated (https, unique). |
 
@@ -186,16 +189,17 @@ Validation:
 
 ## Legal pages (`src/copy/legal/`)
 
-The Terms and the Privacy Policy are **core content shared by every site**: one file each, never a per-site copy.
+The Terms, the Privacy Policy and the Accessibility statement are **core content shared by every site**: one file each, never a per-site copy.
 
 | File | Page |
 |---|---|
 | `src/copy/legal/terms.md` | `/<slug>/terms` on every site, and `/terms` on the hub |
 | `src/copy/legal/privacy.md` | `/<slug>/privacy` on every site, and `/privacy` on the hub |
+| `src/copy/legal/accessibility.md` | `/<slug>/accessibility` on every site, and `/accessibility` on the hub |
 
-Both pages always exist; they aren't optional pages, so `pages` can't switch them off. They use the site's normal layout and branding. Every site footer and the landing page footer link both, and the enquiry form links them in its consent line (`vocab.consentLine`).
+These pages always exist; they aren't optional pages, so `pages` can't switch them off. They use the site's normal layout and branding. Every site footer and the landing page footer link all three, and the enquiry form links the Terms and Privacy Policy in its consent line (`vocab.consentLine`).
 
-> **Placeholder text.** Both files are copied verbatim from getapeptalk.com as stand-ins (`status: placeholder` in the frontmatter). Replace them with terms and a privacy policy reviewed for the Appearances sites before launch (see [brand-and-legal.md](brand-and-legal.md)). Don't edit the stand-in wording piecemeal.
+> **Placeholder text.** The Terms and Privacy files are copied verbatim from getapeptalk.com as stand-ins (`status: placeholder` in the frontmatter). Replace them with terms and a privacy policy reviewed for the Appearances sites before launch (see [brand-and-legal.md](brand-and-legal.md)). Don't edit the stand-in wording piecemeal.
 
 Format:
 - **Frontmatter** (`title`, `source`, `copied`, `status`, `note`) is bookkeeping. Only `title` is shown (as the page heading); the rest is never rendered.
@@ -203,7 +207,7 @@ Format:
 - **Body:** a small, safe markdown subset: headings, paragraphs, bullet and numbered lists (nested by indentation), tables, `**bold**`, `*italic*` and `[links](https://…)`. Links must be `https://`, `http://`, `mailto:`, `/…` or `#…`; anything else renders as plain text.
 - **No raw HTML.** All text is escaped; `<b>`, `<script>` and the like show as literal text. The single exception is `<br>` inside a table cell, which becomes a line break.
 
-In the Next.js app the content provider supplies these through `getLegal('terms' | 'privacy')` (`lib/content/`), so a CMS can provide them later; the JSON provider reads the two markdown files.
+In the Next.js app the content provider supplies these through `getLegal('terms' | 'privacy' | 'accessibility')` (`lib/content/`), so a CMS can provide them later; the JSON provider reads the markdown files.
 
 ## Wording keys (`vocab`)
 
@@ -236,7 +240,7 @@ Placeholder testimonials (`quote`, `profileQuote`) are site-level placeholders, 
 
 ## Event Spaces
 
-`site.json → eventSpaces` configures one venue-hire promotion shared by every branded page, including profiles, enquiry and legal pages. On homepages it sits between featured speakers and First Team; on other pages it sits before the footer. It inherits the brand’s theme and button styling, and stacks photo above copy on mobile. It is separate from bookable people.
+`site.json → eventSpaces` configures one venue-hire promotion ("book a meeting or event space at the stadium"). It appears on the home page (after the booking form, before the closing call to action) and on the ways-to-book page (after the formats), with a line under the button for visitors who already have a venue. Optional `eyebrow` replaces the "Event spaces" label above the heading. It inherits the brand’s theme and button styling, and stacks photo above copy on mobile. It is separate from bookable people.
 
 Set these fields in **Site settings → Event Spaces** in the local admin, or supply them through the CMS content provider:
 

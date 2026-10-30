@@ -8,7 +8,7 @@ import { categoryRoles } from '../../lib/render/category.ts';
 import type { SiteContext } from '../../lib/render/context.ts';
 import { categoryPath } from '../../lib/render/routes.ts';
 import { personNode } from '../../lib/seo/jsonld.ts';
-import { Availability, Beyond, Card, ConsentBanner, FormSection, Official, WaysGrid } from '../site/components.tsx';
+import { Availability, Beyond, Card, ConsentBanner, EnquiryCard, FormSection, Official, WaysGrid } from '../site/components.tsx';
 import { EventSpaces } from '../site/event-spaces.tsx';
 import { FeaturedGrid, HomeHero, Squad, WaysSection } from '../site/home.tsx';
 import { SiteFooter, SiteHeader } from '../site/layout.tsx';
@@ -166,9 +166,9 @@ export const GALLERY: GalleryEntry[] = [
   {
     id: 'hero',
     title: 'Hero',
-    covers: ['HomeHero'],
+    covers: ['HomeHero', 'HeroLine', 'HeroSlides'],
     source: 'components/site/home.tsx',
-    note: 'Eyebrow, headline, lead, the roster finder (who, format, search), trust checks, and the hero and inset photos (site.json → home).',
+    note: 'Eyebrow, headline (its last word cycles through site.json → heroWords), lead, the roster finder, trust checks, and the hero photos: a carousel when site.json → home.slides is set, plus the inset.',
     render: ({ ctx }) => <HomeHero ctx={ctx} />,
   },
   {
@@ -203,9 +203,19 @@ export const GALLERY: GalleryEntry[] = [
   {
     id: 'how',
     title: 'How booking works',
-    covers: ['HowItWorks'],
-    source: 'components/site/sections.tsx',
-    render: ({ ctx }) => <HowItWorks ctx={ctx} />,
+    covers: ['HowItWorks', 'EnquiryCard'],
+    source: 'components/site/sections.tsx, components/site/components.tsx',
+    note: 'On its own (ways to book, about) the steps run in a row under the call to action; on the home page the compact enquiry form sits beside them.',
+    render: ({ ctx }) => (
+      <>
+        <Variant label="Steps only">
+          <HowItWorks ctx={ctx} />
+        </Variant>
+        <Variant label="With the enquiry form (home)">
+          <HowItWorks ctx={ctx} form={<EnquiryCard ctx={ctx} />} />
+        </Variant>
+      </>
+    ),
   },
   {
     id: 'peptalk-band',

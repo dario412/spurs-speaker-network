@@ -1,6 +1,6 @@
 // Per-site render context: merged wording, formats and FAQ, lookups,
 // page switches, and the demo flag. Every component receives this, so sites differ only by data.
-import { FAQ as BASE_FAQ, FORMATS as BASE_FORMATS, VOCAB } from '../content/defaults.ts';
+import { FAQ as BASE_FAQ, FORMATS as BASE_FORMATS, DEFAULT_FORMAT_KEYS, VOCAB } from '../content/defaults.ts';
 import { pagesFor } from '../content/publish.ts';
 import type { FaqEntry, Format, FormatKey, NavLabels, PageKey, Person, Site, Vocab } from '../content/types.ts';
 import { canonicalOrigin, canonicalUrl, type SiteDomain } from '../domains.ts';
@@ -29,6 +29,7 @@ export interface SiteContext {
   /** The site's wording; `aboutTitle` is always set (the default "About <platform>" is filled in here). */
   v: Vocab & { aboutTitle: string };
   nl: NavLabels;
+  /** The site's formats (site.json `formatKeys`, else the default seven), in display order. */
   FORMATS: Record<FormatKey, Format>;
   bySlug: Record<string, Person>;
   hasSquad: boolean;
@@ -87,10 +88,10 @@ export function siteContext(
       navLabels: { ...vocab.navLabels, ...site.vocab?.navLabels },
     } as Vocab & { aboutTitle: string },
     nl: { ...vocab.navLabels, ...site.vocab?.navLabels },
-    FORMATS: Object.fromEntries(Object.entries(formats).map(([k, f]) => [k, { ...f, ...site.formats?.[k as FormatKey] }])) as Record<
-      FormatKey,
-      Format
-    >,
+    // Only the formats the site offers, in its order (site.json `formatKeys`), each with the site's overrides.
+    FORMATS: Object.fromEntries(
+      (site.formatKeys ?? DEFAULT_FORMAT_KEYS).map(key => [key, { ...formats[key], ...site.formats?.[key] }]),
+    ) as Record<FormatKey, Format>,
     bySlug: Object.fromEntries(site.people.map(person => [person.slug, person])),
     hasSquad: site.people.some(person => person.role === 'squad'),
     demo,

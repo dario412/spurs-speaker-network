@@ -2,7 +2,7 @@
 // sections, exported so the component gallery (/_gallery) can show each on its own.
 import type { FormatKey, LegalDoc, Person, Role } from '../../lib/content/types.ts';
 import { personAlt } from '../../lib/render/alt.ts';
-import { categoryRoles, peopleIn, topItems } from '../../lib/render/category.ts';
+import { categoryRoles, peopleIn, roleProse, topItems, topicKey } from '../../lib/render/category.ts';
 import type { SiteContext } from '../../lib/render/context.ts';
 import { renderMarkdown } from '../../lib/render/markdown-view.ts';
 import { categoryPath } from '../../lib/render/routes.ts';
@@ -18,10 +18,11 @@ import {
   waysCopy,
 } from '../../lib/seo/copy.ts';
 import { type Crumb, faqNode, peopleListNode, personNode, servicesNode, siteGraph } from '../../lib/seo/jsonld.ts';
-import { Availability, Beyond, Card, FormSection, Official, ShortlistButton, WaysGrid } from './components.tsx';
+import { Availability, Card, FormSection, Official, ShortlistButton, WaysGrid } from './components.tsx';
+import { EventSpaces } from './event-spaces.tsx';
 import { SimplePage, SiteLayout } from './layout.tsx';
-import { A, Button, FaqItem, Photo } from './primitives.tsx';
-import { CtaBand, FaqBlock, FORMAT_SHORT, HowItWorks, offering, RoleList } from './sections.tsx';
+import { A, FaqItem, Photo } from './primitives.tsx';
+import { CtaBand, FaqBlock, FORMAT_SHORT, offering, RoleList } from './sections.tsx';
 
 /** Home, then the given trail. The visible breadcrumbs and the BreadcrumbList use the same list. */
 const trail = ({ home }: SiteContext, ...rest: Crumb[]): Crumb[] => [{ name: 'Home', path: home }, ...rest];
@@ -36,7 +37,7 @@ const lower = (text: string) => text.charAt(0).toLowerCase() + text.slice(1);
 
 /** The "not sure who to book?" tile closing a grid of cards (not a .card, so the roster filters leave it alone). */
 export function HelpTile({ ctx }: { ctx: SiteContext }) {
-  const { base, v, demo } = ctx;
+  const { base, demo } = ctx;
   return (
     <div className="help-tile">
       <div>
@@ -45,7 +46,7 @@ export function HelpTile({ ctx }: { ctx: SiteContext }) {
         <p>A free shortlist from the PepTalk bookings team, matched to your audience and budget.</p>
       </div>
       <A demo={demo} className="btn btn-cta" href={`${base}/check-availability`}>
-        Get a shortlist of {v.legendsNoun} <span aria-hidden="true">→</span>
+        Get a shortlist <span aria-hidden="true">→</span>
       </A>
     </div>
   );
@@ -65,11 +66,11 @@ export function LegendsPage({ ctx }: { ctx: SiteContext }) {
     crumbs,
     mainEntity: peopleListNode(ctx, site.people, ctx.url(path), heading),
   });
-  const tabs: [string, string, number][] = [
-    ['', 'All', site.people.length],
-    ...categoryRoles(site).map(role => [role.key, role.label, peopleIn(site, role).length] as [string, string, number]),
-  ];
   const offered = (Object.keys(FORMATS) as FormatKey[]).filter(key => offering(site.people, key) > 0);
+  const topics = topItems(
+    site.people.map(person => person.talks),
+    12,
+  ).map(({ item }) => item);
   return (
     <SiteLayout ctx={ctx} path="/legends" graph={graph} crumbs={crumbs}>
       <section className="page-head">
@@ -83,22 +84,25 @@ export function LegendsPage({ ctx }: { ctx: SiteContext }) {
       </section>
       <section className="block first roster">
         <div className="wrap" data-roster="">
-          {/* biome-ignore lint/a11y/useSemanticElements: a <fieldset> would restyle the tab row; role="group" names it for assistive tech. */}
-          <div className="filters tabs" role="group" aria-label="Filter by role">
-            {tabs.map(([key, label, count]) => (
-              <Button demo={demo} key={key} className="chip" type="button" data-filter="role" data-value={key} aria-pressed={key === ''}>
-                {label} <small>{count}</small>
-              </Button>
-            ))}
-          </div>
           <div className="filter-row">
+            <label className="select role-select">
+              <span className="sr-only">Role</span>
+              <select data-filter="role" disabled={demo || undefined}>
+                <option value="">All roles</option>
+                {categoryRoles(site).map(role => (
+                  <option key={role.key} value={role.key}>
+                    {role.label}
+                  </option>
+                ))}
+              </select>
+            </label>
             <label className="select">
-              <span className="sr-only">Era</span>
-              <select data-filter="era" disabled={demo || undefined}>
-                <option value="">Any era</option>
-                {site.eras.map(era => (
-                  <option key={era.key} value={era.key}>
-                    {era.label}
+              <span className="sr-only">Topic</span>
+              <select data-filter="topic" disabled={demo || undefined}>
+                <option value="">Any topic</option>
+                {topics.map(topic => (
+                  <option key={topic} value={topicKey(topic)}>
+                    {topic}
                   </option>
                 ))}
               </select>
@@ -118,13 +122,14 @@ export function LegendsPage({ ctx }: { ctx: SiteContext }) {
               <input
                 className="roster-q"
                 type="search"
-                placeholder="Search by name or topic, e.g. leadership"
+                placeholder="Search by name, e.g. Ledley King"
                 aria-label={`Search ${v.legendsNoun}`}
                 disabled={demo || undefined}
               />
             </label>
           </div>
-          <p className="count" data-count="" aria-live="polite">
+          {/* Announced to screen readers as the filters change; not shown (no counts on the page). */}
+          <p className="sr-only" data-count="" aria-live="polite">
             Showing {site.people.length} of {site.people.length} {v.legendsNoun}
           </p>
           {/* The cards sit directly under the page's <h1>, so their names are <h2>s. */}
@@ -141,7 +146,12 @@ export function LegendsPage({ ctx }: { ctx: SiteContext }) {
               <b>Browse {v.beyondLinkText} →</b>
             </A>
           </p>
-          <Beyond ctx={ctx} />
+          <p className="roster-help">
+            Can’t find who you’re after?{' '}
+            <A demo={demo} href={`${base}/check-availability`}>
+              Ask the bookings team
+            </A>
+          </p>
         </div>
       </section>
     </SiteLayout>
@@ -151,7 +161,7 @@ export function LegendsPage({ ctx }: { ctx: SiteContext }) {
 /** The questions a category page answers, built from its people (formats and topics) plus the shared booking FAQ. */
 export function categoryFaq(ctx: SiteContext, role: Role, people: Person[]): { q: string; a: string }[] {
   const { site, FORMATS } = ctx;
-  const label = lower(role.label);
+  const label = roleProse(site, role);
   const [cost, leadTime] = ctx.faq();
   const formats = (Object.keys(FORMATS) as FormatKey[])
     .map(key => ({ key, count: offering(people, key) }))
@@ -165,7 +175,7 @@ export function categoryFaq(ctx: SiteContext, role: Role, people: Person[]): { q
     { q: `How much does it cost to book ${site.short} ${label}?`, a: cost.a },
     {
       q: `Which formats do ${site.short} ${label} offer?`,
-      a: `${listText(formats.map(({ key, count }) => `${FORMATS[key].title} (${count} of ${people.length})`))}.`,
+      a: `${listText(formats.map(({ key }) => FORMATS[key].title))}.`,
     },
     ...(topics.length ? [{ q: `What do ${site.short} ${label} talk about?`, a: `Most often: ${listText(topics)}.` }] : []),
     leadTime,
@@ -188,7 +198,7 @@ export function CategoryPage({ ctx, role }: { ctx: SiteContext; role: Role }) {
     description: copy.description,
     crumbs,
     image: role.image ? site.images[role.image] : null,
-    mainEntity: peopleListNode(ctx, people, url, `${site.short} ${lower(role.label)}`),
+    mainEntity: peopleListNode(ctx, people, url, `${site.short} ${roleProse(site, role)}`),
     extra: [faqNode(faq, url, ctx)],
   });
   const formats = (Object.keys(FORMATS) as FormatKey[])
@@ -199,7 +209,7 @@ export function CategoryPage({ ctx, role }: { ctx: SiteContext; role: Role }) {
     people.map(person => person.talks),
     8,
   );
-  const label = lower(role.label);
+  const label = roleProse(site, role);
   return (
     <SiteLayout ctx={ctx} path="/category" graph={graph} crumbs={crumbs}>
       <section className="c-hero">
@@ -207,9 +217,6 @@ export function CategoryPage({ ctx, role }: { ctx: SiteContext; role: Role }) {
           <div className="copy">
             <div className="badges">
               <span className="badge light">Category</span>
-              <span className="badge-note">
-                {people.length} {people.length === 1 ? 'speaker' : 'speakers'}
-              </span>
             </div>
             <h1 className="disp">{role.label}</h1>
             <p className="lead">
@@ -217,10 +224,10 @@ export function CategoryPage({ ctx, role }: { ctx: SiteContext; role: Role }) {
             </p>
             <div className="ctas">
               <A demo={demo} className="btn btn-cta btn-lg" href={`${base}/check-availability`}>
-                Check availability <span aria-hidden="true">→</span>
+                Get shortlist <span aria-hidden="true">→</span>
               </A>
               <A demo={demo} className="quiet" href="#people">
-                See all {people.length}
+                See the {v.legendsNoun}
               </A>
             </div>
           </div>
@@ -232,19 +239,19 @@ export function CategoryPage({ ctx, role }: { ctx: SiteContext; role: Role }) {
       <nav className="cat-tabs" aria-label="Categories">
         <div className="wrap">
           <A demo={demo} href={`${base}/legends`}>
-            All {v.legendsNoun} <small>{site.people.length}</small>
+            All {v.legendsNoun}
           </A>
           {categoryRoles(site).map(other => (
             <A demo={demo} key={other.key} href={categoryPath(base, other)} aria-current={other.key === role.key ? 'page' : undefined}>
-              {other.label} <small>{peopleIn(site, other).length}</small>
+              {other.label}
             </A>
           ))}
         </div>
       </nav>
-      <section className="block first" id="people" aria-labelledby="people-title">
+      <section className="block first tint" id="people" aria-labelledby="people-title">
         <div className="wrap">
           <h2 className="count" id="people-title">
-            {people.length} {label}
+            {site.short} {label}
           </h2>
           <div className="grid g3">
             {people.map((person, i) => (
@@ -254,7 +261,7 @@ export function CategoryPage({ ctx, role }: { ctx: SiteContext; role: Role }) {
           </div>
         </div>
       </section>
-      <section className="block tint" aria-labelledby="topics-title">
+      <section className="block" aria-labelledby="topics-title">
         <div className="wrap side-head">
           <div className="intro">
             <span className="eyebrow">What they talk about</span>
@@ -269,24 +276,19 @@ export function CategoryPage({ ctx, role }: { ctx: SiteContext; role: Role }) {
             <div>
               <h3>Popular topics</h3>
               <ul className="tags big">
-                {topics.map(({ item, count }) => (
-                  <li key={item}>
-                    {item} {count > 1 ? <small>{count}</small> : null}
-                  </li>
+                {topics.map(({ item }) => (
+                  <li key={item}>{item}</li>
                 ))}
               </ul>
             </div>
             <div>
               <h3>Formats offered</h3>
               <ul className="fmt-count">
-                {formats.map(({ key, count }) => (
+                {formats.map(({ key }) => (
                   <li key={key}>
                     <A demo={demo} href={ctx.pages.waysToBook ? `${base}/ways-to-book#${key}` : `${base}/legends?format=${key}`}>
                       {FORMATS[key].title}
                     </A>
-                    <span>
-                      {count} of {people.length}
-                    </span>
                   </li>
                 ))}
               </ul>
@@ -294,8 +296,18 @@ export function CategoryPage({ ctx, role }: { ctx: SiteContext; role: Role }) {
           </div>
         </div>
       </section>
-      <FaqBlock ctx={ctx} faq={faq} title={`${role.label}, answered.`} />
-      <RoleList ctx={ctx} eyebrow="Other categories" title="Explore another category." exclude={role.key} tint />
+      <FaqBlock ctx={ctx} faq={faq} title={`${role.label}, answered.`} tint />
+      <RoleList
+        ctx={ctx}
+        eyebrow="More speakers"
+        title={`Explore more ${site.short} ${v.legendsNoun}.`}
+        lead={`${listText(
+          categoryRoles(site)
+            .filter(other => other.key !== role.key)
+            .map(other => roleProse(site, other)),
+        )}, for every kind of event.`}
+        exclude={role.key}
+      />
       <CtaBand ctx={ctx} title={`Bring ${role.singular ? `a ${lower(role.singular)}` : `${site.short} ${label}`} to your next event.`} />
     </SiteLayout>
   );
@@ -422,7 +434,7 @@ export function ProfilePage({ ctx, person }: { ctx: SiteContext; person: Person 
             </div>{' '}
             <div className="grid">
               {sims.map(other => (
-                <Card key={other.slug} ctx={ctx} person={other} />
+                <Card key={other.slug} ctx={ctx} person={other} cta="Explore profile" />
               ))}
             </div>
           </div>
@@ -434,7 +446,7 @@ export function ProfilePage({ ctx, person }: { ctx: SiteContext; person: Person 
 
 /** The profile hero: badges, name, position, line, calls to action and availability beside the photo; key stats below. */
 export function ProfileHero({ ctx, person }: { ctx: SiteContext; person: Person }) {
-  const { site, base, eraLabel, v, demo } = ctx;
+  const { site, base, v, demo } = ctx;
   return (
     <section className="p-hero">
       <div className="split-hero">
@@ -442,7 +454,6 @@ export function ProfileHero({ ctx, person }: { ctx: SiteContext; person: Person 
           <div className="badges">
             <Official ctx={ctx} label={v.officialLegendLabel ?? `Official ${site.short} ${v.legendNoun}`} />
             <span className="pill">{person.roleLabel}</span>
-            <span className="pill">{eraLabel(person.era)}</span>
           </div>
           <h1 className="disp">{person.name}</h1>
           <div className="pos">{person.pos}</div>
@@ -475,7 +486,7 @@ export function ProfileHero({ ctx, person }: { ctx: SiteContext; person: Person 
 
 /** "<name> at a glance": the answer-style definition list that opens a profile (docs/architecture.md → SEO and AEO). */
 export function AtAGlance({ ctx, person }: { ctx: SiteContext; person: Person }) {
-  const { site, eraLabel, v } = ctx;
+  const { site, v } = ctx;
   const travelsFrom = person.travelsFrom ?? v.travelsFrom;
   return (
     <section className="glance" id="overview" aria-labelledby="glance-title">
@@ -486,8 +497,6 @@ export function AtAGlance({ ctx, person }: { ctx: SiteContext; person: Person })
         <dd>
           {person.roleLabel}, {site.orgName}
         </dd>
-        <dt>Era</dt>
-        <dd>{eraLabel(person.era)}</dd>
         <dt>Known for</dt>
         <dd>{person.honour}</dd>
         <dt>Best for</dt>
@@ -613,7 +622,8 @@ export function BookingCard({ ctx, person }: { ctx: SiteContext; person: Person 
   return (
     <aside className="side" id="book" aria-label={`Book ${person.name}`}>
       <div className="side-head">
-        <Photo ctx={ctx} id={person.card} cls="top thumb" slot="mini" alt="" />
+        {/* The hero photo: the most recent picture of the person (cards may show their playing days). */}
+        <Photo ctx={ctx} id={person.hero} cls="top thumb" slot="mini" alt="" />
         <div>
           <h2>Book {person.first}</h2>
           <div className="av">
@@ -654,10 +664,16 @@ export function BookingCard({ ctx, person }: { ctx: SiteContext; person: Person 
   );
 }
 
+const NUMBER_WORDS = ['No', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine'];
+
 export function WaysToBookPage({ ctx }: { ctx: SiteContext }) {
   const { site, base, v, FORMATS, demo } = ctx;
   const path = `${base}/ways-to-book`;
-  const title = `Ways to book ${site.short} ${v.legendsNoun}`;
+  const count = Object.keys(FORMATS).length;
+  const title =
+    count < NUMBER_WORDS.length
+      ? `${NUMBER_WORDS[count]} ways to book a ${site.short} ${v.legendNoun}`
+      : `Ways to book ${site.short} ${v.legendsNoun}`;
   const crumbs = trail(ctx, { name: 'Ways to book', path });
   const keys = Object.keys(FORMATS) as FormatKey[];
   const graph = siteGraph({
@@ -693,12 +709,7 @@ export function WaysToBookPage({ ctx }: { ctx: SiteContext }) {
           <WaysGrid ctx={ctx} keys={keys} detailed level={2} />
         </div>
       </section>
-      <HowItWorks ctx={ctx} />
-      <section className="block">
-        <div className="wrap">
-          <Beyond ctx={ctx} />
-        </div>
-      </section>
+      <EventSpaces ctx={ctx} />
       <CtaBand ctx={ctx} />
     </SimplePage>
   );
@@ -782,8 +793,10 @@ export function AboutPage({ ctx }: { ctx: SiteContext }) {
     [site.people.length, `${v.legendsNoun.charAt(0).toUpperCase()}${v.legendsNoun.slice(1)} to book`],
     [categoryRoles(site).length, 'Categories, from legends to today’s squad'],
     [Object.keys(FORMATS).length, 'Ways to book, in person or virtual'],
-    [1, 'Team handling it all: PepTalk'],
+    [1, 'Bookings team, one point of contact'],
   ];
+  const photo = site.home.aboutImage;
+  const pictured = photo ? site.people.find(person => person.hero === photo || person.card === photo) : undefined;
   return (
     <SimplePage ctx={ctx} path="/about" eyebrow="About the network" title={v.aboutTitle} lead={site.entity} graph={graph} crumbs={crumbs}>
       <section className="about-media">
@@ -799,48 +812,28 @@ export function AboutPage({ ctx }: { ctx: SiteContext }) {
           </dl>
         </div>
       </section>
-      <section className="block tint" aria-labelledby="who-title">
-        <div className="wrap">
-          <div className="head">
-            <div>
-              <span className="eyebrow">Who does what</span>
-              <h2 className="disp" id="who-title">
-                The club’s people. PepTalk’s booking team.
-              </h2>
-            </div>
+      <FaqBlock ctx={ctx} faq={faq} title="Everything you need to know." tint />
+      <section className="block about-intro" aria-labelledby="intro-title">
+        <div className="wrap split">
+          <div>
+            <span className="eyebrow">Our {v.legendsNoun}</span>
+            <h2 className="disp" id="intro-title">
+              The people who made the club, in your room.
+            </h2>
             <p className="lead">
               {site.platform}{' '}
               {v.aboutLead ??
-                `brings together former ${site.orgName} players, managers and backroom staff, plus today's first-team squad, for keynotes, hospitality, brand partnerships and community work, all through one official platform.`}
+                `brings together former ${site.orgName} players, managers and backroom staff, plus today's first-team squad, for keynotes, dinners, workshops and events, all through one official platform.`}
             </p>
+            <A demo={demo} className="more" href={`${base}/legends`}>
+              Meet the {v.legendsNoun} <span aria-hidden="true">→</span>
+            </A>
           </div>
-          <div className="duo">
-            <div className="club">
-              <span className="crest lg" role="img" aria-label={`${site.orgName} crest`} />
-              <h3>{site.orgName}</h3>
-              <p>
-                Puts its people forward, agrees the appearances and hosts matchday hospitality at {site.stadium}. Current players are booked
-                around the {v.fixtureWord}.
-              </p>
-            </div>
-            <div className="op">
-              {/* biome-ignore lint/performance/noImgElement: PepTalk's own logo file. */}
-              <img src="/peptalk/logo.png" alt="PepTalk" width={123} height={32} loading="lazy" />
-              <h3>PepTalk</h3>
-              <p>
-                The speaker and talent booking agency that runs the platform: enquiries, availability, contracts, payments and event
-                logistics, on behalf of {site.orgName}.{' '}
-                <A demo={demo} href={v.beyondUrl} rel="noopener">
-                  More speakers on PepTalk
-                </A>
-                .
-              </p>
-            </div>
-          </div>
+          {photo ? (
+            <Photo ctx={ctx} id={photo} cls="top" slot="split" alt={pictured ? personAlt(pictured) : `A ${site.short} ${v.legendNoun}`} />
+          ) : null}
         </div>
       </section>
-      <HowItWorks ctx={ctx} />
-      <FaqBlock ctx={ctx} faq={faq} title="Frequently asked questions" />
       <CtaBand ctx={ctx} />
     </SimplePage>
   );

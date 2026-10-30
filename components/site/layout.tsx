@@ -7,7 +7,6 @@ import { categoryPath } from '../../lib/render/routes.ts';
 import type { Crumb, Node } from '../../lib/seo/jsonld.ts';
 import { Behaviour } from '../behaviour.tsx';
 import { Concept } from '../concept.tsx';
-import { EventSpaces } from './event-spaces.tsx';
 import { A, Button, Crest, Crumbs, JsonLd } from './primitives.tsx';
 
 /**
@@ -37,7 +36,6 @@ export function SiteLayout({
       <main id="main">
         {crumbs ? <Crumbs demo={demo} crumbs={crumbs} /> : null}
         {children}
-        {path === '/' ? null : <EventSpaces ctx={ctx} />}
       </main>
       <SiteFooter ctx={ctx} />
       {demo ? null : <Behaviour />}
@@ -47,7 +45,7 @@ export function SiteLayout({
 }
 
 /**
- * The utility bar (crest and tagline; the no-obligation promise and the PepTalk operator mark) and the header: the
+ * The utility bar (crest and tagline; the free-shortlist promise) and the header: the
  * organisation's mark and the platform name, the menu button, the nav (switched-off pages left out; `path` marks the
  * current section; the venue-hire link when the site has one) and the main call to action.
  */
@@ -86,11 +84,7 @@ export function SiteHeader({ ctx, path }: { ctx: SiteContext; path: string }) {
             {site.tagline}
           </span>
           <span className="util-r">
-            <span className="promise">Free, no-obligation enquiries</span>
-            <A demo={demo} className="op" href={PEPTALK} rel="noopener">
-              Operated by {/* biome-ignore lint/performance/noImgElement: PepTalk's own logo file. */}
-              <img className="pt-logo" src="/peptalk/logo.png" alt="PepTalk" width={62} height={16} />
-            </A>
+            <span className="promise">Free, tailored shortlists</span>
           </span>
         </div>
       </div>
@@ -149,6 +143,21 @@ export function SiteFooter({ ctx }: { ctx: SiteContext }) {
               <Crest ctx={ctx} size="lg" />
             )}
             <p className="fstate">{site.entity}</p>
+            {site.contact && Object.keys(site.contact).length ? (
+              <address className="fcontact">
+                {site.contact.email ? (
+                  <A demo={demo} className="fc-mail" href={`mailto:${site.contact.email}`}>
+                    {site.contact.email}
+                  </A>
+                ) : null}
+                {site.contact.phone ? (
+                  <A demo={demo} className="fc-phone" href={`tel:${site.contact.phone.replace(/[^+\d]/g, '')}`}>
+                    {site.contact.phone}
+                  </A>
+                ) : null}
+                {site.contact.hours ? <span className="fc-hours">{site.contact.hours}</span> : null}
+              </address>
+            ) : null}
           </div>
           <div>
             <h2>{nl.legends}</h2>
@@ -171,7 +180,7 @@ export function SiteFooter({ ctx }: { ctx: SiteContext }) {
             <div>
               <h2>{nl.ways}</h2>
               <ul>
-                {(Object.keys(FORMATS) as FormatKey[]).slice(0, 5).map(key => (
+                {(Object.keys(FORMATS) as FormatKey[]).slice(0, 6).map(key => (
                   <li key={key}>
                     <A demo={demo} href={`${base}/ways-to-book#${key}`}>
                       {FORMATS[key].title}
@@ -228,6 +237,9 @@ export function SiteFooter({ ctx }: { ctx: SiteContext }) {
             </A>
             <A demo={demo} href={`${base}/privacy`}>
               Privacy
+            </A>
+            <A demo={demo} href={`${base}/accessibility`}>
+              Accessibility
             </A>
           </span>
           <A demo={demo} className="ppl" href={PEPTALK} rel="noopener">

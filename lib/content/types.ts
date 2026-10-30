@@ -4,10 +4,10 @@
 // The renderer decodes entities and lets React escape (see lib/render/text.ts).
 
 export type RoleKey = 'player' | 'manager' | 'staff' | 'women' | 'squad';
-export type FormatKey = 'keynote' | 'hospitality' | 'brand' | 'clinic' | 'fan' | 'workshop' | 'virtual';
+export type FormatKey = 'keynote' | 'dinner' | 'appearance' | 'hospitality' | 'brand' | 'clinic' | 'fan' | 'workshop' | 'virtual';
 export type CrestTreatment = 'full' | 'white' | 'hide';
 export type PageKey = 'waysToBook' | 'hospitality' | 'about';
-export type LegalKind = 'terms' | 'privacy';
+export type LegalKind = 'terms' | 'privacy' | 'accessibility';
 
 /** registry.json */
 export interface Registry {
@@ -74,6 +74,10 @@ export interface Home {
   storyImage: ImageId;
   hospitalityImage: ImageId;
   activeEra: string;
+  /** More hero slides after `hero`: the hero photo becomes a carousel (lib/behaviour.ts rotates it). */
+  slides?: Slot[];
+  /** Speaker photo beside the about page's introduction. */
+  aboutImage?: ImageId;
 }
 
 export interface Role {
@@ -219,6 +223,15 @@ export interface EventSpaces {
   image?: string;
   imageAlt?: string;
   buttonText?: string;
+  /** Small label above the heading (default "Event spaces"). */
+  eyebrow?: string;
+}
+
+/** Contact details shown under the footer's brand column; each line only when set. */
+export interface Contact {
+  email?: string;
+  phone?: string;
+  hours?: string;
 }
 
 /** site.json as stored. */
@@ -244,6 +257,8 @@ export interface SiteConfig {
   motto: string | null;
   copyright: string;
   heroTitle: [string, string];
+  /** Words the hero headline cycles through; the first must end `heroTitle[0]` (it is the one crawlers read). */
+  heroWords?: string[];
   waysTitle: string;
   stadium: string;
   marks: { crest?: string | null; wordmark?: string | null };
@@ -267,6 +282,9 @@ export interface SiteConfig {
   demoProfiles?: string[];
   vocab?: Partial<Omit<Vocab, 'navLabels'>> & { navLabels?: Partial<NavLabels> };
   formats?: Partial<Record<FormatKey, Partial<Format>>>;
+  /** The formats this site offers, in display order (default: every format in src/copy/defaults.mjs). */
+  formatKeys?: FormatKey[];
+  contact?: Contact;
   faqOverrides?: Record<string, string | { q?: string; a?: string }>;
   roles: Role[];
   eras: Era[];

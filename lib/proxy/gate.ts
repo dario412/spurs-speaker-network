@@ -71,6 +71,7 @@ export const isShared = (pathname: string): boolean =>
     '/llms.txt',
     '/terms',
     '/privacy',
+    '/accessibility',
     '/_next/image',
     '/api/enquiry',
   ].includes(pathname) ||

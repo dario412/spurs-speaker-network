@@ -33,3 +33,13 @@ export function topItems(lists: string[][], limit: number): { item: string; coun
     .sort((a, b) => b.count - a.count)
     .slice(0, limit);
 }
+
+/** A talk topic as a filter value: "Coming back from injury" -> "coming-back-from-injury" (the roster's topic filter). */
+export const topicKey = (topic: string): string => roleSlug({ label: topic });
+
+/**
+ * A role label inside a sentence: "Managers & Coaches" -> "managers & coaches". Labels that start with the site's
+ * short name are team names and keep their capitals ("Spurs Women").
+ */
+export const roleProse = (site: Pick<Site, 'short'>, role: Pick<Role, 'label'>): string =>
+  role.label.startsWith(`${site.short} `) ? role.label : role.label.toLowerCase();

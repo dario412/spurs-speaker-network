@@ -16,7 +16,7 @@ export const generateStaticParams = () => siteSegments(site => isSiteIndexable(s
 export async function GET(_request: Request, { params }: RouteContext<'/[site]/llms.txt'>) {
   const mounted = await loadSite((await params).site);
   if (!mounted || !ctxFor(mounted).indexable) notFound();
-  const legal = await Promise.all([content().getLegal('terms'), content().getLegal('privacy')]);
+  const legal = await Promise.all([content().getLegal('terms'), content().getLegal('privacy'), content().getLegal('accessibility')]);
   return new Response(siteLlmsTxt(mounted.site, publicOrigin(), legal.filter(legalIndexable), mounted.domain), {
     headers: { 'Content-Type': 'text/plain; charset=utf-8' },
   });

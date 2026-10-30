@@ -81,8 +81,8 @@
     ],
     "formats": [
       "keynote",
-      "hospitality",
-      "brand",
+      "dinner",
+      "appearance",
       "virtual"
     ],
     "langs": "English, Portuguese"
@@ -173,8 +173,8 @@
     ],
     "formats": [
       "keynote",
-      "brand",
-      "hospitality",
+      "dinner",
+      "appearance",
       "virtual"
     ],
     "langs": "English"
@@ -261,6 +261,7 @@
     ],
     "formats": [
       "keynote",
+      "dinner",
       "workshop",
       "virtual"
     ],
@@ -348,8 +349,8 @@
     ],
     "formats": [
       "keynote",
-      "hospitality",
-      "brand",
+      "dinner",
+      "appearance",
       "virtual"
     ],
     "langs": "English"
@@ -440,9 +441,8 @@
     ],
     "formats": [
       "keynote",
-      "hospitality",
-      "clinic",
-      "brand"
+      "dinner",
+      "appearance"
     ],
     "langs": "English"
   },
@@ -528,9 +528,9 @@
     ],
     "formats": [
       "keynote",
-      "hospitality",
-      "workshop",
-      "clinic"
+      "dinner",
+      "appearance",
+      "workshop"
     ],
     "langs": "English"
   },
@@ -620,8 +620,8 @@
     ],
     "formats": [
       "keynote",
-      "hospitality",
-      "brand",
+      "dinner",
+      "appearance",
       "virtual"
     ],
     "langs": "English"
@@ -711,10 +711,9 @@
       "Hospitality"
     ],
     "formats": [
-      "hospitality",
+      "appearance",
       "keynote",
-      "clinic",
-      "fan"
+      "dinner"
     ],
     "langs": "English"
   },
@@ -804,9 +803,8 @@
     ],
     "formats": [
       "keynote",
-      "hospitality",
-      "brand",
-      "clinic"
+      "dinner",
+      "appearance"
     ],
     "langs": "English"
   },
@@ -896,7 +894,8 @@
     ],
     "formats": [
       "keynote",
-      "hospitality",
+      "dinner",
+      "appearance",
       "workshop",
       "virtual"
     ],
@@ -988,7 +987,8 @@
     ],
     "formats": [
       "keynote",
-      "hospitality",
+      "dinner",
+      "appearance",
       "virtual"
     ],
     "langs": "English, Dutch, French"
@@ -1075,8 +1075,8 @@
     ],
     "formats": [
       "keynote",
-      "brand",
-      "clinic",
+      "dinner",
+      "appearance",
       "virtual"
     ],
     "langs": "English"
@@ -1167,8 +1167,8 @@
     ],
     "formats": [
       "keynote",
-      "hospitality",
-      "brand",
+      "dinner",
+      "appearance",
       "virtual"
     ],
     "langs": "English"
@@ -1259,8 +1259,8 @@
     ],
     "formats": [
       "keynote",
-      "hospitality",
-      "fan",
+      "dinner",
+      "appearance",
       "virtual"
     ],
     "langs": "English"
@@ -1351,9 +1351,8 @@
     ],
     "formats": [
       "keynote",
-      "hospitality",
-      "brand",
-      "fan",
+      "dinner",
+      "appearance",
       "virtual"
     ],
     "langs": "English"
@@ -1444,9 +1443,8 @@
     ],
     "formats": [
       "keynote",
-      "hospitality",
-      "clinic",
-      "fan"
+      "dinner",
+      "appearance"
     ],
     "langs": "English"
   },
@@ -1536,8 +1534,8 @@
     ],
     "formats": [
       "keynote",
-      "hospitality",
-      "fan",
+      "dinner",
+      "appearance",
       "virtual"
     ],
     "langs": "English, French"
@@ -1628,8 +1626,8 @@
     ],
     "formats": [
       "keynote",
-      "hospitality",
-      "brand",
+      "dinner",
+      "appearance",
       "virtual"
     ],
     "langs": "Dutch, English, German"
@@ -1719,8 +1717,9 @@
       "Luxury"
     ],
     "formats": [
-      "hospitality",
+      "appearance",
       "keynote",
+      "dinner",
       "virtual"
     ],
     "langs": "English, Dutch, French"
@@ -1810,10 +1809,7 @@
       "Club partners"
     ],
     "formats": [
-      "hospitality",
-      "clinic",
-      "fan",
-      "brand"
+      "appearance"
     ],
     "langs": "English"
   },
@@ -1899,9 +1895,8 @@
     ],
     "formats": [
       "keynote",
-      "hospitality",
-      "clinic",
-      "fan"
+      "dinner",
+      "appearance"
     ],
     "langs": "English"
   },
@@ -1991,8 +1986,8 @@
     ],
     "formats": [
       "keynote",
-      "hospitality",
-      "fan",
+      "dinner",
+      "appearance",
       "virtual"
     ],
     "langs": "Spanish, English"
@@ -2083,7 +2078,8 @@
     ],
     "formats": [
       "keynote",
-      "hospitality",
+      "dinner",
+      "appearance",
       "workshop"
     ],
     "langs": "Dutch, English"
@@ -2174,8 +2170,9 @@
     ],
     "formats": [
       "keynote",
+      "dinner",
+      "appearance",
       "workshop",
-      "hospitality",
       "virtual"
     ],
     "langs": "English"
@@ -2266,9 +2263,8 @@
     ],
     "formats": [
       "keynote",
-      "clinic",
-      "hospitality",
-      "fan"
+      "dinner",
+      "appearance"
     ],
     "langs": "German, English"
   },
@@ -2358,8 +2354,8 @@
     ],
     "formats": [
       "keynote",
-      "hospitality",
-      "fan",
+      "dinner",
+      "appearance",
       "virtual"
     ],
     "langs": "English"
@@ -2446,8 +2442,8 @@
     ],
     "formats": [
       "keynote",
-      "hospitality",
-      "fan",
+      "dinner",
+      "appearance",
       "virtual"
     ],
     "langs": "Spanish, English"
@@ -2538,9 +2534,8 @@
     ],
     "formats": [
       "keynote",
-      "brand",
-      "hospitality",
-      "fan"
+      "dinner",
+      "appearance"
     ],
     "langs": "French, English"
   },
@@ -2630,8 +2625,8 @@
     ],
     "formats": [
       "keynote",
-      "hospitality",
-      "brand",
+      "dinner",
+      "appearance",
       "virtual"
     ],
     "langs": "English"
@@ -2718,8 +2713,8 @@
     ],
     "formats": [
       "keynote",
-      "clinic",
-      "hospitality",
+      "dinner",
+      "appearance",
       "virtual"
     ],
     "langs": "English"
@@ -2800,10 +2795,9 @@
       "Technology"
     ],
     "formats": [
-      "brand",
-      "fan",
-      "hospitality",
-      "keynote"
+      "appearance",
+      "keynote",
+      "dinner"
     ],
     "langs": "Dutch, English"
   },
@@ -2887,9 +2881,7 @@
       "Travel"
     ],
     "formats": [
-      "brand",
-      "fan",
-      "hospitality"
+      "appearance"
     ],
     "langs": "Spanish, English"
   },
@@ -2969,9 +2961,7 @@
       "Hospitality"
     ],
     "formats": [
-      "brand",
-      "fan",
-      "hospitality",
+      "appearance",
       "virtual"
     ],
     "langs": "English"
@@ -3056,10 +3046,9 @@
       "Healthcare"
     ],
     "formats": [
-      "hospitality",
-      "fan",
+      "appearance",
       "keynote",
-      "brand"
+      "dinner"
     ],
     "langs": "English"
   },
@@ -3143,9 +3132,7 @@
       "Technology"
     ],
     "formats": [
-      "fan",
-      "brand",
-      "clinic",
+      "appearance",
       "workshop"
     ],
     "langs": "English"
@@ -3226,9 +3213,7 @@
       "Financial services"
     ],
     "formats": [
-      "brand",
-      "fan",
-      "clinic"
+      "appearance"
     ],
     "langs": "English"
   },
@@ -3312,9 +3297,7 @@
       "Telecoms"
     ],
     "formats": [
-      "brand",
-      "fan",
-      "hospitality"
+      "appearance"
     ],
     "langs": "Portuguese, English"
   },
@@ -3395,8 +3378,8 @@
     ],
     "formats": [
       "keynote",
-      "hospitality",
-      "brand"
+      "dinner",
+      "appearance"
     ],
     "langs": "English"
   },
@@ -3476,8 +3459,7 @@
       "Technology"
     ],
     "formats": [
-      "brand",
-      "fan",
+      "appearance",
       "virtual"
     ],
     "langs": "Dutch, Spanish, English"
@@ -3558,8 +3540,7 @@
       "Financial services"
     ],
     "formats": [
-      "brand",
-      "fan"
+      "appearance"
     ],
     "langs": "English"
   },
@@ -3639,8 +3620,7 @@
       "Gaming & media"
     ],
     "formats": [
-      "brand",
-      "fan"
+      "appearance"
     ],
     "langs": "Italian, English"
   },
@@ -3720,9 +3700,7 @@
       "Consumer brands"
     ],
     "formats": [
-      "fan",
-      "brand",
-      "clinic"
+      "appearance"
     ],
     "langs": "Swedish, English"
   },
@@ -3802,9 +3780,7 @@
       "Travel"
     ],
     "formats": [
-      "hospitality",
-      "fan",
-      "brand"
+      "appearance"
     ],
     "langs": "Spanish, Italian"
   },
@@ -3884,9 +3860,7 @@
       "Construction & property"
     ],
     "formats": [
-      "brand",
-      "fan",
-      "hospitality"
+      "appearance"
     ],
     "langs": "English"
   },
@@ -3970,9 +3944,7 @@
       "Financial services"
     ],
     "formats": [
-      "hospitality",
-      "brand",
-      "fan"
+      "appearance"
     ],
     "langs": "Italian, English"
   },
@@ -4052,9 +4024,7 @@
       "Consumer brands"
     ],
     "formats": [
-      "fan",
-      "clinic",
-      "brand"
+      "appearance"
     ],
     "langs": "French, English"
   },
@@ -4135,9 +4105,8 @@
     ],
     "formats": [
       "keynote",
-      "fan",
-      "brand",
-      "hospitality"
+      "dinner",
+      "appearance"
     ],
     "langs": "English"
   },
@@ -4217,8 +4186,7 @@
       "Club partners"
     ],
     "formats": [
-      "fan",
-      "brand",
+      "appearance",
       "workshop"
     ],
     "langs": "Finnish, Swedish"
@@ -4299,9 +4267,7 @@
       "Public sector"
     ],
     "formats": [
-      "fan",
-      "clinic",
-      "brand"
+      "appearance"
     ],
     "langs": "English"
   }

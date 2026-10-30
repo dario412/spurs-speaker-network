@@ -169,7 +169,7 @@ It is a developer tool: only the master password opens it (never a per-site pass
 
 ## Event Spaces
 
-Every branded page supports a shared venue-hire promotion, enabled first for Spurs. Edit **Site settings → Event Spaces** to configure its copy, image, button and partner URL; an empty URL hides it. Venue enquiries stay on the partner’s site. See [configuration and outbound tracking](docs/content-model.md#event-spaces).
+The home and ways-to-book pages carry a venue-hire promotion ("book a meeting or event space at the stadium"), enabled first for Spurs. Edit **Site settings → Event Spaces** to configure its copy, image, button and partner URL; an empty URL hides it. Venue enquiries stay on the partner’s site. See [configuration and outbound tracking](docs/content-model.md#event-spaces).
 
 ## Managing sites and pages
 

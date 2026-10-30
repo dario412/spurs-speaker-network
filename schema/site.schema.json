@@ -28,6 +28,8 @@
     "FormatKey": {
       "enum": [
         "keynote",
+        "dinner",
+        "appearance",
         "hospitality",
         "brand",
         "clinic",
@@ -35,7 +37,7 @@
         "workshop",
         "virtual"
       ],
-      "description": "One of the seven booking formats (src/copy/defaults.mjs)."
+      "description": "One of the booking formats (src/copy/defaults.mjs)."
     },
     "Home": {
       "type": "object",
@@ -59,6 +61,16 @@
           "type": "string",
           "minLength": 1,
           "description": "An `eras[].key`."
+        },
+        "slides": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Slot"
+          },
+          "description": "More hero slides after `hero`; the hero photo becomes a carousel."
+        },
+        "aboutImage": {
+          "$ref": "#/$defs/ImageId"
         }
       },
       "required": [
@@ -444,6 +456,14 @@
           "maxItems": 2,
           "description": "The two hero headline lines."
         },
+        "heroWords": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 2,
+          "description": "Words the hero headline cycles through; the first ends `heroTitle[0]`."
+        },
         "waysTitle": {
           "type": "string",
           "minLength": 1,
@@ -606,6 +626,11 @@
             "buttonText": {
               "type": "string",
               "minLength": 1
+            },
+            "eyebrow": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Small label above the heading (default \"Event spaces\")."
             }
           },
           "additionalProperties": false
@@ -654,6 +679,48 @@
           "description": "Per-format overrides of title, short, desc, items.",
           "properties": {
             "keynote": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "short": {
+                  "type": "string"
+                },
+                "desc": {
+                  "type": "string"
+                },
+                "items": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "additionalProperties": false
+            },
+            "dinner": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "short": {
+                  "type": "string"
+                },
+                "desc": {
+                  "type": "string"
+                },
+                "items": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "additionalProperties": false
+            },
+            "appearance": {
               "type": "object",
               "properties": {
                 "title": {
@@ -799,6 +866,33 @@
                 }
               },
               "additionalProperties": false
+            }
+          },
+          "additionalProperties": false
+        },
+        "formatKeys": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/FormatKey"
+          },
+          "minItems": 1,
+          "description": "The formats this site offers, in display order (default: all)."
+        },
+        "contact": {
+          "type": "object",
+          "description": "Contact details under the footer brand column; each line shown only when set.",
+          "properties": {
+            "email": {
+              "type": "string",
+              "minLength": 1
+            },
+            "phone": {
+              "type": "string",
+              "minLength": 1
+            },
+            "hours": {
+              "type": "string",
+              "minLength": 1
             }
           },
           "additionalProperties": false

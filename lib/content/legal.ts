@@ -1,7 +1,7 @@
 // Parses the shared legal documents (src/copy/legal/*.md): YAML-style frontmatter, title, and the "Last update" line.
 import type { LegalDoc, LegalKind } from './types.ts';
 
-export const LEGAL_KINDS: readonly LegalKind[] = ['terms', 'privacy'];
+export const LEGAL_KINDS: readonly LegalKind[] = ['terms', 'privacy', 'accessibility'];
 export const isLegalKind = (value: string): value is LegalKind => (LEGAL_KINDS as readonly string[]).includes(value);
 
 const FRONTMATTER = /^---\r?\n([\s\S]*?)\r?\n---\r?\n?/;
@@ -25,7 +25,7 @@ export function parseLegal(kind: LegalKind, text: string): LegalDoc {
   const updated = LAST_UPDATED.exec(body);
   return {
     kind,
-    title: meta.title || (kind === 'terms' ? 'Terms' : 'Privacy Policy'),
+    title: meta.title || { terms: 'Terms', privacy: 'Privacy Policy', accessibility: 'Accessibility statement' }[kind],
     lastUpdated: updated ? updated[1] : null,
     body: (updated ? body.replace(updated[0], '') : body).trim(),
     meta,

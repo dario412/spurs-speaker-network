@@ -1,31 +1,25 @@
 // Home page and its sections, each exported so the component gallery (/_gallery) can show it on its own.
-// Order: hero and finder, featured people, categories, how booking works, ways to book, the venue-hire promotion,
-// the current squad, the operator band, FAQs and the closing call to action.
-import { HOME_FORMATS } from '../../lib/content/defaults.ts';
-import type { FormatKey } from '../../lib/content/types.ts';
+// Order: hero and finder, featured people, categories, ways to book, FAQs, how booking works with the enquiry form,
+// the venue-hire promotion and the closing call to action.
+import type { FormatKey, Slot } from '../../lib/content/types.ts';
 import { slotAlt } from '../../lib/render/alt.ts';
 import type { SiteContext } from '../../lib/render/context.ts';
 import { categoryPath } from '../../lib/render/routes.ts';
 import { homeCopy } from '../../lib/seo/copy.ts';
 import { faqNode, siteGraph } from '../../lib/seo/jsonld.ts';
-import { Beyond, Card, WaysGrid } from './components.tsx';
+import { Card, EnquiryCard, WaysGrid } from './components.tsx';
 import { EventSpaces } from './event-spaces.tsx';
 import { SiteLayout } from './layout.tsx';
 import { Button, Form, Photo } from './primitives.tsx';
-import { CtaBand, FaqBlock, Head, HowItWorks, PepTalkBand, RoleList, TrustChecks } from './sections.tsx';
+import { CtaBand, FaqBlock, Head, HowItWorks, RoleList, TrustChecks } from './sections.tsx';
 
-/** "Featured": the site's `featured` people as cards, then the "beyond" panel. */
+/** "Featured": the site's `featured` people as cards. */
 export function FeaturedGrid({ ctx }: { ctx: SiteContext }) {
   const { site, base, bySlug, v } = ctx;
   return (
     <section className="block tint" id="legends">
       <div className="wrap">
-        <Head
-          ctx={ctx}
-          eyebrow={v.featuredEyebrow}
-          title={v.featuredHeadline}
-          link={[`${base}/legends`, `See all ${site.people.length} ${v.legendsNoun}`]}
-        />
+        <Head ctx={ctx} eyebrow={v.featuredEyebrow} title={v.featuredHeadline} link={[`${base}/legends`, `See all ${v.legendsNoun}`]} />
         <div className="grid">
           {/* A people provider can hide a featured person; skip them rather than fail the page. */}
           {site.featured
@@ -35,7 +29,6 @@ export function FeaturedGrid({ ctx }: { ctx: SiteContext }) {
               <Card key={slug} ctx={ctx} person={bySlug[slug]} />
             ))}
         </div>
-        <Beyond ctx={ctx} />
       </div>
     </section>
   );
@@ -66,11 +59,11 @@ export function Squad({ ctx }: { ctx: SiteContext }) {
   );
 }
 
-/** The home page's "Ways to book" section: the short format grid with how many people offer each. */
+/** The home page's "Ways to book" section: the short format grid, closed by a "Not sure which?" tile. */
 export function WaysSection({ ctx }: { ctx: SiteContext }) {
-  const { site, pages, base } = ctx;
+  const { site, pages, base, FORMATS } = ctx;
   return (
-    <section className="block">
+    <section className="block tint" id="ways">
       <div className="wrap">
         <Head
           ctx={ctx}
@@ -79,9 +72,71 @@ export function WaysSection({ ctx }: { ctx: SiteContext }) {
           lead="Pick a format to see who's available for it, or tell us about your event and we'll suggest the best fit."
           link={pages.waysToBook ? [`${base}/ways-to-book`, 'How each format works'] : null}
         />
-        <WaysGrid ctx={ctx} keys={HOME_FORMATS} />
+        <WaysGrid ctx={ctx} keys={(Object.keys(FORMATS) as FormatKey[]).slice(0, 5)} help />
       </div>
     </section>
+  );
+}
+
+/**
+ * The first headline line. With site.json `heroWords` its last word cycles through them (CSS, public/styles.css); the
+ * first word stays in the text for crawlers and screen readers, the moving copies are hidden from both.
+ */
+export function HeroLine({ ctx }: { ctx: SiteContext }) {
+  const { site } = ctx;
+  const [first, ...rest] = site.heroWords ?? [];
+  const line = site.heroTitle[0];
+  if (!first || !rest.length || !line.endsWith(` ${first}`)) return <span>{line}</span>;
+  return (
+    <span>
+      {line.slice(0, -first.length)}
+      <span className="rot" data-count={site.heroWords?.length}>
+        <span className="rot-word">{first}</span>
+        <span className="rot-cycle" aria-hidden="true">
+          {[first, ...rest].map(word => (
+            <span key={word}>{word}</span>
+          ))}
+        </span>
+      </span>
+    </span>
+  );
+}
+
+/**
+ * Extra hero slides over the first photo, plus the carousel controls. lib/behaviour.ts advances them every six seconds
+ * (not when the visitor prefers reduced motion), pauses on hover or focus, and wires the arrows.
+ */
+export function HeroSlides({ ctx, slides }: { ctx: SiteContext; slides: Slot[] }) {
+  const total = slides.length + 1;
+  return (
+    <>
+      {slides.map(slide => (
+        <Photo key={slide.image} ctx={ctx} id={slide.image} cls="slide top" slot="hero" alt={slotAlt(slide)}>
+          <div className={`tag${slide.tag ? ` ${slide.tag}` : ''}`}>
+            <b>{slide.name}</b>
+            <small>{slide.line}</small>
+          </div>
+        </Photo>
+      ))}
+      {/* biome-ignore lint/a11y/useSemanticElements: a group of carousel controls, not a form fieldset. */}
+      <div className="carousel-ctl" role="group" aria-label="Featured speakers carousel" data-total={total} hidden>
+        <span className="dots" aria-hidden="true">
+          {Array.from({ length: total }, (_, i) => (
+            // biome-ignore lint/suspicious/noArrayIndexKey: one dot per slide, fixed order.
+            <i key={i} />
+          ))}
+        </span>
+        <span className="num" aria-live="polite">
+          01 / {String(total).padStart(2, '0')}
+        </span>
+        <button type="button" className="prev" aria-label="Previous speaker" disabled={ctx.demo || undefined}>
+          ‹
+        </button>
+        <button type="button" className="next" aria-label="Next speaker" disabled={ctx.demo || undefined}>
+          ›
+        </button>
+      </div>
+    </>
   );
 }
 
@@ -95,7 +150,7 @@ export function HomeHero({ ctx }: { ctx: SiteContext }) {
         <div className="hero-copy">
           <span className="eyebrow">{v.rolesEyebrow}</span>
           <h1 className="disp">
-            <span>{site.heroTitle[0]}</span> <span>{site.heroTitle[1]}</span>
+            <HeroLine ctx={ctx} /> <span>{site.heroTitle[1]}</span>
           </h1>
           <p className="lead">{v.heroLead}</p>
           <Form demo={demo} className="finder" action={`${base}/legends`} method="get" role="search">
@@ -136,6 +191,7 @@ export function HomeHero({ ctx }: { ctx: SiteContext }) {
             <b>{home.hero.name}</b>
             <small>{home.hero.line}</small>
           </div>
+          {home.slides?.length ? <HeroSlides ctx={ctx} slides={home.slides} /> : null}
           <Photo ctx={ctx} id={home.inset.image} cls="mini top" slot="mini" alt={slotAlt(home.inset)} eager>
             <div className="tag">
               <b>{home.inset.name}</b>
@@ -149,7 +205,7 @@ export function HomeHero({ ctx }: { ctx: SiteContext }) {
 }
 
 export function HomePage({ ctx }: { ctx: SiteContext }) {
-  const { site, hasSquad } = ctx;
+  const { site } = ctx;
   const home = site.home;
   const faq = ctx.faq();
   const graph = siteGraph({
@@ -170,12 +226,10 @@ export function HomePage({ ctx }: { ctx: SiteContext }) {
         title="Find the right voice for the room."
         lead={`${site.roles.map(role => role.label).join(', ')}, each with the formats they're available for.`}
       />
-      <HowItWorks ctx={ctx} />
       <WaysSection ctx={ctx} />
-      <EventSpaces ctx={ctx} />
-      {hasSquad ? <Squad ctx={ctx} /> : null}
-      <PepTalkBand ctx={ctx} />
       <FaqBlock ctx={ctx} faq={faq} title={`Booking a ${site.short} ${ctx.v.legendNoun}, answered.`} />
+      <HowItWorks ctx={ctx} form={ctx.demo ? undefined : <EnquiryCard ctx={ctx} />} />
+      <EventSpaces ctx={ctx} />
       <CtaBand ctx={ctx} />
     </SiteLayout>
   );

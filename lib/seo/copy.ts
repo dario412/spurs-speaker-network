@@ -4,6 +4,7 @@
 // either but truncates to the device width (https://developers.google.com/search/docs/appearance/title-link,
 // https://developers.google.com/search/docs/appearance/snippet), so these are display budgets, not rules.
 import type { FormatKey, LegalDoc, Person, Role } from '../content/types.ts';
+import { roleProse } from '../render/category.ts';
 import type { SiteContext } from '../render/context.ts';
 
 export const TITLE_MAX = 65;
@@ -69,10 +70,10 @@ export function profileCopy({ site, v }: SiteContext, person: Person): PageCopy 
   };
 }
 
-/** A category page (one role): "Book Spurs managers & head coaches", the count, the formats on offer and the role's blurb. */
+/** A category page (one role): "Book Spurs managers & coaches", the count, the formats on offer and the role's blurb. */
 export function categoryCopy(ctx: SiteContext, role: Role, people: Person[]): PageCopy {
   const { site, FORMATS } = ctx;
-  const label = lower(role.label);
+  const label = roleProse(ctx.site, role);
   const offered = (Object.keys(FORMATS) as FormatKey[]).filter(key => people.some(person => person.formats.includes(key)));
   const formats = listText(offered.slice(0, 3).map(key => lower(FORMATS[key].title)));
   return {
