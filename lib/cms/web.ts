@@ -1,6 +1,7 @@
-// The CMS web app at /admin (app/admin/[[...path]]/route.ts): sign-in, 2FA, users, account, dashboard, media, the
-// Airtable sync, legal pages, and every content editor from the local admin (src/admin/handlers/, the same forms,
-// validation and save path), with the database as storage instead of files.
+// The CMS web app at /admin (app/admin/[[...path]]/route.ts) for the one site this repository serves: sign-in, 2FA,
+// dashboard, page editors (lib/cms/pages.ts), the speakers list (read-only: Airtable owns the speakers), media, the
+// Airtable sync, users, the style guide and the user's account. Every content save goes through the local admin's
+// validated save path (src/admin/content.mjs), with the database as storage instead of files.
 //
 // Security model: everything except sign-in, password reset and the static assets needs a valid session (signed
 // cookie, re-checked against the user row on every request); a signed-in user without 2FA can only reach the 2FA
@@ -9,29 +10,8 @@
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import QRCode from 'qrcode';
-import { saveLicences, showLicences } from '../../src/admin/handlers/licences.mjs';
-import {
-  confirmDeletePerson,
-  createPerson,
-  editPerson,
-  listPeople,
-  removePerson,
-  savePerson,
-  setPersonActive,
-} from '../../src/admin/handlers/people.mjs';
-import { saveRaw, saveRegistryRaw, showRaw, showRegistry } from '../../src/admin/handlers/raw.mjs';
-import {
-  createSite,
-  editSite,
-  makeLandingRoot,
-  makeRoot,
-  move,
-  saveSiteSettings,
-  setActive,
-  showDashboard,
-} from '../../src/admin/handlers/sites.mjs';
-import { saveChecklist, showChecklist, showVerification } from '../../src/admin/handlers/verification.mjs';
 import { HttpError } from '../../src/admin/http.mjs';
+import { FORMATS } from '../../src/copy/defaults.mjs';
 import { parseLegal } from '../content/legal.ts';
 import {
   type CmsUser,
@@ -67,6 +47,7 @@ import { loadContentFiles, recentChanges, saveContentFiles } from './content-fil
 import { buildShape, cmsContent } from './editor.ts';
 import { resetEmail, sendMail } from './mail.ts';
 import { deleteMedia, listMedia, saveMedia } from './media.ts';
+import { applyForm, fieldsOf, fieldValue, findPage, imageUses, PAGES, type Section, type SiteLike, STYLE_SECTIONS } from './pages.ts';
 import { tagsFor, triggerRebuild } from './publish.ts';
 import { airtableSyncConfigured, latestRuns, runSpursSync, SYNC_TABLE_NAME } from './sync.ts';
 import {
@@ -78,9 +59,14 @@ import {
   legalEditor,
   legalList,
   loginPage,
+  type MediaImage,
   mediaPage,
+  pageEditor,
+  pagesList,
   resetPage,
   shell,
+  speakersPage,
+  styleGuidePage,
   syncPage,
   totpPage,
   usersPage,
@@ -118,62 +104,6 @@ const readCookie = (request: Request, name: string): string | undefined =>
 const safeNext = (next: string) => (/^\/admin(\/[a-z0-9/_-]*)?(\?[a-z0-9=&_-]*)?$/i.test(next) && !next.startsWith('//') ? next : PREFIX);
 
 const clientAddress = (request: Request) => (request.headers.get('x-forwarded-for') ?? '').split(',')[0].trim() || 'local';
-
-// ---- The local admin's screens, mounted under /admin ----
-
-type Handler = (ctx: Record<string, unknown>) => Promise<Record<string, unknown>> | Record<string, unknown>;
-const CONTENT_ROUTES: [string, string, Handler][] = [
-  ['GET', '/', showDashboard],
-  ['POST', '/sites', createSite],
-  ['GET', '/registry', showRegistry],
-  ['POST', '/registry', saveRegistryRaw],
-  ['GET', '/sites/:slug', editSite],
-  ['POST', '/sites/:slug', saveSiteSettings],
-  ['POST', '/sites/:slug/active', setActive],
-  ['POST', '/sites/:slug/root', makeRoot],
-  ['POST', '/root/landing', makeLandingRoot],
-  ['POST', '/sites/:slug/move', move],
-  ['GET', '/sites/:slug/licences', showLicences],
-  ['POST', '/sites/:slug/licences', saveLicences],
-  ['GET', '/sites/:slug/verification', showVerification],
-  ['GET', '/sites/:slug/verification/:group/:key', showChecklist],
-  ['POST', '/sites/:slug/verification/:group/:key', saveChecklist],
-  ['GET', '/sites/:slug/raw/:file', showRaw],
-  ['POST', '/sites/:slug/raw/:file', saveRaw],
-  ['GET', '/sites/:slug/people', listPeople],
-  ['POST', '/sites/:slug/people', createPerson],
-  ['GET', '/sites/:slug/people/:key', editPerson],
-  ['POST', '/sites/:slug/people/:key', savePerson],
-  ['POST', '/sites/:slug/people/:key/active', setPersonActive],
-  ['GET', '/sites/:slug/people/:key/delete', confirmDeletePerson],
-  ['POST', '/sites/:slug/people/:key/delete', removePerson],
-];
-const KEY = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
-function matchContent(method: string, local: string): { handler: Handler; params: Record<string, string> } | 'method' | null {
-  let allowed = false;
-  for (const [routeMethod, pattern, handler] of CONTENT_ROUTES) {
-    const found = new RegExp(`^${pattern.replace(/:(\w+)/g, '(?<$1>[^/]+)')}$`).exec(local);
-    if (!found) continue;
-    const params = { ...found.groups };
-    if (!Object.values(params).every(value => KEY.test(value))) return null;
-    if (routeMethod === method) return { handler, params };
-    allowed = true;
-  }
-  return allowed ? 'method' : null;
-}
-
-/** Local admin paths in links, forms and redirects → /admin paths; "Preview" links → the live page. */
-export function mountPath(path: string): string {
-  if (path === '/preview' || path.startsWith('/preview/')) {
-    const live = path.slice('/preview'.length) || '/';
-    return live === '/all' ? '/all' : live;
-  }
-  if (path.startsWith('/assets/')) return `${PREFIX}${path}`;
-  if (path === '/' || path.startsWith('/?')) return `${PREFIX}/content${path.slice(1)}`;
-  if (path.startsWith(PREFIX)) return path;
-  return `${PREFIX}${path}`;
-}
-const mountHtml = (body: string) => body.replace(/\b(href|action)="(\/[^"]*)"/g, (_, attr, path) => `${attr}="${mountPath(path)}"`);
 
 // ---- The app ----
 
@@ -340,23 +270,20 @@ async function route(request: Request, url: URL, path: string, method: string, d
   const saved = { paths: [] as string[] };
   const content = await cmsContent(session.user.email, saved);
   const snap = content.snapshot();
-  const sites = snap.sites
-    .filter((site: { broken?: unknown }) => !site.broken)
-    .map((site: { slug: string; orgName?: string; short?: string }) => ({
-      slug: site.slug,
-      name: site.short ?? site.orgName ?? site.slug,
-    }));
+  // This repository serves one site: the first in the registry that loads.
+  const site = snap.sites.find((entry: { broken?: unknown }) => !entry.broken) as SiteLike | undefined;
+  if (!site) throw new Error('No site content could be loaded.');
+  const base = `/${site.slug}`;
   const page = (title: string, body: string, status = 200, crumbs: [string, string?][] = []) =>
     html(
       shell({
         title,
-        body: mountHtml(body),
+        body,
         user: session.user,
         path,
         csrf: session.csrf,
         flash,
-        sites,
-        crumbs: crumbs.map(([label, href]) => [label, href ? mountPath(href) : undefined]),
+        crumbs,
       }),
       status,
       clearFlash,
@@ -379,6 +306,45 @@ async function route(request: Request, url: URL, path: string, method: string, d
       : { ...message, kind: 'warn', text: `${message.text} This adds or removes pages: they appear after the next deploy.` };
   };
 
+  /** A page editor: GET shows the fields, POST applies them and saves through the validated save path. */
+  const editor = async (opts: {
+    title: string;
+    description: string;
+    action: string;
+    live: string | null;
+    sections: (site: SiteLike) => Section[];
+    crumbs?: [string, string?][];
+    wrap?: (editorHtml: string) => string;
+    message: string;
+  }): Promise<Response> => {
+    const render = (current: SiteLike, problems: string[] = [], status = 200) => {
+      const sections = opts.sections(current).map(section => ({
+        ...section,
+        fields: section.fields.map(f => ({ ...f, value: fieldValue(current, f) })),
+      }));
+      const editorHtml = pageEditor({
+        title: opts.wrap ? 'Brand settings' : opts.title,
+        description: opts.wrap ? 'Colours and shapes used across the site.' : opts.description,
+        action: opts.action,
+        live: opts.live,
+        sections,
+        images: current.images ?? {},
+        csrf: session.csrf,
+        canEdit: can(session.user, 'edit_content'),
+        problems,
+      });
+      return page(opts.title, opts.wrap ? opts.wrap(editorHtml) : editorHtml, status, opts.crumbs ?? []);
+    };
+    if (method === 'GET') return render(site as SiteLike);
+    need('edit_content');
+    const fields = fieldsOf(opts.sections(site as SiteLike));
+    const candidate = applyForm(site as SiteLike, fields, form as FormData);
+    const result = await content.saveSite(snap, candidate, { registry: undefined, message: opts.message });
+    if (result.problems) return render(candidate, result.problems, 422);
+    if (result.saved?.unchanged) return redirect(opts.action, [flashCookie({ text: 'No changes to save.', kind: 'info' })]);
+    return done(opts.action, { text: 'Saved.', kind: 'ok' });
+  };
+
   // Dashboard
   if (path === PREFIX && method === 'GET') {
     const runs = await latestRuns(1);
@@ -386,15 +352,15 @@ async function route(request: Request, url: URL, path: string, method: string, d
       'Dashboard',
       dashboardPage({
         user: session.user,
-        sites: snap.sites
-          .filter((site: { broken?: unknown }) => !site.broken)
-          .map((site: { slug: string; short?: string; orgName?: string; people: unknown[]; active?: boolean }) => ({
+        sites: [
+          {
             slug: site.slug,
-            name: site.short ?? site.orgName ?? site.slug,
+            name: site.platform ?? site.short ?? site.slug,
             people: site.people.length,
             active: site.active !== false,
-            livePath: `/${site.slug}`,
-          })),
+            livePath: base,
+          },
+        ],
         changes: await recentChanges(8),
         lastSync: runs[0] ? { finishedAt: runs[0].finishedAt, ok: runs[0].ok, summary: runs[0].summary } : null,
         deployHook: Boolean(process.env.VERCEL_DEPLOY_HOOK_URL),
@@ -500,36 +466,124 @@ async function route(request: Request, url: URL, path: string, method: string, d
     ]);
   }
 
+  // Pages
+  if (path === `${PREFIX}/pages` && method === 'GET') return page('Pages', pagesList(PAGES, base));
+  const pageMatch = /^\/admin\/pages\/([a-z-]+)$/.exec(path);
+  if (pageMatch) {
+    const def = findPage(pageMatch[1]);
+    if (!def) throw new HttpError(404, 'There is no such page.');
+    const crumbs: [string, string?][] = [['Pages', `${PREFIX}/pages`], [def.title]];
+    return editor({
+      title: def.title,
+      description: def.description,
+      action: `${PREFIX}/pages/${def.slug}`,
+      live: def.live === null ? null : base + def.live,
+      sections: def.sections,
+      crumbs,
+      message: `content(${site.slug}): edit ${def.title} in the CMS`,
+    });
+  }
+
+  // Style guide
+  if (path === `${PREFIX}/style-guide`) {
+    const theme = site.theme ?? {};
+    const body = (editorHtml: string) =>
+      styleGuidePage({
+        name: site.orgName ?? site.short,
+        marks: [
+          ...(site.marks?.crest ? [{ label: 'Crest', url: site.marks.crest }] : []),
+          ...(site.marks?.wordmark ? [{ label: 'Wordmark', url: site.marks.wordmark }] : []),
+        ],
+        swatches: [
+          { name: 'Brand', hex: theme.brand, note: 'Headings, links, navy panels' },
+          { name: 'Ink', hex: theme.ink, note: 'Text on light backgrounds' },
+          { name: 'Dark', hex: theme.dark, note: 'Dark sections and footer' },
+          { name: 'Bar', hex: theme.bar, note: 'Top utility bar' },
+          { name: 'Action yellow', hex: '#ffe100', note: 'Check availability, the main action' },
+          { name: 'Signal green', hex: '#50fa82', note: 'Available, success' },
+          { name: 'Tint', hex: '#f3f4f8', note: 'Alternate section background' },
+          { name: 'Line', hex: '#e2e5ee', note: 'Borders and dividers' },
+        ].filter(swatch => typeof swatch.hex === 'string'),
+        editor: editorHtml,
+      });
+    return editor({
+      title: 'Style guide',
+      description: '',
+      action: `${PREFIX}/style-guide`,
+      live: null,
+      sections: () => STYLE_SECTIONS,
+      wrap: body,
+      message: `content(${site.slug}): edit brand colours and shapes in the CMS`,
+    });
+  }
+
+  // Speakers (read-only: Airtable owns them)
+  if (path === `${PREFIX}/speakers` && method === 'GET') {
+    const roles: [string, string][] = (site.roles ?? []).map((role: SiteLike) => [role.key, role.label]);
+    const roleName = (key: string) => (site.roles ?? []).find((role: SiteLike) => role.key === key)?.label ?? key;
+    const runs = await latestRuns(5);
+    const lastSync = runs.find(run => run.ok && run.trigger !== 'preview')?.finishedAt ?? null;
+    const speakers = (site.people as SiteLike[])
+      .map(person => ({
+        slug: person.slug,
+        name: person.name,
+        role: roleName(person.role),
+        line: person.roleLabel ?? person.pos ?? '',
+        formats: (person.formats ?? []).map(
+          (key: string) => site.formats?.[key]?.title ?? (FORMATS as Record<string, { title: string }>)[key]?.title ?? key,
+        ),
+        featured: (site.featured ?? []).includes(person.slug),
+        hidden: person.active === false,
+        image: site.images?.[person.card ?? person.hero] ?? null,
+        live: `${base}/legends/${person.slug}`,
+      }))
+      .sort((a, b) => a.name.localeCompare(b.name));
+    return page('Speakers', speakersPage({ speakers, roles, role: url.searchParams.get('role') ?? '', lastSync }));
+  }
+
   // Media
   if (path === `${PREFIX}/media` || path.startsWith(`${PREFIX}/media/`)) {
-    if (method === 'GET' && path === `${PREFIX}/media`)
+    if (method === 'GET' && path === `${PREFIX}/media`) {
+      const uploads = new Map((await listMedia()).map(item => [item.id, item]));
+      const uses = imageUses(site);
+      const images: MediaImage[] = Object.entries(site.images as Record<string, string>)
+        .map(([id, imageUrl]) => ({
+          id,
+          url: imageUrl,
+          upload: uploads.has(id),
+          alt: uploads.get(id)?.alt ?? '',
+          usedBy: uses.get(id) ?? [],
+        }))
+        .sort((a, b) => Number(b.upload) - Number(a.upload) || (a.usedBy[0] ?? '~').localeCompare(b.usedBy[0] ?? '~'));
+      const show = url.searchParams.get('show') ?? '';
       return page(
-        'Media library',
-        mediaPage({ items: await listMedia(), csrf: session.csrf, sites, canEdit: can(session.user, 'edit_content') }),
+        'Media',
+        mediaPage({
+          images,
+          csrf: session.csrf,
+          canEdit: can(session.user, 'edit_content'),
+          filter: ['used', 'unused', 'uploads'].includes(show) ? show : '',
+        }),
       );
+    }
     need('edit_content');
     if (path === `${PREFIX}/media` && method === 'POST') {
       const file = form?.get('file');
-      const slug = String(form?.get('site') ?? '');
-      const site = snap.find(slug);
-      if (!(file instanceof File) || !site)
-        return redirect(`${PREFIX}/media`, [flashCookie({ text: 'Choose an image and a site.', kind: 'error' })]);
+      if (!(file instanceof File) || !file.size)
+        return redirect(`${PREFIX}/media`, [flashCookie({ text: 'Choose an image.', kind: 'error' })]);
       const origin = process.env.PUBLIC_ORIGIN?.replace(/\/+$/, '') || url.origin;
       const result = await saveMedia(file, String(form?.get('alt') ?? ''), session.user.email, origin);
       if ('problem' in result) return redirect(`${PREFIX}/media`, [flashCookie({ text: result.problem, kind: 'error' })]);
       const saving = await content.saveSite(
         snap,
         { ...site, images: { ...site.images, [result.id]: result.url } },
-        { registry: undefined, message: `content(${slug}): add image ${result.id}` },
+        { registry: undefined, message: `content(${site.slug}): add image ${result.id}` },
       );
       if (saving.problems) {
         await deleteMedia(result.id);
         return redirect(`${PREFIX}/media`, [flashCookie({ text: `Not added: ${saving.problems.join('; ')}`, kind: 'error' })]);
       }
-      return done(`${PREFIX}/media`, {
-        text: `Uploaded. Use image id ${result.id} in any image field of ${site.short ?? slug}.`,
-        kind: 'ok',
-      });
+      return done(`${PREFIX}/media?show=uploads`, { text: `Uploaded. Use image id ${result.id} in any image field.`, kind: 'ok' });
     }
     throw new HttpError(404, 'Not found.');
   }
@@ -598,49 +652,9 @@ async function route(request: Request, url: URL, path: string, method: string, d
     return done(`${PREFIX}/legal/${kind}`, { text: 'Saved.', kind: 'ok' });
   }
 
-  // The content editors (src/admin)
-  const local = path === `${PREFIX}/content` ? '/' : path.slice(PREFIX.length);
-  const match = matchContent(method, local);
-  if (match === 'method') throw new HttpError(405, 'Method not allowed.');
-  if (!match) throw new HttpError(404, 'Not found.');
-  if (method === 'POST') need('edit_content');
-  const localUrl = new URL(local + url.search, url.origin);
-  const result = (await match.handler({
-    content,
-    csrf: session.csrf,
-    params: match.params,
-    url: localUrl,
-    form: form ? toSearchParams(form) : undefined,
-    files: {},
-    pending: null,
-  })) as {
-    title?: string;
-    body?: string;
-    crumbs?: [string, string?][];
-    status?: number;
-    redirect?: string;
-    flash?: Flash;
-    download?: unknown;
-  };
-  if (result.redirect)
-    return done(
-      mountPath(result.redirect),
-      result.flash
-        ? {
-            ...result.flash,
-            link: result.flash.link ? { ...result.flash.link, href: mountPath(result.flash.link.href) } : undefined,
-            links: result.flash.links?.map(link => ({ ...link, href: mountPath(link.href) })),
-          }
-        : { text: 'Saved.', kind: 'ok' },
-    );
-  return page(result.title ?? 'CMS', result.body ?? '', result.status ?? 200, [['All sites', '/'], ...(result.crumbs ?? [])]);
-}
-
-/** The local admin reads forms as URLSearchParams-like objects (get / getAll). */
-function toSearchParams(form: FormData): URLSearchParams {
-  const params = new URLSearchParams();
-  for (const [key, value] of form) if (typeof value === 'string') params.append(key, value);
-  return params;
+  // Old local-admin addresses (bookmarks) land on the page list.
+  if (/^\/admin\/(content|sites|registry)(\/|$)/.test(path) && method === 'GET') return redirect(`${PREFIX}/pages`);
+  throw new HttpError(404, 'Not found.');
 }
 
 function readFlash(request: Request): Flash | null {

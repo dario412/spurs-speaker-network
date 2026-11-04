@@ -1,14 +1,27 @@
 # The CMS (/admin)
 
 The online content editor for the speaker network, modelled on the Credible Creators CMS: email and password sign-in
-with two-factor codes, three roles, a dashboard, editors for every site setting and speaker, a media library and an
-Airtable speaker sync. It is branded like getapeptalk.com (Recoleta Alt headings, Sofia Pro text, PepTalk blue).
+with two-factor codes, three roles, and one menu for the one site this repository serves: **Pages**, **Speakers**,
+**Media**, **Sync**, **Users**, **Style guide** and **Your account**. It is branded like getapeptalk.com (Recoleta Alt
+headings, Sofia Pro text, PepTalk blue). There is no way to add sites here: this repository is the Spurs site only.
 
 - **URL:** `/admin` on the deployment (for example `https://spurs-speaker-network.vercel.app/admin`).
 - **Code:** `lib/cms/` (sign-in, database, router, views, media, sync), `app/admin/[[...path]]/route.ts`,
   `app/api/media/[id]/route.ts`, `app/api/cron/sync-airtable/route.ts`, `db/migrations/`.
-- **Editors:** the same forms, validation and save path as the local admin (`src/admin/handlers/`, [admin.md](admin.md)),
-  mounted under `/admin` with the database as storage.
+- **Saving:** every edit goes through the local admin's validated save path (`src/admin/content.mjs`, [admin.md](admin.md))
+  with the database as storage, so the content rules (`scripts/validate-content.mjs`) still decide what is allowed.
+
+## Sections
+
+- **Pages** (`lib/cms/pages.ts`): one editor per page (Home, Speakers page, Speaker categories, Speaker profile, Ways to
+  book, Event spaces, About, FAQs, Header, footer & names) plus the legal pages. Each lists the `site.json` settings
+  that page shows. An empty field uses the shared default (shown greyed out as the placeholder); empty carousel slides
+  and pitch points are dropped. To make more wording editable, add the setting to `site.json` (CLAUDE.md, rule 4) and a
+  field to the page's list; `test/next/cms.test.ts` checks every editor saves an untouched form unchanged.
+- **Speakers:** read-only. Airtable owns the speakers: edit them there, then run a sync.
+- **Media:** every image in `images.json`, with what uses it, plus uploads.
+- **Style guide:** the club's marks, colours, type and buttons, and the editable brand colours and shapes
+  (`theme`, `style`).
 
 ## How content flows
 
@@ -51,7 +64,7 @@ Every content file the site reads (`src/sites/registry.json`, `src/sites/<slug>/
 ## Media library
 
 PNG, JPEG or WebP up to 4 MB (checked from the file's bytes; no SVG). Uploads are stored in the database
-(`cms_media`) and served from `/api/media/<id>`, like the Credible CMS. Uploading adds the image to a site's
+(`cms_media`) and served from `/api/media/<id>`, like the Credible CMS. Uploading adds the image to
 `images.json` with the id `m-…`, which any image field accepts. Use licensed images only (CLAUDE.md, rule 7).
 
 ## Airtable sync

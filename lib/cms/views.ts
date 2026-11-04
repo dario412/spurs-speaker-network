@@ -45,36 +45,24 @@ interface NavItem {
   show?: (user: CmsUser) => boolean;
 }
 
-/** The sidebar, grouped like the Credible CMS: overview, content, people, operations, settings. */
-function nav(user: CmsUser, path: string, sites: { slug: string; name: string }[]): string {
+/** The sidebar, grouped like the Credible CMS: one site, so content is pages, speakers and media. */
+function nav(user: CmsUser, path: string): string {
   const groups: [string, NavItem[]][] = [
     ['Overview', [{ label: 'Dashboard', href: '/admin', match: /^\/admin\/?$/ }]],
     [
       'Content',
       [
-        { label: 'All sites', href: '/admin/content', match: /^\/admin\/content$/ },
-        ...sites.flatMap(site => [
-          { label: `${site.name} settings`, href: `/admin/sites/${site.slug}`, match: new RegExp(`^/admin/sites/${site.slug}(/raw/.*)?$`) },
-          {
-            label: `${site.name} speakers`,
-            href: `/admin/sites/${site.slug}/people`,
-            match: new RegExp(`^/admin/sites/${site.slug}/people`),
-          },
-          {
-            label: 'Licences & checklists',
-            href: `/admin/sites/${site.slug}/licences`,
-            match: new RegExp(`^/admin/sites/${site.slug}/(licences|verification)`),
-          },
-        ]),
-        { label: 'Legal pages', href: '/admin/legal', match: /^\/admin\/legal/ },
-        { label: 'Media library', href: '/admin/media', match: /^\/admin\/media/ },
+        { label: 'Pages', href: '/admin/pages', match: /^\/admin\/(pages|legal)/ },
+        { label: 'Speakers', href: '/admin/speakers', match: /^\/admin\/speakers/ },
+        { label: 'Media', href: '/admin/media', match: /^\/admin\/media/ },
       ],
     ],
-    ['Data', [{ label: 'Airtable sync', href: '/admin/sync', match: /^\/admin\/sync/ }]],
+    ['Data', [{ label: 'Sync', href: '/admin/sync', match: /^\/admin\/sync/ }]],
     [
       'Settings',
       [
         { label: 'Users', href: '/admin/users', match: /^\/admin\/users/, show: u => can(u, 'manage_users') },
+        { label: 'Style guide', href: '/admin/style-guide', match: /^\/admin\/style-guide/ },
         { label: 'Your account', href: '/admin/account', match: /^\/admin\/account/ },
       ],
     ],
@@ -98,7 +86,6 @@ export function shell({
   path,
   csrf,
   flash,
-  sites,
   crumbs = [],
 }: {
   title: string;
@@ -107,7 +94,6 @@ export function shell({
   path: string;
   csrf: string;
   flash?: Flash | null;
-  sites: { slug: string; name: string }[];
   crumbs?: [string, string?][];
 }): string {
   const trail = crumbs.length
@@ -122,7 +108,7 @@ export function shell({
 <a class="skip" href="#main">Skip to content</a>
 <aside class="cms-side">
   <a class="cms-brand" href="/admin"><img src="/admin/assets/peptalk.png" alt="PepTalk" width="123" height="32"><span>CMS</span></a>
-  <nav aria-label="CMS">${nav(user, path, sites)}</nav>
+  <nav aria-label="CMS">${nav(user, path)}</nav>
 </aside>
 <div class="cms-main">
   <header class="cms-top">
@@ -265,7 +251,7 @@ export function dashboardPage(data: DashboardData) {
       site => `<div class="tile">
 <h3>${esc(site.name)} ${site.active ? '<span class="badge ok">Live</span>' : '<span class="badge muted">Inactive</span>'}</h3>
 <p class="sub">${site.people} speakers</p>
-<div class="actions"><a class="btn primary" href="/admin/sites/${esc(site.slug)}">Edit site</a><a class="btn" href="/admin/sites/${esc(site.slug)}/people">Speakers</a><a class="btn" href="${esc(site.livePath)}" target="_blank" rel="noopener">View live</a></div>
+<div class="actions"><a class="btn primary" href="/admin/pages">Edit pages</a><a class="btn" href="/admin/speakers">Speakers</a><a class="btn" href="${esc(site.livePath)}" target="_blank" rel="noopener">View live</a></div>
 </div>`,
     )
     .join('');
@@ -286,7 +272,7 @@ export function dashboardPage(data: DashboardData) {
 <section class="card"><h2>Recent changes</h2>${changes}</section>
 <section class="card"><h2>Airtable sync</h2>${sync}<a class="btn" href="/admin/sync">Open sync</a></section>
 </div>
-${data.deployHook ? '' : '<div class="alert warn"><p>New speakers, new sites and renamed pages need a rebuild. Set <code>VERCEL_DEPLOY_HOOK_URL</code> so the CMS starts one automatically.</p></div>'}`;
+${data.deployHook ? '' : '<div class="alert warn"><p>New speakers and pages switched on or off need a rebuild. Set <code>VERCEL_DEPLOY_HOOK_URL</code> so the CMS starts one automatically.</p></div>'}`;
 }
 
 export interface MediaItem {
@@ -298,37 +284,49 @@ export interface MediaItem {
   createdAt: string;
 }
 
-export function mediaPage({
-  items,
-  csrf,
-  sites,
-  canEdit,
-}: {
-  items: MediaItem[];
-  csrf: string;
-  sites: { slug: string; name: string }[];
-  canEdit: boolean;
-}) {
-  const siteOptions = sites.map(site => `<option value="${esc(site.slug)}">${esc(site.name)}</option>`).join('');
+export interface MediaImage {
+  id: string;
+  url: string;
+  /** Uploaded through the CMS (else a Getty or licensed file referenced by URL). */
+  upload: boolean;
+  alt: string;
+  usedBy: string[];
+}
+
+export function mediaPage({ images, csrf, canEdit, filter }: { images: MediaImage[]; csrf: string; canEdit: boolean; filter: string }) {
   const upload = canEdit
     ? `<section class="card"><h2>Upload an image</h2>
-<p class="hint">PNG, JPG or WebP, up to 4 MB. Each upload gets an image id you can use in any image field (hero, gallery, role tiles, event spaces). Use licensed images only.</p>
+<p class="hint">PNG, JPG or WebP, up to 4 MB. Each upload gets an image id you can use in any image field (carousel, role tiles, event spaces, about). Use licensed images only.</p>
 <form method="post" action="/admin/media" enctype="multipart/form-data" class="grid2"><input type="hidden" name="_csrf" value="${esc(csrf)}">
 <label class="field"><span>Image</span><input type="file" name="file" accept="image/png,image/jpeg,image/webp" required></label>
 ${field('Alt text', 'alt', 'maxlength="200"', '', 'Describe what the picture shows.')}
-<label class="field"><span>Add to site</span><select name="site">${siteOptions}</select></label>
 <div class="field end"><button class="btn primary">Upload</button></div>
 </form></section>`
     : '';
-  const grid = items.length
-    ? `<div class="media-grid">${items
+  const filters: [string, string][] = [
+    ['', `All (${images.length})`],
+    ['used', `In use (${images.filter(image => image.usedBy.length).length})`],
+    ['unused', `Not used (${images.filter(image => !image.usedBy.length).length})`],
+    ['uploads', `Uploads (${images.filter(image => image.upload).length})`],
+  ];
+  const shown = images.filter(image =>
+    filter === 'used' ? image.usedBy.length > 0 : filter === 'unused' ? !image.usedBy.length : filter === 'uploads' ? image.upload : true,
+  );
+  const tabs = `<nav class="tabs" aria-label="Filter images">${filters
+    .map(
+      ([key, label]) =>
+        `<a href="/admin/media${key ? `?show=${key}` : ''}"${key === filter ? ' aria-current="page"' : ''}>${esc(label)}</a>`,
+    )
+    .join('')}</nav>`;
+  const grid = shown.length
+    ? `<div class="media-grid">${shown
         .map(
-          item => `<figure class="media-item"><img src="${esc(item.url)}" alt="${esc(item.alt)}" loading="lazy">
-<figcaption><code>${esc(item.id)}</code><br><small>${esc(item.fileName)} · ${Math.round(item.byteSize / 1024)} KB</small></figcaption></figure>`,
+          image => `<figure class="media-item"><a href="${esc(image.url)}" target="_blank" rel="noopener"><img src="${esc(image.url)}" alt="${esc(image.alt || image.usedBy[0] || '')}" loading="lazy"></a>
+<figcaption><code>${esc(image.id)}</code> ${image.upload ? '<span class="badge accent">Upload</span>' : ''}<br><small>${image.usedBy.length ? esc(image.usedBy.join(', ')) : 'Not used'}</small></figcaption></figure>`,
         )
         .join('')}</div>`
-    : '<p class="hint">No uploads yet.</p>';
-  return `<div class="page-head"><div><h1>Media library</h1><p class="sub">Images uploaded to the CMS. Getty images stay referenced by their Getty id.</p></div></div>${upload}<section class="card"><h2>Uploads</h2>${grid}</section>`;
+    : '<p class="hint">No images here.</p>';
+  return `<div class="page-head"><div><h1>Media</h1><p class="sub">Every image on the site: speakers’ photos from Airtable and Getty, and uploads. Use an image’s id in any image field.</p></div></div>${upload}<section class="card">${tabs}${grid}</section>`;
 }
 
 export interface SyncRun {
@@ -405,4 +403,193 @@ export function legalEditor({
 ${box}<form method="post" action="/admin/legal/${esc(kind)}" class="stack"><input type="hidden" name="_csrf" value="${esc(csrf)}">
 <label class="field"><span>Markdown</span><textarea name="body" rows="30" class="mono">${esc(text)}</textarea></label>
 <button class="btn primary">Save</button></form>`;
+}
+
+// ---- Pages ----
+
+export function pagesList(pages: { slug: string; title: string; description: string; live: string | null }[], base: string) {
+  const rows = pages
+    .map(
+      page => `<tr><td data-label="Page"><b>${esc(page.title)}</b><br><small>${esc(page.description)}</small></td>
+<td data-label="Actions"><div class="actions"><a class="btn primary" href="/admin/pages/${esc(page.slug)}">Edit</a>${page.live !== null ? `<a class="btn" href="${esc(base + page.live)}" target="_blank" rel="noopener">View</a>` : ''}</div></td></tr>`,
+    )
+    .join('');
+  return `<div class="page-head"><div><h1>Pages</h1><p class="sub">Edit the site’s wording and images. Empty fields use the standard wording, shown in grey. Saved changes go live within a minute.</p></div></div>
+<table class="table"><tbody>${rows}
+<tr><td data-label="Page"><b>Legal pages</b><br><small>Terms, privacy and accessibility statement.</small></td><td data-label="Actions"><div class="actions"><a class="btn primary" href="/admin/legal">Edit</a></div></td></tr>
+</tbody></table>`;
+}
+
+export interface EditorField {
+  path: string;
+  label: string;
+  kind?: string;
+  hint?: string;
+  placeholder?: string;
+  options?: [string, string][];
+  wide?: boolean;
+  value: string | boolean;
+}
+
+function editorField(f: EditorField, images: Record<string, string>): string {
+  const name = esc(f.path);
+  const id = `f-${f.path.replace(/[^a-z0-9]/gi, '-')}`;
+  const hint = f.hint ? `<small class="hint">${esc(f.hint)}</small>` : '';
+  const placeholder = f.placeholder ? ` placeholder="${esc(f.placeholder)}"` : '';
+  const value = String(f.value);
+  const wide = f.wide || f.kind === 'textarea' || f.kind === 'lines' ? ' wide' : '';
+  if (f.kind === 'check')
+    return `<label class="field check${wide}"><input type="checkbox" name="${name}"${f.value === true ? ' checked' : ''}> <span>${esc(f.label)}</span>${hint}</label>`;
+  if (f.kind === 'textarea' || f.kind === 'lines') {
+    const lines = Math.max(3, Math.min(10, (value || f.placeholder || '').split('\n').length + 1));
+    return `<label class="field${wide}" for="${id}"><span>${esc(f.label)}</span><textarea id="${id}" name="${name}" rows="${lines}"${placeholder}>${esc(value)}</textarea>${hint}</label>`;
+  }
+  if (f.kind === 'select')
+    return `<label class="field${wide}" for="${id}"><span>${esc(f.label)}</span><select id="${id}" name="${name}"><option value="">Default</option>${(
+      f.options ?? []
+    )
+      .map(([key, label]) => `<option value="${esc(key)}"${key === value ? ' selected' : ''}>${esc(label)}</option>`)
+      .join('')}</select>${hint}</label>`;
+  if (f.kind === 'image') {
+    const url = images[value];
+    const thumb = url ? `<img class="thumb" src="${esc(url)}" alt="" loading="lazy">` : '';
+    return `<label class="field image${wide}" for="${id}"><span>${esc(f.label)}</span><span class="image-pick">${thumb}<input id="${id}" name="${name}" value="${esc(value)}" list="image-ids" autocomplete="off"${placeholder}></span>${hint || '<small class="hint">An image id from Media.</small>'}</label>`;
+  }
+  const type = f.kind === 'color' ? 'color' : f.kind === 'url' ? 'url' : 'text';
+  return `<label class="field${wide}" for="${id}"><span>${esc(f.label)}</span><input id="${id}" type="${type}" name="${name}" value="${esc(value)}"${placeholder}>${hint}</label>`;
+}
+
+export function pageEditor({
+  title,
+  description,
+  action,
+  live,
+  sections,
+  images,
+  csrf,
+  canEdit,
+  problems = [],
+}: {
+  title: string;
+  description: string;
+  action: string;
+  live: string | null;
+  sections: { title: string; intro?: string; fields: EditorField[] }[];
+  images: Record<string, string>;
+  csrf: string;
+  canEdit: boolean;
+  problems?: string[];
+}) {
+  const box = problems.length
+    ? `<div class="alert error"><p>Nothing was saved:</p><ul>${problems.map(p => `<li>${esc(p)}</li>`).join('')}</ul></div>`
+    : '';
+  const usesImages = sections.some(section => section.fields.some(f => f.kind === 'image'));
+  const list = usesImages
+    ? `<datalist id="image-ids">${Object.keys(images)
+        .map(id => `<option value="${esc(id)}"></option>`)
+        .join('')}</datalist>`
+    : '';
+  const body = sections
+    .map(
+      section =>
+        `<section class="card"><h2>${esc(section.title)}</h2>${section.intro ? `<p class="hint">${esc(section.intro)}</p>` : ''}${
+          section.fields.length ? `<div class="grid2">${section.fields.map(f => editorField(f, images)).join('')}</div>` : ''
+        }</section>`,
+    )
+    .join('');
+  const save = canEdit
+    ? '<div class="savebar"><button class="btn primary">Save changes</button></div>'
+    : '<p class="hint">Your role can look but not change anything.</p>';
+  return `<div class="page-head"><div><h1>${esc(title)}</h1><p class="sub">${esc(description)}</p></div>${live !== null ? `<a class="btn" href="${esc(live)}" target="_blank" rel="noopener">View live</a>` : ''}</div>
+${box}<form method="post" action="${esc(action)}" class="stack"><input type="hidden" name="_csrf" value="${esc(csrf)}">${list}
+<fieldset${canEdit ? '' : ' disabled'}>${body}</fieldset>${save}</form>`;
+}
+
+// ---- Speakers ----
+
+export interface SpeakerRow {
+  slug: string;
+  name: string;
+  role: string;
+  line: string;
+  formats: string[];
+  featured: boolean;
+  hidden: boolean;
+  image: string | null;
+  live: string;
+}
+
+export function speakersPage({
+  speakers,
+  roles,
+  role,
+  lastSync,
+}: {
+  speakers: SpeakerRow[];
+  roles: [string, string][];
+  role: string;
+  lastSync: string | null;
+}) {
+  const tabs = `<nav class="tabs" aria-label="Filter by role">${[['', 'All'] as [string, string], ...roles]
+    .map(([key, label]) => {
+      const count = key ? speakers.filter(s => s.role === label).length : speakers.length;
+      return `<a href="/admin/speakers${key ? `?role=${esc(key)}` : ''}"${key === role ? ' aria-current="page"' : ''}>${esc(label)} (${count})</a>`;
+    })
+    .join('')}</nav>`;
+  const roleLabel = roles.find(([key]) => key === role)?.[1];
+  const shown = roleLabel ? speakers.filter(s => s.role === roleLabel) : speakers;
+  const rows = shown
+    .map(
+      s => `<tr>
+<td data-label="Speaker"><span class="who">${s.image ? `<img class="avatar" src="${esc(s.image)}" alt="" loading="lazy">` : '<span class="avatar"></span>'}<span><b>${esc(s.name)}</b><br><small><code>${esc(s.slug)}</code></small></span></span></td>
+<td data-label="Role">${esc(s.role)}<br><small>${esc(s.line)}</small></td>
+<td data-label="Formats"><small>${esc(s.formats.join(', '))}</small></td>
+<td data-label="Status">${s.hidden ? '<span class="badge muted">Hidden</span>' : '<span class="badge ok">Live</span>'} ${s.featured ? '<span class="badge accent">Featured</span>' : ''}</td>
+<td data-label="Profile">${s.hidden ? '' : `<a class="btn" href="${esc(s.live)}" target="_blank" rel="noopener">View</a>`}</td>
+</tr>`,
+    )
+    .join('');
+  return `<div class="page-head"><div><h1>Speakers</h1><p class="sub">Speakers come from Airtable. To change one, edit it in Airtable, then run a sync. Last sync: ${esc(when(lastSync))}.</p></div><a class="btn primary" href="/admin/sync">Open sync</a></div>
+<section class="card">${tabs}<table class="table"><thead><tr><th>Speaker</th><th>Role</th><th>Formats</th><th>Status</th><th>Profile</th></tr></thead><tbody>${rows}</tbody></table></section>`;
+}
+
+// ---- Style guide ----
+
+export interface Swatch {
+  name: string;
+  hex: string;
+  note: string;
+}
+
+export function styleGuidePage({
+  name,
+  marks,
+  swatches,
+  editor,
+}: {
+  name: string;
+  marks: { label: string; url: string }[];
+  swatches: Swatch[];
+  editor: string;
+}) {
+  const sw = swatches
+    .map(
+      s =>
+        `<div class="swatch"><svg width="64" height="64" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" fill="${esc(s.hex)}" stroke="#d9dce6"/></svg><div><b>${esc(s.name)}</b><br><code>${esc(s.hex)}</code><br><small>${esc(s.note)}</small></div></div>`,
+    )
+    .join('');
+  return `<div class="page-head"><div><h1>Style guide</h1><p class="sub">The ${esc(name)} brand as the site uses it: marks, colours, type and components. Brand colours and shapes can be changed below.</p></div></div>
+<section class="card"><h2>Marks</h2><div class="marks">${marks.map(m => `<figure><span class="mark-box"><img src="${esc(m.url)}" alt="${esc(m.label)}"></span><figcaption><small>${esc(m.label)}</small></figcaption></figure>`).join('')}</div>
+<p class="hint">Use the club’s own files, unmodified: no redrawing, recolouring or stretching.</p></section>
+<section class="card"><h2>Colours</h2><div class="swatches">${sw}</div></section>
+<section class="card"><h2>Typography</h2>
+<div class="type-sample"><p class="sg-display sg-h1">Book a Spurs legend for your next event.</p><small class="hint">Display: Outfit, 800 · headings</small>
+<p class="sg-display sg-h2">Five ways to book.</p><small class="hint">Display: Outfit, 700 · section headings</small>
+<p class="sg-body">Body text is Outfit at 16–18px with comfortable line spacing. Keep sentences short and plain, and lead with what the reader can do.</p><small class="hint">Body: Outfit, 400</small>
+<p class="sg-eyebrow">Eyebrow · small caps label</p><small class="hint">Eyebrows: Outfit, 700, uppercase, wide tracking</small></div></section>
+<section class="card"><h2>Components</h2>
+<div class="sg-row"><span class="sg-btn sg-cta">Check availability</span><span class="sg-btn sg-navy">See profile</span><span class="sg-btn sg-ghost">Explore profile</span></div>
+<p class="hint">Yellow is kept for the one action that matters on each screen (Check availability). Navy buttons for everything else.</p>
+<div class="sg-row"><span class="sg-pill">Limited availability</span><span class="sg-pill sg-signal">Available</span></div></section>
+${editor}`;
 }
