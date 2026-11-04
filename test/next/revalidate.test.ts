@@ -243,7 +243,11 @@ test('cache tags and domain mounts: both copies of a site read the same tagged e
   const memory = createMemoryProvider({
     registry,
     sites: [example('site-populated.json'), example('site-shell.json')],
-    legal: { terms: example('legal-terms.json'), privacy: example('legal-privacy.json') },
+    legal: {
+      terms: example('legal-terms.json'),
+      privacy: example('legal-privacy.json'),
+      accessibility: example('legal-accessibility.json'),
+    },
   });
   // The source: northbridge's tagline changes in the CMS between renders.
   let tagline = 'Before the edit';

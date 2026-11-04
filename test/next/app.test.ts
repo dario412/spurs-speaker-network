@@ -233,14 +233,13 @@ test('internal review notes and empty values never render', async () => {
     );
 });
 
-test('profiles leave out the "beyond" panel; regular homepages link the wider PepTalk roster', async () => {
+test('PepTalk stays in the background: no "beyond" panel on home pages, profiles or the roster', async () => {
   for (const site of sites) {
     const person = site.people.find(candidate => !site.demoProfiles?.includes(candidate.slug));
     if (person) assert.doesNotMatch((await get(`/${site.slug}/legends/${person.slug}`)).html, /class="beyond"/, site.slug);
-    if (!site.demoHome)
-      assert.match((await get(`/${site.slug}`)).html, /<div class="beyond">[\s\S]*?href="https:\/\/getapeptalk\.com\//, site.slug);
+    assert.doesNotMatch((await get(`/${site.slug}`)).html, /class="beyond"/, site.slug);
+    assert.doesNotMatch((await get(`/${site.slug}/legends`)).html, /class="beyond"/, site.slug);
   }
-  assert.match((await get('/northbridge')).html, /<div class="beyond">[\s\S]*?href="https:\/\/getapeptalk\.com\/type\/football-speakers"/);
 });
 
 test('the PepTalk landing page links every platform, and its talent types link the rosters filtered by role', async () => {
@@ -558,7 +557,7 @@ test('structured data: one valid @graph per page, matching the visible page, nev
   const roster = nodes(jsonLd((await get('/spurs/legends')).html)[0]).find(node => node['@type'] === 'ItemList');
   assert.equal(roster?.numberOfItems, site.people.length, 'the roster ItemList lists every published person');
   const ways = nodes(jsonLd((await get('/spurs/ways-to-book')).html)[0]).filter(node => node['@type'] === 'Service');
-  assert.equal(ways.length, 7);
+  assert.equal(ways.length, site.formatKeys?.length ?? 7, 'one Service per format the site offers');
   // The home page shows the booking FAQ, so it carries FAQPage markup (every question visible: checked above).
   assert.ok(
     nodes(jsonLd((await get('/spurs')).html)[0]).some(node => node['@type'] === 'FAQPage'),
@@ -685,7 +684,7 @@ test('about page: the heading names the platform (or the site’s own override),
   );
   assert.equal(
     text(/<h1 class="disp">([\s\S]*?)<\/h1>/.exec((await get('/spurs/about')).html)?.[1] ?? ''),
-    'About the Spurs Speaker Network',
+    'The official Spurs speaker network',
   );
 });
 

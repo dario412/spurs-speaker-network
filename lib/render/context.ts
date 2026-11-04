@@ -1,6 +1,6 @@
 // Per-site render context: merged wording, formats and FAQ, lookups,
 // page switches, and the demo flag. Every component receives this, so sites differ only by data.
-import { FAQ as BASE_FAQ, FORMATS as BASE_FORMATS, VOCAB } from '../content/defaults.ts';
+import { FAQ as BASE_FAQ, FORMATS as BASE_FORMATS, DEFAULT_FORMAT_KEYS, VOCAB } from '../content/defaults.ts';
 import { pagesFor } from '../content/publish.ts';
 import type { FaqEntry, Format, FormatKey, NavLabels, PageKey, Person, Site, Vocab } from '../content/types.ts';
 import { canonicalOrigin, canonicalUrl, type SiteDomain } from '../domains.ts';
@@ -29,6 +29,7 @@ export interface SiteContext {
   /** The site's wording; `aboutTitle` is always set (the default "About <platform>" is filled in here). */
   v: Vocab & { aboutTitle: string };
   nl: NavLabels;
+  /** The site's formats (site.json `formatKeys`, else the default seven), in display order. */
   FORMATS: Record<FormatKey, Format>;
   bySlug: Record<string, Person>;
   hasSquad: boolean;
@@ -36,8 +37,11 @@ export interface SiteContext {
   demo: boolean;
   eraLabel(key: string): string;
   roleLabel(key: string): string;
-  /** FAQ entries ready to render: all of them, or only the profile ones (with the person's name) when person is given. */
-  faq(person?: Person): { q: string; a: string }[];
+  /**
+   * FAQ entries ready to render: all of them (the about page), only the profile ones (with the person's name) when a
+   * person is given, or the home page's set with `{ home: true }`. Venue questions need a venue-hire promotion.
+   */
+  faq(person?: Person | null, options?: { home?: boolean }): { q: string; a: string }[];
   /**
    * Search engines may index this copy of the site: site.json `indexable` (after the deployment guards in
    * lib/seo/indexing.ts), and this is the canonical copy.
@@ -87,19 +91,21 @@ export function siteContext(
       navLabels: { ...vocab.navLabels, ...site.vocab?.navLabels },
     } as Vocab & { aboutTitle: string },
     nl: { ...vocab.navLabels, ...site.vocab?.navLabels },
-    FORMATS: Object.fromEntries(Object.entries(formats).map(([k, f]) => [k, { ...f, ...site.formats?.[k as FormatKey] }])) as Record<
-      FormatKey,
-      Format
-    >,
+    // Only the formats the site offers, in its order (site.json `formatKeys`), each with the site's overrides.
+    FORMATS: Object.fromEntries(
+      (site.formatKeys ?? DEFAULT_FORMAT_KEYS).map(key => [key, { ...formats[key], ...site.formats?.[key] }]),
+    ) as Record<FormatKey, Format>,
     bySlug: Object.fromEntries(site.people.map(person => [person.slug, person])),
     hasSquad: site.people.some(person => person.role === 'squad'),
     demo,
     eraLabel: key => site.eras.find(era => era.key === key)?.label ?? key,
     roleLabel: key => site.roles.find(role => role.key === key)?.label ?? key,
-    faq(person) {
-      const values = { org: site.orgName, first: person?.first };
+    faq(person, { home = false } = {}) {
+      const values = { org: site.orgName, platform: site.platform, stadium: site.stadium, first: person?.first };
       return faqEntries
+        .filter(entry => !entry.venue || Boolean(site.eventSpaces?.url))
         .filter(entry => !person || entry.profile)
+        .filter(entry => !home || entry.home !== false)
         .map(({ q, a }) => ({ q: fillPlaceholders(q, values), a: fillPlaceholders(a, values) }));
     },
     indexable: isSiteIndexable(stored) && canonical,

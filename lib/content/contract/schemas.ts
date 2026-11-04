@@ -20,11 +20,11 @@ const text = () => s.string({ minLength: 1 });
 const hostname = () => s.string({ pattern: HOSTNAME.source }).label('hostname');
 
 export const ROLE_KEYS = ['player', 'manager', 'staff', 'women', 'squad'] as const;
-export const FORMAT_KEYS = ['keynote', 'hospitality', 'brand', 'clinic', 'fan', 'workshop', 'virtual'] as const;
+export const FORMAT_KEYS = ['keynote', 'dinner', 'appearance', 'hospitality', 'brand', 'clinic', 'fan', 'workshop', 'virtual'] as const;
 export const PAGE_KEYS = ['waysToBook', 'hospitality', 'about'] as const;
 
 const RoleKey = s.ref('RoleKey', s.enum(ROLE_KEYS).describe('Role group: drives roster filters and homepage tiles.'));
-const FormatKey = s.ref('FormatKey', s.enum(FORMAT_KEYS).describe('One of the seven booking formats (src/copy/defaults.mjs).'));
+const FormatKey = s.ref('FormatKey', s.enum(FORMAT_KEYS).describe('One of the booking formats (src/copy/defaults.mjs).'));
 const CrestTreatment = s.enum(['full', 'white', 'hide']);
 
 const ImageId = s.ref(
@@ -172,6 +172,8 @@ const Home = s.ref(
     storyImage: ImageId,
     hospitalityImage: ImageId,
     activeEra: text().describe('An `eras[].key`.'),
+    slides: s.optional(s.array(Slot).describe('More hero slides after `hero`; the hero photo becomes a carousel.')),
+    aboutImage: s.optional(ImageId),
   }),
 );
 
@@ -184,6 +186,16 @@ const Role = s.ref(
     image: s.optional(ImageId),
     singular: s.optional(s.string()),
     browseLabel: s.optional(s.string()),
+    pitch: s.optional(
+      s
+        .object({
+          eyebrow: s.string(),
+          heading: s.string(),
+          lead: s.string(),
+          points: s.array(s.object({ title: s.string(), text: s.string() }), { minItems: 1 }),
+        })
+        .describe('The category page\'s "why book" section; without it the page shows popular topics and formats.'),
+    ),
   }),
 );
 
@@ -289,6 +301,9 @@ const siteConfigShape = {
   motto: s.nullable(s.string()).describe('Official motto, or null.'),
   copyright: text().describe('Rights holder’s legal name.'),
   heroTitle: s.tuple([s.string(), s.string()]).describe('The two hero headline lines.'),
+  heroWords: s.optional(
+    s.array(s.string(), { minItems: 2 }).describe('Words the hero headline cycles through; the first ends `heroTitle[0]`.'),
+  ),
   waysTitle: text().describe('"Ways to book" heading.'),
   stadium: text().describe('Venue used in copy.'),
   marks: s
@@ -330,6 +345,7 @@ const siteConfigShape = {
         image: text().describe('Image id in this site’s images map. Use a venue photo.'),
         imageAlt: text(),
         buttonText: text(),
+        eyebrow: text().describe('Small label above the heading (default "Event spaces").'),
       })
       .describe(
         'Shared Event Spaces promotion. When url is set, all fields are required. Enquiries and bookings stay on the partner site.',
@@ -350,6 +366,12 @@ const siteConfigShape = {
         >,
       )
       .describe('Per-format overrides of title, short, desc, items.'),
+  ),
+  formatKeys: s.optional(s.array(FormatKey, { minItems: 1 }).describe('The formats this site offers, in display order (default: all).')),
+  contact: s.optional(
+    s
+      .partial({ email: text(), phone: text(), hours: text() })
+      .describe('Contact details under the footer brand column; each line shown only when set.'),
   ),
   faqOverrides: s.optional(
     s.record(FaqOverride).describe('Keyed by an FAQ `key` in src/copy/defaults.mjs: an answer string, or `{ q, a }`.'),
@@ -426,7 +448,7 @@ export const RawSiteSchema = s.ref(
 export const LegalSchema = s.ref(
   'LegalDoc',
   s.object({
-    kind: s.enum(['terms', 'privacy']),
+    kind: s.enum(['terms', 'privacy', 'accessibility']),
     title: text().describe('Page heading.'),
     lastUpdated: s.nullable(s.string()).describe('"Last updated" text from the source, or null.'),
     body: text().describe('Markdown body (safe subset, see docs/content-model.md → Legal pages).'),

@@ -14,9 +14,10 @@ import {
   STARTED_FIELD,
 } from '../../lib/enquiry/fields.ts';
 import { personAlt } from '../../lib/render/alt.ts';
+import { topicKey } from '../../lib/render/category.ts';
 import { officialLabel, type SiteContext } from '../../lib/render/context.ts';
 import { A, Button, Crest, Form, Photo } from './primitives.tsx';
-import { formatLine, offering } from './sections.tsx';
+import { formatLine } from './sections.tsx';
 
 /**
  * Roster card for one person, used on the home page, roster, categories and profiles. `level` is the name's heading
@@ -24,7 +25,20 @@ import { formatLine, offering } from './sections.tsx';
  * `eager` loads the photo straight away (cards in the first viewport); others load lazily. The data-* attributes feed
  * the roster filters (lib/behaviour.ts).
  */
-export function Card({ ctx, person, level = 3, eager = false }: { ctx: SiteContext; person: Person; level?: 2 | 3; eager?: boolean }) {
+export function Card({
+  ctx,
+  person,
+  level = 3,
+  eager = false,
+  cta = 'See profile',
+}: {
+  ctx: SiteContext;
+  person: Person;
+  level?: 2 | 3;
+  eager?: boolean;
+  /** The button label at the foot of the card. */
+  cta?: string;
+}) {
   const { base, demo } = ctx;
   const href = `${base}/legends/${person.slug}`;
   const Heading = level === 2 ? 'h2' : 'h3';
@@ -34,7 +48,9 @@ export function Card({ ctx, person, level = 3, eager = false }: { ctx: SiteConte
       data-role={person.role}
       data-era={person.era}
       data-formats={person.formats.join(' ')}
+      data-topics={person.talks.map(topicKey).join(' ')}
       data-search={`${person.name} ${person.short} ${person.talks.join(' ')}`.toLowerCase()}
+      data-name={person.name}
     >
       <A demo={demo} href={href} tabIndex={-1} aria-hidden="true">
         {/* The link is hidden from assistive tech (the name link below is the accessible one), so the alt text serves image search. */}
@@ -54,8 +70,11 @@ export function Card({ ctx, person, level = 3, eager = false }: { ctx: SiteConte
         <div className="hon">{person.honour}</div>
       </div>
       <div className="ft">
-        <span className="fmts">{formatLine(person, 2)}</span>
-        <ShortlistButton ctx={ctx} person={person} />
+        <span className="fmts">{formatLine(person, 3)}</span>
+        <A demo={demo} className="btn btn-line card-cta" href={href}>
+          {cta}
+          <span className="sr-only">: {person.name}</span> <span aria-hidden="true">→</span>
+        </A>
       </div>
     </article>
   );
@@ -126,37 +145,47 @@ export function WaysGrid({
   keys,
   detailed = false,
   level = 3,
+  help = false,
 }: {
   ctx: SiteContext;
   keys: FormatKey[];
   detailed?: boolean;
   level?: 2 | 3;
+  /** Close the short grid with a "Not sure which?" tile linking to the enquiry form. */
+  help?: boolean;
 }) {
-  const { site, base, demo } = ctx;
+  const { base, demo } = ctx;
   const Heading = level === 2 ? 'h2' : 'h3';
   if (!detailed)
     return (
       <div className="ways">
         {keys.map(key => {
           const format = ctx.FORMATS[key];
-          const count = offering(site.people, key);
           return (
             <div className="way" key={key}>
               <Heading>{format.title}</Heading>
               <p>{format.short}</p>
               <A demo={demo} className="more" href={`${base}/legends?format=${key}`}>
-                {count} {count === 1 ? 'speaker' : 'speakers'} available <span aria-hidden="true">→</span>
+                See who’s available<span className="sr-only"> for {format.title.toLowerCase()}</span> <span aria-hidden="true">→</span>
               </A>
             </div>
           );
         })}
+        {help ? (
+          <div className="way way-help">
+            <Heading>Not sure which?</Heading>
+            <p>Tell us about your event and we’ll suggest the right format and speaker.</p>
+            <A demo={demo} className="more" href={`${base}/check-availability`}>
+              Ask the bookings team <span aria-hidden="true">→</span>
+            </A>
+          </div>
+        ) : null}
       </div>
     );
   return (
     <ol className="fmt-rows">
       {keys.map((key, i) => {
         const format = ctx.FORMATS[key];
-        const count = offering(site.people, key);
         return (
           <li className="fmt-row" id={key} key={key}>
             <span className="n" aria-hidden="true">
@@ -176,7 +205,7 @@ export function WaysGrid({
             </div>
             <div className="go">
               <A demo={demo} className="more" href={`${base}/legends?format=${key}`}>
-                See {count} {count === 1 ? 'speaker' : 'speakers'} <span aria-hidden="true">→</span>
+                See speakers<span className="sr-only"> for {format.title.toLowerCase()}</span> <span aria-hidden="true">→</span>
               </A>
               <A demo={demo} className="btn btn-line" href={`${base}/check-availability`}>
                 Check availability
@@ -213,7 +242,21 @@ export function Consent({ ctx }: { ctx: SiteContext }) {
 /** Which state the enquiry form shows: the fields (idle), or a fixed error or thank-you state (the component gallery). */
 export type EnquiryState = 'idle' | 'error' | 'sent';
 
-function EnquiryForm({ ctx, idPrefix, state }: { ctx: SiteContext; idPrefix: string; state: EnquiryState }) {
+/**
+ * The enquiry form. `compact` (the home page's booking section) asks only for the essentials: name, work email,
+ * company, date, format, an optional preferred speaker and the brief.
+ */
+function EnquiryForm({
+  ctx,
+  idPrefix,
+  state,
+  compact = false,
+}: {
+  ctx: SiteContext;
+  idPrefix: string;
+  state: EnquiryState;
+  compact?: boolean;
+}) {
   const { site, v, FORMATS, demo } = ctx;
   const id = (name: string) => `${idPrefix}${name}`;
   const seg = (name: string, options: string[]) => (
@@ -293,14 +336,18 @@ function EnquiryForm({ ctx, idPrefix, state }: { ctx: SiteContext; idPrefix: str
         <label htmlFor={id('f-date')}>Event date</label>
         <input id={id('f-date')} name="date" type="date" disabled={demo || undefined} />
       </div>
-      <fieldset className="f full">
-        <legend>Who are you looking for?</legend>
-        {seg('who', v.whoOptions)}
-      </fieldset>
-      <fieldset className="f full">
-        <legend>Where</legend>
-        {seg('where', v.whereOptions)}
-      </fieldset>
+      {compact ? null : (
+        <>
+          <fieldset className="f full">
+            <legend>Who are you looking for?</legend>
+            {seg('who', v.whoOptions)}
+          </fieldset>
+          <fieldset className="f full">
+            <legend>Where</legend>
+            {seg('where', v.whereOptions)}
+          </fieldset>
+        </>
+      )}
       <div className="f">
         <label htmlFor={id('f-format')}>Format</label>
         <select id={id('f-format')} name="format" disabled={demo || undefined}>
@@ -309,18 +356,22 @@ function EnquiryForm({ ctx, idPrefix, state }: { ctx: SiteContext; idPrefix: str
           ))}
         </select>
       </div>
-      <div className="f">
-        <label htmlFor={id('f-size')}>Audience size</label>
-        <select id={id('f-size')} name="size" defaultValue={DEFAULT_AUDIENCE_SIZE} disabled={demo || undefined}>
-          {AUDIENCE_SIZES.map(size => (
-            <option key={size}>{size}</option>
-          ))}
-        </select>
-      </div>
-      <div className="f full">
-        <label htmlFor={id('f-legend')}>Who you have in mind</label>
+      {compact ? null : (
+        <div className="f">
+          <label htmlFor={id('f-size')}>Audience size</label>
+          <select id={id('f-size')} name="size" defaultValue={DEFAULT_AUDIENCE_SIZE} disabled={demo || undefined}>
+            {AUDIENCE_SIZES.map(size => (
+              <option key={size}>{size}</option>
+            ))}
+          </select>
+        </div>
+      )}
+      <div className={compact ? 'f' : 'f full'}>
+        <label htmlFor={id('f-legend')}>
+          Preferred speaker <small>(optional)</small>
+        </label>
         <select id={id('f-legend')} name="legend" disabled={demo || undefined}>
-          <option value="">Not sure yet, recommend someone</option>
+          <option value="">No preference</option>
           {site.people.map(person => (
             <option key={person.slug} value={person.slug}>
               {person.name}
@@ -333,17 +384,32 @@ function EnquiryForm({ ctx, idPrefix, state }: { ctx: SiteContext; idPrefix: str
         <textarea
           id={id('f-brief')}
           name="brief"
-          placeholder="Tell us about the occasion…"
+          placeholder={compact ? 'Audience, location, budget range…' : 'Tell us about the occasion…'}
           maxLength={FIELD_LIMITS.brief}
           disabled={demo || undefined}
         />
       </div>
       <Button demo={demo} className="btn btn-cta btn-lg" type="submit">
-        Check availability →
+        {compact ? 'Get my free shortlist →' : 'Check availability →'}
       </Button>
       <Consent ctx={ctx} />
-      <p className="note">Handled by the PepTalk bookings team on behalf of {site.orgName}.</p>
+      <p className="note">
+        {compact
+          ? 'Free and tailored to your brief. We only use your details to reply.'
+          : `Handled by the PepTalk bookings team on behalf of ${site.orgName}.`}
+      </p>
     </Form>
+  );
+}
+
+/** The home page's enquiry card (beside "How booking works"): a heading, one line and the compact form. */
+export function EnquiryCard({ ctx, state = 'idle' }: { ctx: SiteContext; state?: EnquiryState }) {
+  return (
+    <div className="enquiry-card">
+      <h3 className="disp">Check availability</h3>
+      <p>Two minutes. The bookings team replies within one working day.</p>
+      <EnquiryForm ctx={ctx} idPrefix="home-" state={state} compact />
+    </div>
   );
 }
 

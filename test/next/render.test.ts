@@ -43,7 +43,7 @@ test('a text crest badge keeps only capitals, digits and spaces (it lands in a C
 });
 
 test('the route table: hub pages, then every site’s pages as its switches allow, and no stories', () => {
-  const expected = ['/', '/terms', '/privacy'];
+  const expected = ['/', '/terms', '/privacy', '/accessibility'];
   for (const site of sites) {
     const base = `/${site.slug}`;
     const pages = { ...PAGE_DEFAULTS, ...site.pages };
@@ -57,7 +57,7 @@ test('the route table: hub pages, then every site’s pages as its switches allo
     if (pages.waysToBook) expected.push(`${base}/ways-to-book`);
     if (pages.hospitality) expected.push(`${base}/hospitality`);
     if (pages.about) expected.push(`${base}/about`);
-    expected.push(`${base}/terms`, `${base}/privacy`);
+    expected.push(`${base}/terms`, `${base}/privacy`, `${base}/accessibility`);
   }
   const current = allPaths(sites, landingPath(undefined));
   assert.equal(allPaths(sites, landingPath('spurs'))[0], '/all', 'with a root site, the landing page is at /all');
@@ -226,12 +226,14 @@ test('content with quotes and markup cannot break out of attributes', async () =
   assert.equal(unescapeHtml(/<aside class="side" id="book" aria-label="([^"]*)">/.exec(profile)?.[1] ?? ''), `Book ${site.people[0].name}`);
 });
 
-test('Event Spaces appears once on every branded page and never becomes a bookable profile', async () => {
+test('Event Spaces appears once on the home and ways-to-book pages only, and never becomes a bookable profile', async () => {
   const spurs = sites.find(site => site.slug === 'spurs') as Site;
+  const promoted = new Set(['/spurs', '/spurs/ways-to-book']);
   for (const path of sitePaths(spurs)) {
     const { status, html } = await renderPage(path, [spurs]);
     assert.equal(status, 200, path);
-    assert.equal((html.match(/class="event-spaces"/g) ?? []).length, 1, path);
+    assert.equal((html.match(/class="event-spaces"/g) ?? []).length, promoted.has(path) ? 1 : 0, path);
+    if (!promoted.has(path)) continue;
     assert.match(html, /id="event-spaces-heading"/);
     assert.ok(html.indexOf('class="event-spaces"') < html.indexOf('</main>'), path);
     const resolved = resolvePage([spurs], path);
@@ -245,22 +247,21 @@ test('Event Spaces appears once on every branded page and never becomes a bookab
   }
   const { html: homepage } = await renderPage('/spurs', [spurs]);
   const speakers = homepage.indexOf('id="legends"');
+  const enquire = homepage.indexOf('id="enquire"');
   const eventSpaces = homepage.indexOf('class="event-spaces"');
-  const firstTeam = homepage.indexOf('id="squad"');
-  assert.ok(speakers < eventSpaces && eventSpaces < firstTeam, 'Event Spaces sits between speakers and first team');
-  for (const homeLayout of [{ waysAfterRoles: false }, { waysAfterRoles: true }]) {
-    const { html } = await renderPage('/spurs', [{ ...spurs, homeLayout }]);
-    assert.ok(html.indexOf('id="legends"') < html.indexOf('class="event-spaces"'));
-    assert.ok(html.indexOf('class="event-spaces"') < html.indexOf('id="squad"'));
-  }
+  const closing = homepage.indexOf('class="band cta-band"');
+  assert.ok(
+    speakers < enquire && enquire < eventSpaces && eventSpaces < closing,
+    'Event Spaces sits after the booking form, before the closing call to action',
+  );
   assert.ok(!sitePaths(spurs).some(path => path.includes('event-spaces')));
   for (const config of [undefined, {}, { ...spurs.eventSpaces, url: '' }]) {
     const hidden = { ...spurs, eventSpaces: config };
-    const { html } = await renderPage('/spurs/about', [hidden]);
+    const { html } = await renderPage('/spurs', [hidden]);
     assert.doesNotMatch(html, /class="event-spaces"|event-spaces-heading|data-event-spaces/);
   }
   const eastvale = sites.find(site => site.slug === 'eastvale') as Site;
-  const { html } = await renderPage('/eastvale/about', [
+  const { html } = await renderPage('/eastvale/ways-to-book', [
     { ...eastvale, eventSpaces: { ...spurs.eventSpaces, image: eastvale.home.hospitalityImage as string } },
   ]);
   assert.match(html, /data-brand="eastvale"/);

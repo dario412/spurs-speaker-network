@@ -423,6 +423,7 @@ export function LandingPage({
               <div>
                 <a href="/terms">Terms</a>
                 <a href="/privacy">Privacy</a>
+                <a href="/accessibility">Accessibility</a>
               </div>
             </div>
           </div>

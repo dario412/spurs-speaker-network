@@ -13,7 +13,7 @@ import { landingCss, published, renderPage, siteCss } from './next-render/index.
 export const PREFIX = '/preview';
 const PUBLIC = new URL('../../public/', import.meta.url);
 const STATIC = /^\/(styles\.css|fonts\/[a-z0-9-]+\.woff2|peptalk\/[a-z0-9-]+\.png|og\/[a-z0-9-]+\.jpg)$/;
-const HUB_LEGAL = new Set(['terms', 'privacy']);
+const HUB_LEGAL = new Set(['terms', 'privacy', 'accessibility']);
 const TYPES = {
   '.html': 'text/html; charset=utf-8',
   '.css': 'text/css; charset=utf-8',

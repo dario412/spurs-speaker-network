@@ -1,5 +1,8 @@
 {
   "slug": "spurs",
+  "pages": {
+    "hospitality": false
+  },
   "short": "Spurs",
   "orgName": "Tottenham Hotspur",
   "platform": "Spurs Speaker Network",
@@ -12,7 +15,13 @@
     "Book a Spurs legend",
     "for your next event."
   ],
-  "waysTitle": "Six ways to book.",
+  "heroWords": [
+    "legend",
+    "coach",
+    "manager",
+    "analyst"
+  ],
+  "waysTitle": "Five ways to book.",
   "stadium": "Tottenham Hotspur Stadium",
   "marks": {
     "crest": "https://upload.wikimedia.org/wikipedia/en/thumb/b/b4/Tottenham_Hotspur.svg/960px-Tottenham_Hotspur.svg.png",
@@ -37,11 +46,12 @@
     "https://resources.thfc.pulselive.com"
   ],
   "featured": [
-    "sandro",
     "dele-alli",
-    "gareth-bale",
     "harry-redknapp",
+    "bethany-england",
     "ledley-king",
+    "sandro",
+    "gareth-bale",
     "clive-allen"
   ],
   "home": {
@@ -58,24 +68,44 @@
     "eraImage": "2229588812",
     "storyImage": "2290706689",
     "hospitalityImage": "2290101699",
-    "activeEra": "pochettino"
+    "activeEra": "pochettino",
+    "slides": [
+      {
+        "image": "2262990854",
+        "name": "Dele Alli",
+        "line": "Midfielder · 2015–2022"
+      },
+      {
+        "image": "167130458",
+        "name": "Gareth Bale",
+        "line": "Winger · 2007–2013"
+      },
+      {
+        "image": "2252547628",
+        "name": "Ledley King",
+        "line": "Centre-back · Club ambassador"
+      },
+      {
+        "image": "1247076775",
+        "name": "Bethany England",
+        "line": "Striker · Spurs Women"
+      }
+    ],
+    "aboutImage": "2262990854"
   },
   "vocab": {
-    "rosterLead": "Filter by role, era or format, or search by name or topic, to find the right voice for your event.",
-    "heroLead": "The official way to book former Tottenham Hotspur players, managers and coaches for keynotes, matchday hospitality, brand campaigns and virtual events.",
+    "rosterLead": "Former players, managers, coaches, Spurs Women and first-team players. Filter by role, topic or format, or search by name.",
+    "heroLead": "The official way to book former Tottenham Hotspur players, managers, coaches and analysts for keynotes, after-dinner speaking, appearances, workshops and virtual events.",
     "eraLead": "From the old Lane to the new stadium, find the Spurs side you remember and book the people who built it.",
     "eventStoryTitle": "Example booking: partner dinner, 300 guests",
     "eventStoryBody": "A former head coach and two former players hosted a partner dinner at Tottenham Hotspur Stadium: welcome, Q&amp;A and photos. (Illustrative example.)",
     "galleryHeadline": "In Lilywhite &amp; beyond",
     "careerHeadline": "Spurs career",
-    "hospitalityEyebrow": "At Tottenham Hotspur Stadium",
-    "hospitalityLead": "Add a Spurs speaker to your Premium lounge or box at Tottenham Hotspur Stadium.",
-    "hospitalityBody": "A speaker welcomes your guests, hosts a pre-match Q&amp;A, visits tables for photos and shares half-time insight in your lounge or box.",
     "staffPill": "Backroom staff",
-    "assureRoles": "Players, head coaches and staff",
+    "assureRoles": "Players, managers, coaches and staff",
     "squadEyebrow": "First team",
     "squadHeadline": "Book today’s first team.",
-    "squadLead": "Current players are available for brand work, fan events and hospitality, subject to the fixture list and training schedule.",
+    "squadLead": "Current players are available for appearances and events, subject to the fixture list and training schedule.",
     "rolesEyebrow": "Players · Managers · Coaches · Spurs Women",
     "rolesHeadline": "Find a speaker by role",
     "legendNoun": "speaker",
@@ -84,24 +114,35 @@
       "legends": "Speakers"
     },
     "featuredEyebrow": "Featured speakers",
-    "featuredHeadline": "Legends of every era.",
+    "featuredHeadline": "Speakers from every era.",
     "officialLabel": "Official Tottenham Hotspur speaker network",
     "officialLegendLabel": "Official Spurs speaker",
     "officialSmall": "Official Tottenham Hotspur",
     "formHeadline": "Request a speaker",
-    "hospitalityTitle": "Matchday hospitality",
-    "aboutTitle": "About the Spurs Speaker Network",
+    "aboutTitle": "The official Spurs speaker network",
     "quoteEyebrow": "Client feedback",
     "beyondLead": "Browse football and sports speakers on PepTalk.",
-    "waysLead": "From a conference keynote to a matchday lounge, pick the format that fits your event. Every booking is handled end to end by PepTalk."
+    "waysLead": "From a conference keynote to a guest appearance, pick the format that fits your event. Every booking is handled end to end by one bookings team.",
+    "aboutLead": "brings former Tottenham Hotspur players, managers, coaches and analysts, plus Spurs Women and today’s first team, to conferences, dinners, workshops and events. Every speaker is put forward with the club and booked through one official service, so you get people who lived the moments, briefed for your audience."
   },
   "formats": {
-    "clinic": {
-      "desc": "Grassroots and community days led by former players and coaches."
+    "keynote": {
+      "title": "Keynote & fireside chat",
+      "short": "A headline talk or an interview-style conversation on leadership, pressure and resilience.",
+      "desc": "A 30–45 minute talk, or an interview-style conversation with your host, built around your theme: leadership, pressure and resilience.",
+      "items": [
+        "Conference keynote",
+        "Fireside chat with your host",
+        "Panel guest"
+      ]
     },
-    "hospitality": {
-      "short": "A speaker hosts your guests in your lounge or box.",
-      "desc": "Hosts your guests before and after kick-off in your lounge or box."
+    "workshop": {
+      "short": "Hands-on sessions with managers and coaches on building high-performing teams.",
+      "desc": "Interactive sessions with managers and coaches on how elite teams build culture and perform under pressure."
+    },
+    "virtual": {
+      "short": "Live online sessions and recorded video messages for teams anywhere.",
+      "desc": "Live online sessions and personalised video messages, wherever your team is."
     }
   },
   "style": {
@@ -123,7 +164,8 @@
       "q": "Can speakers travel outside London or abroad?",
       "a": "Yes, most speakers travel across the UK and internationally. Virtual formats are available too."
     },
-    "leadTime": "Six to eight weeks is ideal. Availability depends on fixtures, media commitments and, for some speakers, current roles in football."
+    "leadTime": "Six to eight weeks is ideal. Availability depends on fixtures, media commitments and, for some speakers, current roles in football.",
+    "current": "Yes, for appearances and events. Current squad appearances are arranged with Tottenham Hotspur around the fixture list and training schedule, so allow extra lead time and expect limited dates."
   },
   "roles": [
     {
@@ -135,10 +177,33 @@
     },
     {
       "key": "manager",
-      "label": "Managers & head coaches",
+      "label": "Managers & Coaches",
       "blurb": "Leadership, team-building and big decisions under pressure.",
-      "image": "677839962",
-      "singular": "Former manager"
+      "image": "2265318812",
+      "singular": "Former manager",
+      "pitch": {
+        "eyebrow": "Why book a manager",
+        "heading": "Leadership, from the dugout.",
+        "lead": "Managers and coaches are a natural fit for leadership events: they’ve built teams, handled stars and made big calls in front of a full stadium.",
+        "points": [
+          {
+            "title": "Building a culture",
+            "text": "How a young, hungry side is built and kept together."
+          },
+          {
+            "title": "Turnarounds",
+            "text": "Taking over at the bottom and changing direction fast."
+          },
+          {
+            "title": "Managing big personalities",
+            "text": "Trust, humour and getting the best from top talent."
+          },
+          {
+            "title": "Decisions under pressure",
+            "text": "Making the call when everyone is watching."
+          }
+        ]
+      }
     },
     {
       "key": "staff",
@@ -185,11 +250,19 @@
     }
   ],
   "eventSpaces": {
-    "heading": "Your next event. Our iconic stadium.",
-    "copy": "Explore spaces for meetings, conferences and celebrations at Tottenham Hotspur Stadium. Enquire and book directly with the stadium’s events team.",
+    "heading": "Book a meeting or event space at the stadium.",
+    "copy": "Conferences, away days, launches and dinners in the stadium’s event spaces, with a Spurs speaker to open, host or close the day. Enquire directly with the stadium’s events team.",
     "image": "2290101699",
     "imageAlt": "Tottenham Hotspur Stadium",
-    "buttonText": "Explore event spaces",
-    "url": "https://www.tottenhamhotspurstadium.com/venue-hire/"
-  }
+    "buttonText": "Enquire about event spaces",
+    "url": "https://www.tottenhamhotspurstadium.com/venue-hire/",
+    "eyebrow": "Meetings & events at Tottenham Hotspur Stadium"
+  },
+  "formatKeys": [
+    "keynote",
+    "dinner",
+    "appearance",
+    "workshop",
+    "virtual"
+  ]
 }

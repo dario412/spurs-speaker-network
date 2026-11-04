@@ -298,7 +298,8 @@ test('verification.json shape errors are problems; missing or stale checks are n
 test('verificationStatus counts built pages and visible people, and spots changed content', () => {
   const site = stored('spurs');
   const visible = items => items.filter(item => item.active !== false).length;
-  const pages = 6;
+  // Spurs builds five checklist pages: its hospitality page is switched off in site.json.
+  const pages = 5;
   assert.equal(verificationStatus(site).total, pages + visible(site.people));
   site.verification = verifyAll(site);
   assert.equal(verificationStatus(site).verified, verificationStatus(site).total);
@@ -306,7 +307,7 @@ test('verificationStatus counts built pages and visible people, and spots change
   site.pages = { hospitality: false, about: false };
   site.people[0] = { ...site.people[0], active: false };
   const status = verificationStatus(site);
-  assert.equal(status.total, pages - 2 + visible(site.people), 'switched-off pages and hidden people');
+  assert.equal(status.total, pages - 1 + visible(site.people), 'switched-off pages and hidden people');
   assert.ok(!('pages:hospitality' in status.entries) && !(`people:${site.people[0].slug}` in status.entries));
 
   const legends = () => verificationEntries(site).find(entry => entry.key === 'legends').fingerprint;

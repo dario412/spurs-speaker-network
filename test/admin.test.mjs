@@ -793,7 +793,7 @@ test('switched-off pages and hidden people do not count and have no checklist', 
   try {
     const before = verificationStatus(storedSpurs(admin)).total;
     const settings = formData(await (await admin.get('/sites/spurs')).text(), '/sites/spurs');
-    settings.delete('pages.hospitality');
+    settings.delete('pages.about');
     assert.equal((await admin.post('/sites/spurs', settings)).status, 303);
     const { sites } = await validateAll(pathToFileURL(`${admin.dir}/`));
     const spurs = sites.find(site => site.slug === 'spurs');
@@ -803,9 +803,9 @@ test('switched-off pages and hidden people do not count and have no checklist', 
 
     assert.equal(verificationStatus(storedSpurs(admin)).total, before - 2);
     const list = await (await admin.get('/sites/spurs/verification')).text();
-    assert.doesNotMatch(list, /verification\/pages\/hospitality/);
+    assert.doesNotMatch(list, /verification\/pages\/about/);
     assert.doesNotMatch(list, new RegExp(`verification/people/${plain.slug}"`));
-    assert.equal((await admin.get('/sites/spurs/verification/pages/hospitality')).status, 404);
+    assert.equal((await admin.get('/sites/spurs/verification/pages/about')).status, 404);
     assert.equal((await admin.get(`/sites/spurs/verification/people/${plain.slug}`)).status, 404);
     assert.equal((await admin.get('/sites/spurs/verification/pages/waysToBook')).status, 404, 'URLs use page paths');
   } finally {

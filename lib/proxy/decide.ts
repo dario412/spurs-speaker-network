@@ -83,7 +83,8 @@ export function publicPath(pathname: string, manifest: ProxyConfig['manifest']):
   // Both landing URLs (lib/render/routes.ts → landingPath): whichever one isn't in use redirects before the gate.
   if (
     manifest.hubIndexable &&
-    ([LANDING_HOME, LANDING_FOLDER, '/terms', '/privacy', '/landing.css'].includes(pathname) || pathname.startsWith('/all/'))
+    ([LANDING_HOME, LANDING_FOLDER, '/terms', '/privacy', '/accessibility', '/landing.css'].includes(pathname) ||
+      pathname.startsWith('/all/'))
   )
     return true;
   return (manifest.indexable.length > 0 || manifest.hubIndexable) && RENDER_ASSET.test(pathname);

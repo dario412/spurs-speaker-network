@@ -36,7 +36,7 @@ export function siteSitemapEntries(
     ...(site.demoHome ? [`/${site.slug}`] : []),
     ...(site.demoProfiles ?? []).map(slug => `/${site.slug}/legends/${slug}`),
   ]);
-  const legal = new Set([`/${site.slug}/terms`, `/${site.slug}/privacy`]);
+  const legal = new Set([`/${site.slug}/terms`, `/${site.slug}/privacy`, `/${site.slug}/accessibility`]);
   const byPath = new Map(site.people.map(person => [`/${site.slug}/legends/${person.slug}`, person]));
   return sitePaths(site)
     .filter(path => !demo.has(path) && (legalIndexable || !legal.has(path)))
@@ -79,7 +79,9 @@ export const sitemapPaths = (indexableSlugs: string[], hubIndexable: boolean, do
 
 /** Hub pages in /all/sitemap.xml: the landing page at `landing` (its URL, lib/render/routes.ts → landingPath), legal pages. */
 export const hubSitemapEntries = (hubIndexable: boolean, legalIndexable: boolean, landing: string = LANDING_HOME): SitemapEntry[] =>
-  hubIndexable ? [{ path: landing }, ...(legalIndexable ? [{ path: '/terms' }, { path: '/privacy' }] : [])] : [];
+  hubIndexable
+    ? [{ path: landing }, ...(legalIndexable ? [{ path: '/terms' }, { path: '/privacy' }, { path: '/accessibility' }] : [])]
+    : [];
 
 /** Paths every indexable page needs to render for a crawler (styles, fonts, scripts, images, cards). */
 export const RENDER_ASSETS = ['/styles.css', '/fonts/', '/_next/static/', '/_next/image', '/og/', '/peptalk/', '/sitemap.xml', '/llms.txt'];
@@ -93,7 +95,7 @@ export interface RobotsRules {
 export function robotsRules(indexableSlugs: string[], hubIndexable: boolean, origin: string, landing: string = LANDING_HOME): RobotsRules {
   const allow = [
     ...indexableSlugs.flatMap(slug => [`/${slug}$`, `/${slug}/`]),
-    ...(hubIndexable ? [`${landing}$`, '/all/', '/terms$', '/privacy$'] : []),
+    ...(hubIndexable ? [`${landing}$`, '/all/', '/terms$', '/privacy$', '/accessibility$'] : []),
   ];
   if (!allow.length) return { rules: { userAgent: '*', disallow: '/' } };
   return {

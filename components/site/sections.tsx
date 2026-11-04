@@ -3,7 +3,7 @@
 // Each is exported so the component gallery (/_gallery) can show it on its own.
 import type { ReactNode } from 'react';
 import type { FormatKey, Person } from '../../lib/content/types.ts';
-import { categoryRoles, peopleIn } from '../../lib/render/category.ts';
+import { categoryRoles } from '../../lib/render/category.ts';
 import { PEPTALK, type SiteContext } from '../../lib/render/context.ts';
 import { categoryPath } from '../../lib/render/routes.ts';
 import { A, FaqItem, Photo } from './primitives.tsx';
@@ -11,6 +11,8 @@ import { A, FaqItem, Photo } from './primitives.tsx';
 /** Short format names for card footers and filters ("Keynote · Hospitality"); the full titles live in FORMATS. */
 export const FORMAT_SHORT: Record<FormatKey, string> = {
   keynote: 'Keynote',
+  dinner: 'After-dinner',
+  appearance: 'Appearances',
   hospitality: 'Hospitality',
   brand: 'Brand',
   clinic: 'Clinics',
@@ -68,15 +70,15 @@ export function TrustChecks({ ctx }: { ctx: SiteContext }) {
   const { site } = ctx;
   return (
     <ul className="checks">
-      <li>Official {site.orgName} service</li>
-      <li>Free shortlist, no obligation</li>
-      <li>Booked end to end by PepTalk</li>
+      <li>Official {site.short} service</li>
+      <li>Free, tailored shortlist</li>
+      <li>Managed end to end</li>
     </ul>
   );
 }
 
 /**
- * The role list: one row per category (photo, label, blurb, how many people, arrow) linking to its category page.
+ * The role list: one row per category (photo, label, blurb, arrow) linking to its category page.
  * `exclude` leaves out the current category on a category page.
  */
 export function RoleList({
@@ -106,41 +108,66 @@ export function RoleList({
           {lead ? <p className="lead">{lead}</p> : null}
         </div>
         <ul className="rolelist">
-          {roles.map(role => {
-            const count = peopleIn(site, role).length;
-            return (
-              <li key={role.key}>
-                <A demo={demo} href={categoryPath(base, role)}>
-                  {/* Decorative: the row's label names the role. */}
-                  {role.image ? <Photo ctx={ctx} id={role.image} cls="thumb top" slot="cat" alt="" /> : <span className="thumb" />}
-                  <span className="txt">
-                    <b>{role.label}</b>
-                    <small>{role.blurb}</small>
-                  </span>
-                  <span className="count">
-                    {count} {count === 1 ? 'speaker' : 'speakers'}
-                  </span>
-                  <span className="arrow" aria-hidden="true">
-                    →
-                  </span>
-                </A>
-              </li>
-            );
-          })}
+          {roles.map(role => (
+            <li key={role.key}>
+              <A demo={demo} href={categoryPath(base, role)}>
+                {/* Decorative: the row's label names the role. */}
+                {role.image ? <Photo ctx={ctx} id={role.image} cls="thumb top" slot="cat" alt="" /> : <span className="thumb" />}
+                <span className="txt">
+                  <b>{role.label}</b>
+                  <small>{role.blurb}</small>
+                </span>
+                <span className="arrow" aria-hidden="true">
+                  →
+                </span>
+              </A>
+            </li>
+          ))}
         </ul>
       </div>
     </section>
   );
 }
 
-/** "How booking works": three steps on the navy band, with the main call to action. */
-export function HowItWorks({ ctx }: { ctx: SiteContext }) {
+/**
+ * "How booking works": three steps on the navy band. With `form` (the home page) the steps stack on the left and the
+ * enquiry form sits beside them; without it, the steps run in a row under the main call to action.
+ */
+export function HowItWorks({ ctx, form }: { ctx: SiteContext; form?: ReactNode }) {
   const { base, v, demo } = ctx;
   const steps: [string, string][] = [
     ['Share your brief', 'Date, audience, format and who you have in mind. It takes two minutes and commits you to nothing.'],
     ['Get a tailored shortlist', `${v.diaryCheck} You get options and an indicative fee.`],
-    ['Confirm and relax', 'PepTalk handles the contract, payment, briefing and logistics, then the day itself.'],
+    ['Confirm and relax', 'One contract, one point of contact. The bookings team handles logistics, briefing and the day itself.'],
   ];
+  const list = (
+    <ol className="steps">
+      {steps.map(([title, text], i) => (
+        <li key={title}>
+          <span className="n" aria-hidden="true">
+            {String(i + 1).padStart(2, '0')}
+          </span>
+          <h3>{title}</h3>
+          <p>{text}</p>
+        </li>
+      ))}
+    </ol>
+  );
+  if (form)
+    return (
+      <section className="band how with-form" id="enquire" aria-labelledby="how-form-title">
+        <div className="wrap">
+          <div className="how-steps">
+            <span className="eyebrow">How booking works</span>
+            <h2 className="disp" id="how-form-title">
+              From brief to booked in three steps.
+            </h2>
+            {list}
+          </div>
+          {form}
+        </div>
+      </section>
+    );
   return (
     <section className="band how" aria-labelledby="how-title">
       <div className="wrap">
@@ -155,17 +182,7 @@ export function HowItWorks({ ctx }: { ctx: SiteContext }) {
             Check availability <span aria-hidden="true">→</span>
           </A>
         </div>
-        <ol className="steps">
-          {steps.map(([title, text], i) => (
-            <li key={title}>
-              <span className="n" aria-hidden="true">
-                {String(i + 1).padStart(2, '0')}
-              </span>
-              <h3>{title}</h3>
-              <p>{text}</p>
-            </li>
-          ))}
-        </ol>
+        {list}
       </div>
     </section>
   );
@@ -252,14 +269,14 @@ export function CtaBand({ ctx, title, children }: { ctx: SiteContext; title?: st
           <h2 className="disp" id="cta-title">
             {title ?? `Bring a ${site.short} ${v.legendNoun} to your next event.`}
           </h2>
-          <p>{children ?? 'Tell us about your event and get a free, no-obligation shortlist from the PepTalk bookings team.'}</p>
+          <p>{children ?? 'Tell us about your event and get a free, tailored shortlist from the PepTalk bookings team.'}</p>
         </div>
         <div className="actions">
           <A demo={demo} className="btn btn-cta btn-lg" href={`${base}/check-availability`}>
             Check availability <span aria-hidden="true">→</span>
           </A>
           <A demo={demo} className="quiet" href={`${base}/legends`}>
-            or browse all {site.people.length} {v.legendsNoun}
+            or browse all {v.legendsNoun}
           </A>
         </div>
       </div>

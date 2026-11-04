@@ -229,6 +229,7 @@ A published site (`listSites()`, `getSite()`): active only, hidden people remove
 | `motto` | string \| null | yes |  | Official motto, or null. |
 | `copyright` | string | yes |  | Rights holder’s legal name. |
 | `heroTitle` | [string, string] | yes |  | The two hero headline lines. |
+| `heroWords` | string[] (min 2) | no |  | Words the hero headline cycles through; the first ends `heroTitle[0]`. |
 | `waysTitle` | string | yes |  | "Ways to book" heading. |
 | `stadium` | string | yes |  | Venue used in copy. |
 | `marks` | { crest?, wordmark? } | yes |  | The organisation’s own crest and wordmark files, unmodified. |
@@ -242,14 +243,16 @@ A published site (`listSites()`, `getSite()`): active only, hidden people remove
 | `orgType` | string | no | `"SportsTeam"` | `SportsTeam` or `SportsOrganization` (structured data). |
 | `tracking` | { gtmId?, ga4Id? } | no |  | Tags the site loads (off by default; lib/tracking.ts). Unset: the TRACKING_GTM_ID fallback, else none. The CSP allows Google’s hosts only for sites with tags. |
 | `consent` | { required? } | no |  | Consent banner for the tracking tags. |
-| `eventSpaces` | { url?, heading?, copy?, image?, imageAlt?, buttonText? } | no |  | Shared Event Spaces promotion. When url is set, all fields are required. Enquiries and bookings stay on the partner site. |
+| `eventSpaces` | { url?, heading?, copy?, image?, imageAlt?, buttonText?, eyebrow? } | no |  | Shared Event Spaces promotion. When url is set, all fields are required. Enquiries and bookings stay on the partner site. |
 | `featured` | slug[] (min 1) | yes |  | People in "Featured this season": active people of this site. |
 | `home` | [Home](#home) | yes |  |  |
 | `homeLayout` | { waysAfterRoles?, hideEras? } | no |  |  |
 | `demoHome` | boolean | no |  | Render the home page as a look-only demo. |
 | `demoProfiles` | slug[] | no |  | Profiles rendered as look-only demos. |
 | `vocab` | [VocabOverrides](#vocaboverrides) | no |  | Wording overrides; any key left out keeps the default in src/copy/defaults.mjs (VOCAB). |
-| `formats` | { keynote?, hospitality?, brand?, clinic?, fan?, workshop?, virtual? } | no |  | Per-format overrides of title, short, desc, items. |
+| `formats` | { keynote?, dinner?, appearance?, hospitality?, brand?, clinic?, fan?, workshop?, virtual? } | no |  | Per-format overrides of title, short, desc, items. |
+| `formatKeys` | [FormatKey](#formatkey)[] (min 1) | no |  | The formats this site offers, in display order (default: all). |
+| `contact` | { email?, phone?, hours? } | no |  | Contact details under the footer brand column; each line shown only when set. |
 | `faqOverrides` | { [key]: string \| { q?, a? } } | no |  | Keyed by an FAQ `key` in src/copy/defaults.mjs: an answer string, or `{ q, a }`. |
 | `roles` | [Role](#role)[] (min 1) | yes |  |  |
 | `eras` | [Era](#era)[] (min 1) | yes |  |  |
@@ -277,6 +280,7 @@ A site as stored (`getRawSite()`, `listRawSites()`): hidden people and bookkeepi
 | `motto` | string \| null | yes |  | Official motto, or null. |
 | `copyright` | string | yes |  | Rights holder’s legal name. |
 | `heroTitle` | [string, string] | yes |  | The two hero headline lines. |
+| `heroWords` | string[] (min 2) | no |  | Words the hero headline cycles through; the first ends `heroTitle[0]`. |
 | `waysTitle` | string | yes |  | "Ways to book" heading. |
 | `stadium` | string | yes |  | Venue used in copy. |
 | `marks` | { crest?, wordmark? } | yes |  | The organisation’s own crest and wordmark files, unmodified. |
@@ -290,14 +294,16 @@ A site as stored (`getRawSite()`, `listRawSites()`): hidden people and bookkeepi
 | `orgType` | string | no | `"SportsTeam"` | `SportsTeam` or `SportsOrganization` (structured data). |
 | `tracking` | { gtmId?, ga4Id? } | no |  | Tags the site loads (off by default; lib/tracking.ts). Unset: the TRACKING_GTM_ID fallback, else none. The CSP allows Google’s hosts only for sites with tags. |
 | `consent` | { required? } | no |  | Consent banner for the tracking tags. |
-| `eventSpaces` | { url?, heading?, copy?, image?, imageAlt?, buttonText? } | no |  | Shared Event Spaces promotion. When url is set, all fields are required. Enquiries and bookings stay on the partner site. |
+| `eventSpaces` | { url?, heading?, copy?, image?, imageAlt?, buttonText?, eyebrow? } | no |  | Shared Event Spaces promotion. When url is set, all fields are required. Enquiries and bookings stay on the partner site. |
 | `featured` | slug[] (min 1) | yes |  | People in "Featured this season": active people of this site. |
 | `home` | [Home](#home) | yes |  |  |
 | `homeLayout` | { waysAfterRoles?, hideEras? } | no |  |  |
 | `demoHome` | boolean | no |  | Render the home page as a look-only demo. |
 | `demoProfiles` | slug[] | no |  | Profiles rendered as look-only demos. |
 | `vocab` | [VocabOverrides](#vocaboverrides) | no |  | Wording overrides; any key left out keeps the default in src/copy/defaults.mjs (VOCAB). |
-| `formats` | { keynote?, hospitality?, brand?, clinic?, fan?, workshop?, virtual? } | no |  | Per-format overrides of title, short, desc, items. |
+| `formats` | { keynote?, dinner?, appearance?, hospitality?, brand?, clinic?, fan?, workshop?, virtual? } | no |  | Per-format overrides of title, short, desc, items. |
+| `formatKeys` | [FormatKey](#formatkey)[] (min 1) | no |  | The formats this site offers, in display order (default: all). |
+| `contact` | { email?, phone?, hours? } | no |  | Contact details under the footer brand column; each line shown only when set. |
 | `faqOverrides` | { [key]: string \| { q?, a? } } | no |  | Keyed by an FAQ `key` in src/copy/defaults.mjs: an answer string, or `{ q, a }`. |
 | `roles` | [Role](#role)[] (min 1) | yes |  |  |
 | `eras` | [Era](#era)[] (min 1) | yes |  |  |
@@ -341,7 +347,7 @@ A site as stored (`getRawSite()`, `listRawSites()`): hidden people and bookkeepi
 
 | Field | Type | Required | Default | Notes |
 |---|---|---|---|---|
-| `kind` | `"terms"` \| `"privacy"` | yes |  |  |
+| `kind` | `"terms"` \| `"privacy"` \| `"accessibility"` | yes |  |  |
 | `title` | string | yes |  | Page heading. |
 | `lastUpdated` | string \| null | yes |  | "Last updated" text from the source, or null. |
 | `body` | string | yes |  | Markdown body (safe subset, see docs/content-model.md → Legal pages). |
@@ -366,9 +372,9 @@ What a PeopleProvider returns for one site (hidden people included; switches are
 
 ### FormatKey
 
-One of the seven booking formats (src/copy/defaults.mjs).
+One of the booking formats (src/copy/defaults.mjs).
 
-Type: `"keynote"` \| `"hospitality"` \| `"brand"` \| `"clinic"` \| `"fan"` \| `"workshop"` \| `"virtual"`
+Type: `"keynote"` \| `"dinner"` \| `"appearance"` \| `"hospitality"` \| `"brand"` \| `"clinic"` \| `"fan"` \| `"workshop"` \| `"virtual"`
 
 ### Home
 
@@ -380,6 +386,8 @@ Type: `"keynote"` \| `"hospitality"` \| `"brand"` \| `"clinic"` \| `"fan"` \| `"
 | `storyImage` | [ImageId](#imageid) | yes |  | A key of the site’s `images` map: a Getty id today ("2206513784"), the URL’s host and path for R2 images ("media.example.com/people/a.jpg"). `null` only on `status: "shell"` sites (a labelled placeholder renders). |
 | `hospitalityImage` | [ImageId](#imageid) | yes |  | A key of the site’s `images` map: a Getty id today ("2206513784"), the URL’s host and path for R2 images ("media.example.com/people/a.jpg"). `null` only on `status: "shell"` sites (a labelled placeholder renders). |
 | `activeEra` | string | yes |  | An `eras[].key`. |
+| `slides` | [Slot](#slot)[] | no |  | More hero slides after `hero`; the hero photo becomes a carousel. |
+| `aboutImage` | [ImageId](#imageid) | no |  | A key of the site’s `images` map: a Getty id today ("2206513784"), the URL’s host and path for R2 images ("media.example.com/people/a.jpg"). `null` only on `status: "shell"` sites (a labelled placeholder renders). |
 
 ### ImageId
 
@@ -409,6 +417,7 @@ Type: [string, string]
 | `image` | [ImageId](#imageid) | no |  | A key of the site’s `images` map: a Getty id today ("2206513784"), the URL’s host and path for R2 images ("media.example.com/people/a.jpg"). `null` only on `status: "shell"` sites (a labelled placeholder renders). |
 | `singular` | string | no |  |  |
 | `browseLabel` | string | no |  |  |
+| `pitch` | { eyebrow, heading, lead, points } | no |  | The category page's "why book" section; without it the page shows popular topics and formats. |
 
 ### RoleKey
 

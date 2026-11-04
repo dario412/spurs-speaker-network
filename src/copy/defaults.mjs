@@ -7,6 +7,18 @@ export const FORMATS = {
     desc: 'A 30–45 minute talk with Q&A, built around your theme.',
     items: ['Conference keynote', 'After-dinner speech', 'Fireside chat with your host'],
   },
+  dinner: {
+    title: 'After-dinner speaking',
+    short: 'Stories from the dressing room to close your dinner, awards night or gala.',
+    desc: 'Stories from the dressing room to close your dinner, awards night or gala, told with warmth and humour.',
+    items: ['After-dinner speech', 'Awards night host', 'Gala dinner Q&A'],
+  },
+  appearance: {
+    title: 'Appearances',
+    short: 'Launches, shoots, Q&As, signings and guest visits: any time you need a speaker in the room.',
+    desc: 'Any time you need a speaker in the room: launches, shoots, Q&As, signings and guest visits.',
+    items: ['Product launch or shoot', 'Q&A or signing session', 'Guest visit to your event'],
+  },
   hospitality: {
     title: 'Matchday hospitality',
     short: 'A legend hosts your guests in the stadium lounges.',
@@ -45,11 +57,14 @@ export const FORMATS = {
   },
 };
 export const HOME_FORMATS = ['keynote', 'hospitality', 'brand', 'clinic', 'fan', 'workshop'];
+// The formats a site offers when its site.json has no `formatKeys` (dinner and appearance are opt-in).
+export const DEFAULT_FORMAT_KEYS = ['keynote', 'hospitality', 'brand', 'clinic', 'fan', 'workshop', 'virtual'];
 
-// Booking FAQ shown on the about page; entries with `profile: true` also appear on every profile page.
+// Booking FAQ shown on the about page; entries with `profile: true` also appear on every profile page, and every entry
+// without `home: false` on the home page. `venue: true` entries only appear on sites with a venue-hire promotion.
 // Sites override an entry by key in site.json `faqOverrides`: an answer string, or { q, a }.
-// Placeholders: {org} is the organisation name; {first} is the person's first name on a profile page,
-// and {first|text} falls back to text where there is no person (the about page).
+// Placeholders: {org} is the organisation name, {platform} the site name, {stadium} the venue; {first} is the
+// person's first name on a profile page, and {first|text} falls back to text where there is no person (the about page).
 export const FAQ = [
   {
     key: 'cost',
@@ -70,22 +85,37 @@ export const FAQ = [
     profile: false,
   },
   {
+    key: 'venue',
+    q: 'Can we book an event space at {stadium} too?',
+    a: "Yes. Meeting and event spaces at {stadium} are booked directly with the venue's events team (Event spaces, in the menu). Tell us your date and we'll find a speaker to match.",
+    profile: false,
+    venue: true,
+  },
+  {
     key: 'travel',
     q: 'Can {first|legends} travel outside London or abroad?',
     a: 'Yes, most legends travel across the UK and internationally. Virtual formats are available too.',
     profile: true,
   },
   {
+    key: 'official',
+    q: 'Is this the official {org} speaker service?',
+    a: 'Yes. {platform} is the official {org} speaker booking service. Every booking is agreed with the club and handled by one bookings team.',
+    profile: false,
+  },
+  {
     key: 'media',
     q: 'Can we use photos and video from the event?',
     a: 'Usually, for internal and agreed social use. Image rights and content use are confirmed in the booking agreement.',
     profile: true,
+    home: false,
   },
   {
     key: 'contracting',
     q: 'Who contracts and invoices the booking?',
     a: 'PepTalk handles contracting, invoicing and logistics on behalf of {org}.',
     profile: true,
+    home: false,
   },
 ];
 
