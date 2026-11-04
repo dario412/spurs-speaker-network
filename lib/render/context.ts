@@ -37,8 +37,11 @@ export interface SiteContext {
   demo: boolean;
   eraLabel(key: string): string;
   roleLabel(key: string): string;
-  /** FAQ entries ready to render: all of them, or only the profile ones (with the person's name) when person is given. */
-  faq(person?: Person): { q: string; a: string }[];
+  /**
+   * FAQ entries ready to render: all of them (the about page), only the profile ones (with the person's name) when a
+   * person is given, or the home page's set with `{ home: true }`. Venue questions need a venue-hire promotion.
+   */
+  faq(person?: Person | null, options?: { home?: boolean }): { q: string; a: string }[];
   /**
    * Search engines may index this copy of the site: site.json `indexable` (after the deployment guards in
    * lib/seo/indexing.ts), and this is the canonical copy.
@@ -97,10 +100,12 @@ export function siteContext(
     demo,
     eraLabel: key => site.eras.find(era => era.key === key)?.label ?? key,
     roleLabel: key => site.roles.find(role => role.key === key)?.label ?? key,
-    faq(person) {
-      const values = { org: site.orgName, first: person?.first };
+    faq(person, { home = false } = {}) {
+      const values = { org: site.orgName, platform: site.platform, stadium: site.stadium, first: person?.first };
       return faqEntries
+        .filter(entry => !entry.venue || Boolean(site.eventSpaces?.url))
         .filter(entry => !person || entry.profile)
+        .filter(entry => !home || entry.home !== false)
         .map(({ q, a }) => ({ q: fillPlaceholders(q, values), a: fillPlaceholders(a, values) }));
     },
     indexable: isSiteIndexable(stored) && canonical,

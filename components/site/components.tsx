@@ -50,6 +50,7 @@ export function Card({
       data-formats={person.formats.join(' ')}
       data-topics={person.talks.map(topicKey).join(' ')}
       data-search={`${person.name} ${person.short} ${person.talks.join(' ')}`.toLowerCase()}
+      data-name={person.name}
     >
       <A demo={demo} href={href} tabIndex={-1} aria-hidden="true">
         {/* The link is hidden from assistive tech (the name link below is the accessible one), so the alt text serves image search. */}

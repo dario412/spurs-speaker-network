@@ -417,6 +417,7 @@ Type: [string, string]
 | `image` | [ImageId](#imageid) | no |  | A key of the site’s `images` map: a Getty id today ("2206513784"), the URL’s host and path for R2 images ("media.example.com/people/a.jpg"). `null` only on `status: "shell"` sites (a labelled placeholder renders). |
 | `singular` | string | no |  |  |
 | `browseLabel` | string | no |  |  |
+| `pitch` | { eyebrow, heading, lead, points } | no |  | The category page's "why book" section; without it the page shows popular topics and formats. |
 
 ### RoleKey
 

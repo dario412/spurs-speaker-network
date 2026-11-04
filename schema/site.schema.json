@@ -329,6 +329,48 @@
         },
         "browseLabel": {
           "type": "string"
+        },
+        "pitch": {
+          "type": "object",
+          "description": "The category page's \"why book\" section; without it the page shows popular topics and formats.",
+          "properties": {
+            "eyebrow": {
+              "type": "string"
+            },
+            "heading": {
+              "type": "string"
+            },
+            "lead": {
+              "type": "string"
+            },
+            "points": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string"
+                  },
+                  "text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "title",
+                  "text"
+                ],
+                "additionalProperties": false
+              },
+              "minItems": 1
+            }
+          },
+          "required": [
+            "eyebrow",
+            "heading",
+            "lead",
+            "points"
+          ],
+          "additionalProperties": false
         }
       },
       "required": [

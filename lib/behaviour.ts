@@ -67,7 +67,7 @@ export function rosterState(search: string, chips: { filter: string; value: stri
     const value = params.get(filter) || '';
     return value && known(filter, value) ? value : '';
   };
-  return { role: pick('role'), topic: pick('topic'), format: pick('format'), q: params.get('q') || '' };
+  return { role: pick('role'), topic: pick('topic'), format: pick('format'), sort: pick('sort'), q: params.get('q') || '' };
 }
 
 /** The roster URL for a filter state: only set filters in the query, and the #fragment kept. */
@@ -93,23 +93,34 @@ function initRoster(doc: Document, signal: AbortSignal) {
   ];
   const state = rosterState(location.search, chipList);
   const cards = [...roster.querySelectorAll<HTMLElement>('.card')];
+  const grid = cards[0]?.parentElement;
   const empty = roster.querySelector<HTMLElement>('.empty');
   const search = roster.querySelector<HTMLInputElement>('.roster-q');
   const count = roster.querySelector<HTMLElement>('[data-count]');
-  if (!empty || !search) return;
-  search.value = state.q;
+  const more = roster.querySelector<HTMLButtonElement>('.more-btn');
+  // Cards arrive in featured order; "Name (A–Z)" reorders them, "Featured" restores this order.
+  const byName = [...cards].sort((a, b) => (a.dataset.name ?? '').localeCompare(b.dataset.name ?? ''));
+  const pageSize = Number(roster.dataset.pageSize) || Number.POSITIVE_INFINITY;
+  let limit = pageSize;
+  if (search) search.value = state.q;
   const apply = () => {
+    const order = state.sort === 'name' ? byName : cards;
+    const tile = grid?.querySelector(':scope > :not(.card)');
+    for (const card of order) grid?.insertBefore(card, tile ?? null);
     let shown = 0;
-    for (const card of cards) {
+    let matched = 0;
+    for (const card of order) {
       const ok =
         (!state.role || card.dataset.role === state.role) &&
         (!state.topic || (card.dataset.topics ?? '').split(' ').includes(state.topic)) &&
         (!state.format || (card.dataset.formats ?? '').split(' ').includes(state.format)) &&
         (!state.q || (card.dataset.search ?? '').includes(state.q.toLowerCase()));
-      card.hidden = !ok;
-      if (ok) shown += 1;
+      if (ok) matched += 1;
+      card.hidden = !ok || matched > limit;
+      if (!card.hidden) shown += 1;
     }
-    empty.hidden = shown > 0;
+    if (more) more.hidden = matched <= limit;
+    if (empty) empty.hidden = matched > 0;
     if (count) count.textContent = (count.textContent ?? '').replace(/^Showing \d+/, `Showing ${shown}`);
     for (const chip of buttons) chip.setAttribute('aria-pressed', String(state[chip.dataset.filter ?? ''] === chip.dataset.value));
     for (const select of selects) select.value = state[select.dataset.filter ?? ''] ?? '';
@@ -130,14 +141,25 @@ function initRoster(doc: Document, signal: AbortSignal) {
       'change',
       () => {
         state[select.dataset.filter ?? ''] = select.value;
+        // A new filter or sort starts from the first page again.
+        limit = pageSize;
         apply();
       },
       { signal },
     );
-  search.addEventListener(
+  search?.addEventListener(
     'input',
     () => {
       state.q = search.value.trim();
+      limit = pageSize;
+      apply();
+    },
+    { signal },
+  );
+  more?.addEventListener(
+    'click',
+    () => {
+      limit += pageSize;
       apply();
     },
     { signal },

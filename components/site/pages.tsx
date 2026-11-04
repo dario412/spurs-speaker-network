@@ -21,7 +21,7 @@ import { type Crumb, faqNode, peopleListNode, personNode, servicesNode, siteGrap
 import { Availability, Card, FormSection, Official, ShortlistButton, WaysGrid } from './components.tsx';
 import { EventSpaces } from './event-spaces.tsx';
 import { SimplePage, SiteLayout } from './layout.tsx';
-import { A, FaqItem, Photo } from './primitives.tsx';
+import { A, Button, FaqItem, Photo } from './primitives.tsx';
 import { CtaBand, FaqBlock, FORMAT_SHORT, offering, RoleList } from './sections.tsx';
 
 /** Home, then the given trail. The visible breadcrumbs and the BreadcrumbList use the same list. */
@@ -30,10 +30,63 @@ const trail = ({ home }: SiteContext, ...rest: Crumb[]): Crumb[] => [{ name: 'Ho
 /** Cards in the first rows load eagerly; the rest wait until they scroll near the viewport. */
 const EAGER_CARDS = 3;
 
+/** Roster pages show this many cards, then "Show more speakers" (lib/behaviour.ts; all cards are in the HTML). */
+const PAGE_SIZE = 11;
+
+/** People with the site's featured people first (in featured order), then everyone else in roster order. */
+const featuredFirst = (site: SiteContext['site'], people: Person[]): Person[] => {
+  const rank = (person: Person) => {
+    const i = site.featured.indexOf(person.slug);
+    return i === -1 ? site.featured.length : i;
+  };
+  return people
+    .map((person, i) => ({ person, i }))
+    .sort((a, b) => rank(a.person) - rank(b.person) || a.i - b.i)
+    .map(({ person }) => person);
+};
+
+/** "Sort: Featured / Name": reorders the cards in place (lib/behaviour.ts). */
+function SortSelect({ ctx }: { ctx: SiteContext }) {
+  return (
+    <label className="select sort-select">
+      <span className="sort-label">Sort:</span>
+      <select data-filter="sort" disabled={ctx.demo || undefined} aria-label="Sort">
+        <option value="">Featured</option>
+        <option value="name">Name (A–Z)</option>
+      </select>
+    </label>
+  );
+}
+
+/** "Show more speakers", shown by the behaviour script while cards are held back. */
+function ShowMore({ ctx }: { ctx: SiteContext }) {
+  const { base, demo } = ctx;
+  return (
+    <div className="load-more">
+      <Button demo={demo} className="btn btn-line more-btn" type="button" hidden>
+        Show more {ctx.v.legendsNoun}
+      </Button>
+      <p className="roster-help">
+        Can’t find who you’re after?{' '}
+        <A demo={demo} href={`${base}/check-availability`}>
+          Ask the bookings team
+        </A>
+      </p>
+    </div>
+  );
+}
+
 /** Display titles of booking formats, in the given order. */
 const formatTitles = ({ FORMATS }: SiteContext, keys: FormatKey[]): string[] => keys.map(key => FORMATS[key].title);
 
 const lower = (text: string) => text.charAt(0).toLowerCase() + text.slice(1);
+const capital = (text: string) => text.charAt(0).toUpperCase() + text.slice(1);
+
+/** "a Spurs manager": a role's singular for a closing line, without "Former" and with the site's short name once. */
+const oneOf = (site: SiteContext['site'], singular: string): string => {
+  const noun = lower(singular.replace(/^former\s+/i, ''));
+  return noun.toLowerCase().startsWith(site.short.toLowerCase()) ? `a ${capital(noun)}` : `a ${site.short} ${noun}`;
+};
 
 /** The "not sure who to book?" tile closing a grid of cards (not a .card, so the roster filters leave it alone). */
 export function HelpTile({ ctx }: { ctx: SiteContext }) {
@@ -75,15 +128,15 @@ export function LegendsPage({ ctx }: { ctx: SiteContext }) {
     <SiteLayout ctx={ctx} path="/legends" graph={graph} crumbs={crumbs}>
       <section className="page-head">
         <div className="wrap">
-          <span className="eyebrow">The roster</span>
+          <span className="eyebrow">All {v.legendsNoun}</span>
           <div className="ph-row">
-            <h1 className="disp">{heading}</h1>
+            <h1 className="disp">{heading}.</h1>
             <p className="lead">{v.rosterLead}</p>
           </div>
         </div>
       </section>
       <section className="block first roster">
-        <div className="wrap" data-roster="">
+        <div className="wrap" data-roster="" data-page-size={PAGE_SIZE}>
           <div className="filter-row">
             <label className="select role-select">
               <span className="sr-only">Role</span>
@@ -127,6 +180,7 @@ export function LegendsPage({ ctx }: { ctx: SiteContext }) {
                 disabled={demo || undefined}
               />
             </label>
+            <SortSelect ctx={ctx} />
           </div>
           {/* Announced to screen readers as the filters change; not shown (no counts on the page). */}
           <p className="sr-only" data-count="" aria-live="polite">
@@ -134,7 +188,7 @@ export function LegendsPage({ ctx }: { ctx: SiteContext }) {
           </p>
           {/* The cards sit directly under the page's <h1>, so their names are <h2>s. */}
           <div className="grid">
-            {site.people.map((person, i) => (
+            {featuredFirst(site, site.people).map((person, i) => (
               <Card key={person.slug} ctx={ctx} person={person} level={2} eager={i < EAGER_CARDS} />
             ))}
             {site.people.length ? <HelpTile ctx={ctx} /> : null}
@@ -146,12 +200,7 @@ export function LegendsPage({ ctx }: { ctx: SiteContext }) {
               <b>Browse {v.beyondLinkText} →</b>
             </A>
           </p>
-          <p className="roster-help">
-            Can’t find who you’re after?{' '}
-            <A demo={demo} href={`${base}/check-availability`}>
-              Ask the bookings team
-            </A>
-          </p>
+          <ShowMore ctx={ctx} />
         </div>
       </section>
     </SiteLayout>
@@ -249,66 +298,116 @@ export function CategoryPage({ ctx, role }: { ctx: SiteContext; role: Role }) {
         </div>
       </nav>
       <section className="block first tint" id="people" aria-labelledby="people-title">
-        <div className="wrap">
-          <h2 className="count" id="people-title">
-            {site.short} {label}
-          </h2>
+        <div className="wrap" data-roster="" data-page-size={PAGE_SIZE}>
+          <div className="results-head">
+            <h2 className="count" id="people-title">
+              Featured {label}
+            </h2>
+            <div className="filter-row">
+              <label className="select">
+                <span className="sr-only">Format</span>
+                <select data-filter="format" disabled={demo || undefined}>
+                  <option value="">Any format</option>
+                  {formats.map(({ key }) => (
+                    <option key={key} value={key}>
+                      {FORMATS[key].title}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <SortSelect ctx={ctx} />
+            </div>
+          </div>
+          <p className="sr-only" data-count="" aria-live="polite">
+            Showing {people.length} of {people.length} {label}
+          </p>
           <div className="grid g3">
-            {people.map((person, i) => (
+            {featuredFirst(site, people).map((person, i) => (
               <Card key={person.slug} ctx={ctx} person={person} eager={i < 3} />
             ))}
             <HelpTile ctx={ctx} />
           </div>
+          <p className="empty" hidden>
+            No {label} offer that format yet.{' '}
+            <A demo={demo} href={`${base}/check-availability`}>
+              <b>Ask the bookings team →</b>
+            </A>
+          </p>
+          <ShowMore ctx={ctx} />
         </div>
       </section>
-      <section className="block" aria-labelledby="topics-title">
-        <div className="wrap side-head">
-          <div className="intro">
-            <span className="eyebrow">What they talk about</span>
-            <h2 className="disp" id="topics-title">
-              Topics &amp; formats
-            </h2>
-            <p className="lead">
-              What {site.short} {label} are booked for most, from their own profiles.
-            </p>
-          </div>
-          <div className="topic-cols">
-            <div>
-              <h3>Popular topics</h3>
-              <ul className="tags big">
-                {topics.map(({ item }) => (
-                  <li key={item}>{item}</li>
-                ))}
-              </ul>
+      {role.pitch ? (
+        <section className="block" aria-labelledby="pitch-title">
+          <div className="wrap side-head">
+            <div className="intro">
+              <span className="eyebrow">{role.pitch.eyebrow}</span>
+              <h2 className="disp" id="pitch-title">
+                {role.pitch.heading}
+              </h2>
+              <p className="lead">{role.pitch.lead}</p>
             </div>
-            <div>
-              <h3>Formats offered</h3>
-              <ul className="fmt-count">
-                {formats.map(({ key }) => (
-                  <li key={key}>
-                    <A demo={demo} href={ctx.pages.waysToBook ? `${base}/ways-to-book#${key}` : `${base}/legends?format=${key}`}>
-                      {FORMATS[key].title}
-                    </A>
-                  </li>
-                ))}
-              </ul>
+            <ul className="pitch-points">
+              {role.pitch.points.map(point => (
+                <li key={point.title}>
+                  <h3>{point.title}</h3>
+                  <p>{point.text}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      ) : (
+        <section className="block" aria-labelledby="topics-title">
+          <div className="wrap side-head">
+            <div className="intro">
+              <span className="eyebrow">What they talk about</span>
+              <h2 className="disp" id="topics-title">
+                Topics &amp; formats
+              </h2>
+              <p className="lead">
+                What {site.short} {label} are booked for most, from their own profiles.
+              </p>
+            </div>
+            <div className="topic-cols">
+              <div>
+                <h3>Popular topics</h3>
+                <ul className="tags big">
+                  {topics.map(({ item }) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              </div>
+              <div>
+                <h3>Formats offered</h3>
+                <ul className="fmt-count">
+                  {formats.map(({ key }) => (
+                    <li key={key}>
+                      <A demo={demo} href={ctx.pages.waysToBook ? `${base}/ways-to-book#${key}` : `${base}/legends?format=${key}`}>
+                        {FORMATS[key].title}
+                      </A>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
       <FaqBlock ctx={ctx} faq={faq} title={`${role.label}, answered.`} tint />
       <RoleList
         ctx={ctx}
         eyebrow="More speakers"
         title={`Explore more ${site.short} ${v.legendsNoun}.`}
-        lead={`${listText(
-          categoryRoles(site)
-            .filter(other => other.key !== role.key)
-            .map(other => roleProse(site, other)),
-        )}, for every kind of event.`}
+        lead={capital(
+          `${listText(
+            categoryRoles(site)
+              .filter(other => other.key !== role.key)
+              .map(other => roleProse(site, other)),
+          )}, for every kind of event.`,
+        )}
         exclude={role.key}
       />
-      <CtaBand ctx={ctx} title={`Bring ${role.singular ? `a ${lower(role.singular)}` : `${site.short} ${label}`} to your next event.`} />
+      <CtaBand ctx={ctx} title={`Bring ${role.singular ? oneOf(site, role.singular) : `${site.short} ${label}`} to your next event.`} />
     </SiteLayout>
   );
 }
@@ -316,7 +415,12 @@ export function CategoryPage({ ctx, role }: { ctx: SiteContext; role: Role }) {
 export function ProfilePage({ ctx, person }: { ctx: SiteContext; person: Person }) {
   const { site, base, v, nl, demo } = ctx;
   const others = site.people.filter(other => other.slug !== person.slug);
-  const sims = [...others.filter(other => other.role === person.role), ...others.filter(other => other.role !== person.role)].slice(0, 4);
+  // Related speakers: the site's featured people first, then the same role, then everyone else.
+  const sims = featuredFirst(site, [
+    ...others.filter(other => site.featured.includes(other.slug)),
+    ...others.filter(other => !site.featured.includes(other.slug) && other.role === person.role),
+    ...others.filter(other => !site.featured.includes(other.slug) && other.role !== person.role),
+  ]).slice(0, 4);
   const path = `${base}/legends/${person.slug}`;
   const url = ctx.url(path);
   const role = site.roles.find(candidate => candidate.key === person.role);
@@ -672,7 +776,7 @@ export function WaysToBookPage({ ctx }: { ctx: SiteContext }) {
   const count = Object.keys(FORMATS).length;
   const title =
     count < NUMBER_WORDS.length
-      ? `${NUMBER_WORDS[count]} ways to book a ${site.short} ${v.legendNoun}`
+      ? `${NUMBER_WORDS[count]} ways to book a ${site.short} ${v.legendNoun}.`
       : `Ways to book ${site.short} ${v.legendsNoun}`;
   const crumbs = trail(ctx, { name: 'Ways to book', path });
   const keys = Object.keys(FORMATS) as FormatKey[];

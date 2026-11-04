@@ -61,7 +61,7 @@ export function Squad({ ctx }: { ctx: SiteContext }) {
 
 /** The home page's "Ways to book" section: the short format grid, closed by a "Not sure which?" tile. */
 export function WaysSection({ ctx }: { ctx: SiteContext }) {
-  const { site, pages, base, FORMATS } = ctx;
+  const { site, FORMATS } = ctx;
   return (
     <section className="block tint" id="ways">
       <div className="wrap">
@@ -70,7 +70,6 @@ export function WaysSection({ ctx }: { ctx: SiteContext }) {
           eyebrow="Ways to book"
           title={site.waysTitle}
           lead="Pick a format to see who's available for it, or tell us about your event and we'll suggest the best fit."
-          link={pages.waysToBook ? [`${base}/ways-to-book`, 'How each format works'] : null}
         />
         <WaysGrid ctx={ctx} keys={(Object.keys(FORMATS) as FormatKey[]).slice(0, 5)} help />
       </div>
@@ -207,7 +206,7 @@ export function HomeHero({ ctx }: { ctx: SiteContext }) {
 export function HomePage({ ctx }: { ctx: SiteContext }) {
   const { site } = ctx;
   const home = site.home;
-  const faq = ctx.faq();
+  const faq = ctx.faq(null, { home: true });
   const graph = siteGraph({
     ctx,
     path: ctx.home,

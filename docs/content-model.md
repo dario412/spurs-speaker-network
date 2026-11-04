@@ -59,7 +59,7 @@ Terms (organisation, site, platform, person, legend, current player, hub) are de
 | `formatKeys` | string[]? | The formats the site offers, in display order (default: the seven original formats). Every person's `formats` must be in this list. Spurs offers `keynote`, `dinner` (after-dinner speaking), `appearance` (launches, shoots, Q&As, signings, guest visits), `workshop` and `virtual`. |
 | `contact` | `{ email?, phone?, hours? }`? | Contact details under the footer's brand column; each line shows only when set. Use real, confirmed details only. |
 | `faqOverrides` | object | Keyed by the FAQ entry's `key` in `src/copy/defaults.mjs`: `"cost": "new answer"` or `"cost": { "q": "…", "a": "…" }`. Placeholders: `{org}` is the organisation name; `{first|fallback}` is the person's first name on profiles and the fallback text on the about page. |
-| `roles` | array | `{ key, label, blurb, image, singular }`; `key` is one of `player`, `manager`, `staff`, `women`, `squad` (current players) |
+| `roles` | array | `{ key, label, blurb, image, singular, pitch? }`; `key` is one of `player`, `manager`, `staff`, `women`, `squad` (current players). Optional `pitch` (`{ eyebrow, heading, lead, points: [{ title, text }] }`) replaces the category page's popular-topics section with a "why book" section. |
 | `eras` | array | `{ key, label, blurb }` |
 | `stories` | (not allowed) | A feature that no longer exists. A leftover `stories` key (or `pages.stories`) is a validation error: delete it. |
 

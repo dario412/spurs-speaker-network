@@ -186,6 +186,16 @@ const Role = s.ref(
     image: s.optional(ImageId),
     singular: s.optional(s.string()),
     browseLabel: s.optional(s.string()),
+    pitch: s.optional(
+      s
+        .object({
+          eyebrow: s.string(),
+          heading: s.string(),
+          lead: s.string(),
+          points: s.array(s.object({ title: s.string(), text: s.string() }), { minItems: 1 }),
+        })
+        .describe('The category page\'s "why book" section; without it the page shows popular topics and formats.'),
+    ),
   }),
 );
 

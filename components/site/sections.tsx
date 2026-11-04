@@ -70,7 +70,7 @@ export function TrustChecks({ ctx }: { ctx: SiteContext }) {
   const { site } = ctx;
   return (
     <ul className="checks">
-      <li>Official {site.orgName} service</li>
+      <li>Official {site.short} service</li>
       <li>Free, tailored shortlist</li>
       <li>Managed end to end</li>
     </ul>

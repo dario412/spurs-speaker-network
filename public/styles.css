@@ -676,7 +676,10 @@ div.demo {
   color: #fff;
 }
 .card .ltd {
-  right: 14px;
+  /* Bottom-left, so a long role tag at the top never runs under it. */
+  top: auto;
+  bottom: 14px;
+  left: 14px;
   background: #fff;
   color: var(--ink);
   letter-spacing: 0.04em;
@@ -2746,6 +2749,86 @@ dl.kstats div:first-child {
   border-bottom: 2px solid var(--ink);
 }
 
+/* Roster and category: sort control, results head, show more */
+.sort-select {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: auto;
+}
+.sort-select .sort-label {
+  font: 500 15px / 1.2 var(--body);
+  color: var(--muted);
+}
+label.select.sort-select select {
+  width: auto;
+  border-color: transparent;
+  background: transparent;
+  padding-left: 4px;
+  font-weight: 600;
+}
+label.select.sort-select::after {
+  right: 12px;
+}
+.results-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+.results-head .count {
+  margin: 0;
+}
+.results-head .filter-row {
+  margin-top: 0;
+}
+.results-head + .sr-only + .grid {
+  margin-top: 24px;
+}
+.load-more {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  margin-top: 40px;
+}
+.load-more .roster-help {
+  margin-top: 0;
+}
+.more-btn[hidden] {
+  display: none;
+}
+
+/* Category: the "why book" points */
+.pitch-points {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 40px;
+  border-top: 2px solid var(--ink);
+}
+.pitch-points li {
+  padding: 28px 0;
+  border-bottom: 1px solid var(--line);
+}
+.pitch-points h3 {
+  font: 700 20px / 1.3 var(--body);
+  margin-bottom: 8px;
+}
+.pitch-points p {
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--muted);
+}
+
+/* Ways to book: the first jump link reads as the current one */
+.jump a:first-child {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: #fff;
+}
+
 /* About: the speakers introduction beside a photo */
 .about-intro .split {
   align-items: center;
@@ -2779,6 +2862,9 @@ dl.kstats div:first-child {
   }
 }
 @media (max-width: 760px) {
+  .pitch-points {
+    grid-template-columns: 1fr;
+  }
   .es-venue {
     flex-direction: column;
     align-items: flex-start;

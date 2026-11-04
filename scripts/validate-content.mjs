@@ -208,6 +208,17 @@ export function validateSite(site) {
     need(ROLE_KEYS.has(role.key), `roles[${i}].key`, `must be one of ${[...ROLE_KEYS].join(', ')}`);
     need(typeof role.label === 'string', `roles[${i}].label`, 'is required');
     if (role.image !== undefined) image(role.image, `roles[${i}].image`);
+    if (role.pitch !== undefined)
+      need(
+        text(role.pitch?.eyebrow) &&
+          text(role.pitch?.heading) &&
+          text(role.pitch?.lead) &&
+          Array.isArray(role.pitch?.points) &&
+          role.pitch.points.length > 0 &&
+          role.pitch.points.every(point => text(point?.title) && text(point?.text)),
+        `roles[${i}].pitch`,
+        'needs eyebrow, heading, lead and points of { title, text }',
+      );
     roleKeys.add(role.key);
   }
   need(roleKeys.size > 0, 'roles', 'needs at least one role');

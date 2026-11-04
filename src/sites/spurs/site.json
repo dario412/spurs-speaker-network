@@ -46,11 +46,12 @@
     "https://resources.thfc.pulselive.com"
   ],
   "featured": [
-    "sandro",
     "dele-alli",
-    "gareth-bale",
     "harry-redknapp",
+    "bethany-england",
     "ledley-king",
+    "sandro",
+    "gareth-bale",
     "clive-allen"
   ],
   "home": {
@@ -118,7 +119,7 @@
     "officialLegendLabel": "Official Spurs speaker",
     "officialSmall": "Official Tottenham Hotspur",
     "formHeadline": "Request a speaker",
-    "aboutTitle": "About the Spurs Speaker Network",
+    "aboutTitle": "The official Spurs speaker network",
     "quoteEyebrow": "Client feedback",
     "beyondLead": "Browse football and sports speakers on PepTalk.",
     "waysLead": "From a conference keynote to a guest appearance, pick the format that fits your event. Every booking is handled end to end by one bookings team.",
@@ -136,10 +137,12 @@
       ]
     },
     "workshop": {
-      "short": "Hands-on sessions with managers and coaches on building high-performing teams."
+      "short": "Hands-on sessions with managers and coaches on building high-performing teams.",
+      "desc": "Interactive sessions with managers and coaches on how elite teams build culture and perform under pressure."
     },
     "virtual": {
-      "short": "Live online sessions and recorded video messages for teams anywhere."
+      "short": "Live online sessions and recorded video messages for teams anywhere.",
+      "desc": "Live online sessions and personalised video messages, wherever your team is."
     }
   },
   "style": {
@@ -176,8 +179,31 @@
       "key": "manager",
       "label": "Managers & Coaches",
       "blurb": "Leadership, team-building and big decisions under pressure.",
-      "image": "677839962",
-      "singular": "Former manager"
+      "image": "2265318812",
+      "singular": "Former manager",
+      "pitch": {
+        "eyebrow": "Why book a manager",
+        "heading": "Leadership, from the dugout.",
+        "lead": "Managers and coaches are a natural fit for leadership events: they’ve built teams, handled stars and made big calls in front of a full stadium.",
+        "points": [
+          {
+            "title": "Building a culture",
+            "text": "How a young, hungry side is built and kept together."
+          },
+          {
+            "title": "Turnarounds",
+            "text": "Taking over at the bottom and changing direction fast."
+          },
+          {
+            "title": "Managing big personalities",
+            "text": "Trust, humour and getting the best from top talent."
+          },
+          {
+            "title": "Decisions under pressure",
+            "text": "Making the call when everyone is watching."
+          }
+        ]
+      }
     },
     {
       "key": "staff",

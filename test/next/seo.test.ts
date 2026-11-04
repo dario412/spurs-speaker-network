@@ -293,11 +293,12 @@ test('bug: roster filters ignore unknown roles and topics from the URL instead o
     role: 'player',
     topic: 'leadership',
     format: '',
+    sort: '',
     q: 'kane',
   });
-  assert.deepEqual(rosterState('?role=goalkeeper&topic=juggling', chips), { role: '', topic: '', format: '', q: '' });
-  assert.deepEqual(rosterState('?format=keynote', chips), { role: '', topic: '', format: 'keynote', q: '' });
-  assert.deepEqual(rosterState('?format=juggling', chips), { role: '', topic: '', format: '', q: '' });
+  assert.deepEqual(rosterState('?role=goalkeeper&topic=juggling', chips), { role: '', topic: '', format: '', sort: '', q: '' });
+  assert.deepEqual(rosterState('?format=keynote', chips), { role: '', topic: '', format: 'keynote', sort: '', q: '' });
+  assert.deepEqual(rosterState('?format=juggling', chips), { role: '', topic: '', format: '', sort: '', q: '' });
 });
 
 test('the home carousel steps through its slides and wraps at both ends', () => {

@@ -87,6 +87,15 @@ export interface Role {
   image?: ImageId;
   singular?: string;
   browseLabel?: string;
+  /** "Why book a manager": the category page's pitch section (else the page shows popular topics and formats). */
+  pitch?: RolePitch;
+}
+
+export interface RolePitch {
+  eyebrow: string;
+  heading: string;
+  lead: string;
+  points: { title: string; text: string }[];
 }
 
 export interface Era {
@@ -107,6 +116,10 @@ export interface FaqEntry {
   q: string;
   a: string;
   profile: boolean;
+  /** Shown on the home page too (default true; the about page shows every entry). */
+  home?: boolean;
+  /** Only for sites with a venue-hire promotion (site.json eventSpaces.url). */
+  venue?: boolean;
 }
 
 export type Pair = [string, string];

@@ -684,7 +684,7 @@ test('about page: the heading names the platform (or the site’s own override),
   );
   assert.equal(
     text(/<h1 class="disp">([\s\S]*?)<\/h1>/.exec((await get('/spurs/about')).html)?.[1] ?? ''),
-    'About the Spurs Speaker Network',
+    'The official Spurs speaker network',
   );
 });
 

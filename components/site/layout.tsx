@@ -169,11 +169,6 @@ export function SiteFooter({ ctx }: { ctx: SiteContext }) {
                   </A>
                 </li>
               ))}
-              <li>
-                <A demo={demo} href={`${base}/legends`}>
-                  All {v.legendsNoun}
-                </A>
-              </li>
             </ul>
           </div>
           {pages.waysToBook ? (
@@ -200,28 +195,28 @@ export function SiteFooter({ ctx }: { ctx: SiteContext }) {
           <div>
             <h2>{nl.about}</h2>
             <ul>
+              <li>
+                <A demo={demo} href={`${ctx.home}#enquire`}>
+                  How booking works
+                </A>
+              </li>
+              {site.eventSpaces?.url ? (
+                <li>
+                  <A demo={demo} href={site.eventSpaces.url} target="_blank" rel="noopener">
+                    Event spaces<span className="sr-only"> (opens in a new tab)</span>
+                  </A>
+                </li>
+              ) : null}
               {pages.about ? (
-                <>
-                  <li>
-                    <A demo={demo} href={`${base}/about`}>
-                      About this platform
-                    </A>
-                  </li>
-                  <li>
-                    <A demo={demo} href={`${base}/about#faq`}>
-                      FAQs
-                    </A>
-                  </li>
-                </>
+                <li>
+                  <A demo={demo} href={`${base}/about#faq`}>
+                    FAQs
+                  </A>
+                </li>
               ) : null}
               <li>
                 <A demo={demo} href={`${base}/check-availability`}>
                   Check availability
-                </A>
-              </li>
-              <li>
-                <A demo={demo} href={v.beyondUrl} rel="noopener">
-                  More speakers on PepTalk
                 </A>
               </li>
             </ul>
