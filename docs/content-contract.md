@@ -524,6 +524,25 @@ Wording overrides; any key left out keeps the default in src/copy/defaults.mjs (
 | `travelsFrom` | string | no |  |  |
 | `aboutTitle` | string \| null | no |  |  |
 | `consentLine` | string | no |  |  |
+| `trustOfficial` | string | no |  |  |
+| `trustShortlist` | string | no |  |  |
+| `trustManaged` | string | no |  |  |
+| `browseEyebrow` | string | no |  |  |
+| `homeRolesTitle` | string | no |  |  |
+| `waysEyebrow` | string | no |  |  |
+| `waysHomeLead` | string | no |  |  |
+| `homeFaqTitle` | string | no |  |  |
+| `faqLead` | string | no |  |  |
+| `howEyebrow` | string | no |  |  |
+| `howHeadline` | string | no |  |  |
+| `step1Title` | string | no |  |  |
+| `step1Text` | string | no |  |  |
+| `step2Title` | string | no |  |  |
+| `step2Text` | string | no |  |  |
+| `step3Title` | string | no |  |  |
+| `step3Text` | string | no |  |  |
+| `ctaTitle` | string | no |  |  |
+| `ctaLead` | string | no |  |  |
 | `officialSmall` | string | no |  |  |
 | `currentNoun` | string | no |  |  |
 | `navLabels` | { legends?, ways?, hospitality?, about? } | no |  |  |

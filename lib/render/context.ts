@@ -14,6 +14,43 @@ export const PEPTALK = 'https://www.getapeptalk.com';
 export const fillPlaceholders = (text: string, values: Record<string, string | undefined>): string =>
   text.replace(/\{(\w+)(?:\|([^}]*))?\}/g, (match, name: string, fallback?: string) => values[name] ?? fallback ?? match);
 
+/** Wording keys whose text may use {short}, {org}, {platform}, {stadium}, {legendNoun}, {legendsNoun} or {diaryCheck}. */
+export const FILLED_VOCAB = [
+  'trustOfficial',
+  'trustShortlist',
+  'trustManaged',
+  'browseEyebrow',
+  'homeRolesTitle',
+  'waysEyebrow',
+  'waysHomeLead',
+  'homeFaqTitle',
+  'faqLead',
+  'howEyebrow',
+  'howHeadline',
+  'step1Title',
+  'step1Text',
+  'step2Title',
+  'step2Text',
+  'step3Title',
+  'step3Text',
+  'ctaTitle',
+  'ctaLead',
+] as const;
+
+/** The values those placeholders take for a site (decoded content, merged wording). */
+export const vocabTokens = (
+  site: Pick<Site, 'short' | 'orgName' | 'platform' | 'stadium'>,
+  v: Pick<Vocab, 'legendNoun' | 'legendsNoun' | 'diaryCheck'>,
+) => ({
+  short: site.short,
+  org: site.orgName,
+  platform: site.platform,
+  stadium: site.stadium,
+  legendNoun: v.legendNoun,
+  legendsNoun: v.legendsNoun,
+  diaryCheck: v.diaryCheck,
+});
+
 export interface SiteContext {
   /** The published site with every string decoded to plain text (theme CSS uses the stored values instead). */
   site: Site;
@@ -41,7 +78,7 @@ export interface SiteContext {
    * FAQ entries ready to render: all of them (the about page), only the profile ones (with the person's name) when a
    * person is given, or the home page's set with `{ home: true }`. Venue questions need a venue-hire promotion.
    */
-  faq(person?: Person | null, options?: { home?: boolean }): { q: string; a: string }[];
+  faq(person?: Person | null, options?: { home?: boolean }): { q: string; a: string; key: string }[];
   /**
    * Search engines may index this copy of the site: site.json `indexable` (after the deployment guards in
    * lib/seo/indexing.ts), and this is the canonical copy.
@@ -75,6 +112,15 @@ export function siteContext(
   const formats = decodeDeep(BASE_FORMATS);
   const vocab = decodeDeep(VOCAB);
   const base = onDomain && domain ? '' : `/${site.slug}`;
+  const v = {
+    ...vocab,
+    ...site.vocab,
+    // The shared default is null: the about page is "About <platform>" unless the site sets its own heading.
+    aboutTitle: site.vocab?.aboutTitle ?? `About ${site.platform}`,
+    navLabels: { ...vocab.navLabels, ...site.vocab?.navLabels },
+  } as Vocab & { aboutTitle: string };
+  const tokens = vocabTokens(site, v);
+  for (const key of FILLED_VOCAB) v[key] = fillPlaceholders(v[key], tokens);
   const canonical = Boolean(onDomain && domain) === Boolean(domain?.live);
   return {
     site,
@@ -83,13 +129,7 @@ export function siteContext(
     url: path => canonicalUrl(site.slug, path === '/' && !base ? '' : path.slice(base.length), domain, origin),
     canonical,
     pages: pagesFor(site),
-    v: {
-      ...vocab,
-      ...site.vocab,
-      // The shared default is null: the about page is "About <platform>" unless the site sets its own heading.
-      aboutTitle: site.vocab?.aboutTitle ?? `About ${site.platform}`,
-      navLabels: { ...vocab.navLabels, ...site.vocab?.navLabels },
-    } as Vocab & { aboutTitle: string },
+    v,
     nl: { ...vocab.navLabels, ...site.vocab?.navLabels },
     // Only the formats the site offers, in its order (site.json `formatKeys`), each with the site's overrides.
     FORMATS: Object.fromEntries(
@@ -106,7 +146,7 @@ export function siteContext(
         .filter(entry => !entry.venue || Boolean(site.eventSpaces?.url))
         .filter(entry => !person || entry.profile)
         .filter(entry => !home || entry.home !== false)
-        .map(({ q, a }) => ({ q: fillPlaceholders(q, values), a: fillPlaceholders(a, values) }));
+        .map(({ key, q, a }) => ({ key, q: fillPlaceholders(q, values), a: fillPlaceholders(a, values) }));
     },
     indexable: isSiteIndexable(stored) && canonical,
     launched: isSiteIndexable(stored),

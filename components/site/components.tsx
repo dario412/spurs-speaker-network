@@ -16,7 +16,7 @@ import {
 import { personAlt } from '../../lib/render/alt.ts';
 import { topicKey } from '../../lib/render/category.ts';
 import { officialLabel, type SiteContext } from '../../lib/render/context.ts';
-import { A, Button, Crest, Form, Photo } from './primitives.tsx';
+import { A, Button, Crest, edit, Form, Photo } from './primitives.tsx';
 import { formatLine } from './sections.tsx';
 
 /**
@@ -100,9 +100,9 @@ export function ShortlistButton({
 }
 
 /** The crest plus an "Official …" label, on the home and profile heroes. */
-export function Official({ ctx, label }: { ctx: SiteContext; label: string }) {
+export function Official({ ctx, label, path }: { ctx: SiteContext; label: string; path?: string }) {
   return (
-    <span className="official">
+    <span className="official" {...edit(path)}>
       <Crest ctx={ctx} size="md" />
       {label}
     </span>
@@ -163,8 +163,8 @@ export function WaysGrid({
           const format = ctx.FORMATS[key];
           return (
             <div className="way" key={key}>
-              <Heading>{format.title}</Heading>
-              <p>{format.short}</p>
+              <Heading {...edit(`formats.${key}.title`)}>{format.title}</Heading>
+              <p {...edit(`formats.${key}.short`)}>{format.short}</p>
               <A demo={demo} className="more" href={`${base}/legends?format=${key}`}>
                 See who’s available<span className="sr-only"> for {format.title.toLowerCase()}</span> <span aria-hidden="true">→</span>
               </A>
@@ -192,8 +192,8 @@ export function WaysGrid({
               {String(i + 1).padStart(2, '0')}
             </span>
             <div className="what">
-              <Heading>{format.title}</Heading>
-              <p>{format.desc}</p>
+              <Heading {...edit(`formats.${key}.title`)}>{format.title}</Heading>
+              <p {...edit(`formats.${key}.desc`)}>{format.desc}</p>
             </div>
             <div className="incl">
               <span className="eyebrow">Includes</span>
@@ -440,7 +440,9 @@ export function FormSection({
       <div className="wrap formgrid">
         <div>
           <span className="eyebrow">Check availability</span>
-          <Heading className="disp">{v.formHeadline}</Heading>
+          <Heading className="disp" {...edit('vocab.formHeadline')}>
+            {v.formHeadline}
+          </Heading>
           <p>
             Tell us about your event and the PepTalk bookings team will confirm availability around the {v.fixtureWord}, usually within one
             working day.

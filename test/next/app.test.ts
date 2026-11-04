@@ -505,7 +505,7 @@ test('images: content photos are <img> with srcset and alt text; the LCP photo i
     const photos = [...html.matchAll(/<img class="ph"[^>]*>/g)].map(([img]) => img);
     const alts = photos.map(img => text(/alt="([^"]*)"/.exec(img)?.[1] ?? ''));
     if (/\/legends\/[a-z0-9-]+$/.test(path)) {
-      const name = text(/<h1 class="disp">([\s\S]*?)<\/h1>/.exec(html)?.[1] ?? '');
+      const name = text(/<h1 class="disp"[^>]*>([\s\S]*?)<\/h1>/.exec(html)?.[1] ?? '');
       assert.ok(alts[0].startsWith(`${name}, `), `${path}: the hero alt names ${name}: "${alts[0]}"`);
       assert.match(photos[0], /loading="eager" fetchPriority="high"/, `${path}: profile hero is the LCP image`);
       assert.equal(photos.filter(img => /fetchPriority="high"/.test(img)).length, 1, path);
@@ -670,7 +670,7 @@ test('fixture: shell sites and a one-person site render without broken images or
 test('about page: the heading names the platform (or the site’s own override), and title and breadcrumb follow it', async () => {
   for (const site of sites.filter(candidate => candidate.pages?.about !== false)) {
     const html = (await get(`/${site.slug}/about`)).html;
-    const h1 = text(/<h1 class="disp">([\s\S]*?)<\/h1>/.exec(html)?.[1] ?? '');
+    const h1 = text(/<h1 class="disp"[^>]*>([\s\S]*?)<\/h1>/.exec(html)?.[1] ?? '');
     const expected = text(site.vocab?.aboutTitle ?? `About ${site.platform}`);
     assert.equal(h1, expected, site.slug);
     assert.doesNotMatch(h1, /Operated by PepTalk/, `${site.slug}: the old default heading`);
@@ -679,11 +679,11 @@ test('about page: the heading names the platform (or the site’s own override),
     assert.equal(crumbs.at(-1)?.name, h1, `${site.slug}: breadcrumb`);
   }
   assert.equal(
-    text(/<h1 class="disp">([\s\S]*?)<\/h1>/.exec((await get('/eastvale/about')).html)?.[1] ?? ''),
+    text(/<h1 class="disp"[^>]*>([\s\S]*?)<\/h1>/.exec((await get('/eastvale/about')).html)?.[1] ?? ''),
     'About Eastvale Rovers Legends',
   );
   assert.equal(
-    text(/<h1 class="disp">([\s\S]*?)<\/h1>/.exec((await get('/spurs/about')).html)?.[1] ?? ''),
+    text(/<h1 class="disp"[^>]*>([\s\S]*?)<\/h1>/.exec((await get('/spurs/about')).html)?.[1] ?? ''),
     'The official Spurs speaker network',
   );
 });

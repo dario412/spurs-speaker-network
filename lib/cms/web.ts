@@ -11,8 +11,9 @@ import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import QRCode from 'qrcode';
 import { HttpError } from '../../src/admin/http.mjs';
-import { FORMATS } from '../../src/copy/defaults.mjs';
+import { FORMATS, VOCAB } from '../../src/copy/defaults.mjs';
 import { parseLegal } from '../content/legal.ts';
+import { FILLED_VOCAB, vocabTokens } from '../render/context.ts';
 import {
   type CmsUser,
   can,
@@ -47,7 +48,20 @@ import { loadContentFiles, recentChanges, saveContentFiles } from './content-fil
 import { buildShape, cmsContent } from './editor.ts';
 import { resetEmail, sendMail } from './mail.ts';
 import { deleteMedia, listMedia, saveMedia } from './media.ts';
-import { applyForm, fieldsOf, fieldValue, findPage, imageUses, PAGES, type Section, type SiteLike, STYLE_SECTIONS } from './pages.ts';
+import {
+  applyForm,
+  type Field,
+  fieldCatalog,
+  fieldsOf,
+  fieldValue,
+  findPage,
+  imageUses,
+  PAGES,
+  pageForPath,
+  type Section,
+  type SiteLike,
+  STYLE_SECTIONS,
+} from './pages.ts';
 import { tagsFor, triggerRebuild } from './publish.ts';
 import { airtableSyncConfigured, latestRuns, runSpursSync, SYNC_TABLE_NAME } from './sync.ts';
 import {
@@ -93,6 +107,19 @@ const redirect = (location: string, cookies: string[] = []) => {
 };
 const cookie = (name: string, value: string, maxAge: number) =>
   `${name}=${value}; Path=/admin; HttpOnly; SameSite=Lax; Max-Age=${maxAge}${process.env.NODE_ENV === 'production' ? '; Secure' : ''}`;
+/**
+ * A readable marker on the whole site (no secret in it) that tells the site's pages to load the visual editor
+ * (lib/visual-editor/). The editor's API still needs the real session cookie, which only /admin receives.
+ */
+const EDIT_COOKIE = 'pt_cms_edit';
+const editMarker = (on: boolean) =>
+  `${EDIT_COOKIE}=${on ? '1' : ''}; Path=/; SameSite=Lax; Max-Age=${on ? SESSION_TTL_S : 0}${process.env.NODE_ENV === 'production' ? '; Secure' : ''}`;
+const VISUAL_API = '/admin/api/visual';
+const json = (body: unknown, status = 200, cookies: string[] = []) => {
+  const headers = new Headers({ 'Content-Type': 'application/json; charset=utf-8', ...NO_STORE });
+  for (const value of cookies) headers.append('Set-Cookie', value);
+  return new Response(JSON.stringify(body), { status, headers });
+};
 const flashCookie = (flash: Flash) => cookie(FLASH_COOKIE, signValue(JSON.stringify(flash)), 60);
 const readCookie = (request: Request, name: string): string | undefined =>
   (request.headers.get('cookie') ?? '')
@@ -223,17 +250,22 @@ async function route(request: Request, url: URL, path: string, method: string, d
   // ---- Signed in ----
   const found = await sessionUser(readCookie(request, SESSION_COOKIE));
   if (!found) {
+    if (path === VISUAL_API) return json({ error: 'signed-out' }, 401, [editMarker(false)]);
     if (method === 'POST') return redirect(`${PREFIX}/login`);
     return redirect(`${PREFIX}/login?next=${encodeURIComponent(path + url.search)}`);
   }
   const session: Session = { user: found.user, csrf: csrfToken(found.sid) };
   let form: FormData | null = null;
-  if (method === 'POST') {
+  if (method === 'POST' && path === VISUAL_API) {
+    // The visual editor posts JSON with the form token in a header.
+    if (!csrfOk(found.sid, request.headers.get('x-csrf-token') ?? '')) return json({ error: 'token' }, 403);
+  } else if (method === 'POST') {
     form = await request.formData();
     if (!csrfOk(found.sid, String(form.get('_csrf') ?? '')))
       throw new HttpError(403, 'Missing or invalid form token. Reload the page and try again.');
   }
-  if (path === `${PREFIX}/logout` && method === 'POST') return redirect(`${PREFIX}/login`, [cookie(SESSION_COOKIE, '', 0)]);
+  if (path === `${PREFIX}/logout` && method === 'POST')
+    return redirect(`${PREFIX}/login`, [cookie(SESSION_COOKIE, '', 0), editMarker(false)]);
 
   // Two-factor sign-in is required before anything else.
   if (!session.user.totpEnabled || path === `${PREFIX}/2fa`) {
@@ -274,8 +306,9 @@ async function route(request: Request, url: URL, path: string, method: string, d
   const site = snap.sites.find((entry: { broken?: unknown }) => !entry.broken) as SiteLike | undefined;
   if (!site) throw new Error('No site content could be loaded.');
   const base = `/${site.slug}`;
-  const page = (title: string, body: string, status = 200, crumbs: [string, string?][] = []) =>
-    html(
+  const canEdit = can(session.user, 'edit_content');
+  const page = (title: string, body: string, status = 200, crumbs: [string, string?][] = []) => {
+    const response = html(
       shell({
         title,
         body,
@@ -288,6 +321,9 @@ async function route(request: Request, url: URL, path: string, method: string, d
       status,
       clearFlash,
     );
+    response.headers.append('Set-Cookie', editMarker(canEdit));
+    return response;
+  };
   const done = async (to: string, message: Flash) => redirect(to, [flashCookie(await afterSave(message))]);
 
   /** Refresh what changed; rebuild when the set of pages or image hosts did. */
@@ -344,6 +380,63 @@ async function route(request: Request, url: URL, path: string, method: string, d
     if (result.saved?.unchanged) return redirect(opts.action, [flashCookie({ text: 'No changes to save.', kind: 'info' })]);
     return done(opts.action, { text: 'Saved.', kind: 'ok' });
   };
+
+  // The visual editor on the live pages (lib/visual-editor/client.ts): the fields it can edit, and saving them.
+  if (path === VISUAL_API) {
+    const catalog = fieldCatalog(site);
+    if (method === 'GET') {
+      const fields = Object.fromEntries(
+        [...catalog].map(([key, f]) => [
+          key,
+          {
+            label: f.label,
+            kind: f.kind ?? 'text',
+            hint: f.hint,
+            placeholder: f.placeholder,
+            options: f.options,
+            page: f.page,
+            value: fieldValue(site, f),
+          },
+        ]),
+      );
+      const v = { ...(VOCAB as unknown as Record<string, string>), ...(site.vocab ?? {}) };
+      return json(
+        {
+          canEdit,
+          csrf: session.csrf,
+          page: pageForPath(base, url.searchParams.get('path') ?? ''),
+          tokens: vocabTokens(site as never, v as never),
+          filled: FILLED_VOCAB.map(key => `vocab.${key}`),
+          images: Object.keys(site.images ?? {}),
+          fields,
+        },
+        200,
+        [editMarker(canEdit)],
+      );
+    }
+    if (!canEdit) return json({ ok: false, problems: ['Your role can’t change content.'] }, 403);
+    const body = (await request.json().catch(() => null)) as { values?: Record<string, unknown> } | null;
+    const values = body?.values && typeof body.values === 'object' ? body.values : null;
+    if (!values || !Object.keys(values).length) return json({ ok: false, problems: ['Nothing to save.'] }, 422);
+    const fields = Object.keys(values).map(key => catalog.get(key));
+    if (fields.some(f => !f)) return json({ ok: false, problems: ['Some of those fields can’t be edited here.'] }, 422);
+    const formLike = {
+      get: (key: string) => {
+        const value = values[key];
+        if (typeof value === 'boolean') return value ? 'on' : null;
+        return typeof value === 'string' ? value : null;
+      },
+    };
+    const candidate = applyForm(site, fields as Field[], formLike);
+    const result = await content.saveSite(snap, candidate, {
+      registry: undefined,
+      message: `content(${site.slug}): edit ${Object.keys(values).join(', ')} in the visual editor`,
+    });
+    if (result.problems) return json({ ok: false, problems: result.problems }, 422);
+    if (result.saved?.unchanged) return json({ ok: true, message: 'No changes to save.' });
+    const message = await afterSave({ text: 'Saved.', kind: 'ok' });
+    return json({ ok: true, message: message.text });
+  }
 
   // Dashboard
   if (path === PREFIX && method === 'GET') {
@@ -671,6 +764,7 @@ const ASSETS: Record<string, [string, string]> = {
   'admin.css': ['src/admin/public/admin.css', 'text/css; charset=utf-8'],
   'admin.js': ['src/admin/public/admin.js', 'text/javascript; charset=utf-8'],
   'cms.css': ['lib/cms/cms.css', 'text/css; charset=utf-8'],
+  'visual-editor.css': ['lib/cms/visual-editor.css', 'text/css; charset=utf-8'],
   'peptalk.png': ['public/peptalk/logo.png', 'image/png'],
   'favicon.png': ['public/peptalk/favicon.png', 'image/png'],
   'recoleta-alt-500.woff2': ['public/fonts/recoleta-alt-500.woff2', 'font/woff2'],

@@ -56,6 +56,7 @@ export default async function config(phase: string): Promise<NextConfig> {
         './config/airtable.json',
         // The CMS's own assets (lib/cms/web.ts serves them from /admin/assets/).
         './lib/cms/cms.css',
+        './lib/cms/visual-editor.css',
         './src/admin/public/*',
         './public/peptalk/*',
         './public/fonts/recoleta-alt-500.woff2',

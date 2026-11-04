@@ -6,7 +6,7 @@ import { test } from 'node:test';
 import { csrfOk, csrfToken, readSession, sessionCookie, signValue, unsignValue } from '../../lib/cms/auth.ts';
 import { CONTENT_PATH } from '../../lib/cms/content-files.ts';
 import { MEDIA_ID, sniffImage } from '../../lib/cms/media.ts';
-import { applyForm, fieldsOf, fieldValue, imageUses, PAGES, STYLE_SECTIONS } from '../../lib/cms/pages.ts';
+import { applyForm, fieldCatalog, fieldsOf, fieldValue, imageUses, PAGES, pageForPath, STYLE_SECTIONS } from '../../lib/cms/pages.ts';
 import { tagsFor } from '../../lib/cms/publish.ts';
 import { createJsonProvider } from '../../lib/content/json-provider.ts';
 import { buildCsp } from '../../lib/proxy/csp.ts';
@@ -180,4 +180,27 @@ test('the CMS provider’s overlay: saved files win over the committed ones, uns
   assert.equal((await cms.getSite('spurs'))?.people.length, (await plain.getSite('spurs'))?.people.length, 'people still from the files');
   const legal = createJsonProvider({ cache: false, overlay: new Map([['src/copy/legal/terms.md', '---\ntitle: New terms\n---\nBody']]) });
   assert.equal((await legal.getLegal('terms')).title, 'New terms');
+});
+
+test('the visual editor: every element marked on a page is a field the CMS can edit, and pages map to their editors', async () => {
+  const { renderPage } = await import('../../src/admin/next-render/index.mjs');
+  const { publishable } = await import('../../lib/content/publish.ts');
+  const { sitePaths } = await import('../../lib/render/routes.ts');
+  const stored = loadSite('spurs');
+  const site = publishable(stored);
+  const catalog = fieldCatalog(stored);
+  let marked = 0;
+  for (const path of sitePaths(site)) {
+    const { html } = await renderPage(path, [site]);
+    for (const match of html.matchAll(/data-edit="([^"]+)"/g))
+      for (const field of match[1].split(' ')) {
+        marked++;
+        assert.ok(catalog.has(field), `${path}: ${field} is marked but not editable`);
+      }
+  }
+  assert.ok(marked > 100, 'pages carry edit marks');
+  assert.equal(pageForPath('/spurs', '/spurs'), 'home');
+  assert.equal(pageForPath('/spurs', '/spurs/legends/sandro'), 'profile');
+  assert.equal(pageForPath('/spurs', '/spurs/category/first-team'), 'categories');
+  assert.equal(pageForPath('/spurs', '/other'), null);
 });

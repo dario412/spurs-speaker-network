@@ -1,0 +1,205 @@
+/* The visual editor on the live site (lib/visual-editor/client.ts): the bar, outlines and the panel. Loaded only for
+   signed-in editors. Everything is namespaced (pt-ve-, pt-editing) so it can't touch the site's own styles. */
+@font-face {
+  font-family: "PT Editor Sans";
+  src: url("/admin/assets/sofia-pro-300.woff2") format("woff2");
+  font-weight: 300;
+}
+@font-face {
+  font-family: "PT Editor Sans";
+  src: url("/admin/assets/sofia-pro-500.woff2") format("woff2");
+  font-weight: 500;
+}
+@font-face {
+  font-family: "PT Editor Sans";
+  src: url("/admin/assets/sofia-pro-700.woff2") format("woff2");
+  font-weight: 700;
+}
+@font-face {
+  font-family: "PT Editor Display";
+  src: url("/admin/assets/recoleta-alt-500.woff2") format("woff2");
+  font-weight: 500;
+}
+.pt-editing [data-edit] {
+  outline: 2px dashed rgba(57, 113, 192, 0.55);
+  outline-offset: 3px;
+  cursor: pointer;
+}
+.pt-editing [data-edit]:hover {
+  outline-style: solid;
+  outline-color: #3971c0;
+}
+.pt-editing .pt-changed {
+  outline: 2px solid #f2b705;
+}
+.pt-editing .pt-selected {
+  outline: 3px solid #3971c0;
+}
+.pt-ve-bar,
+.pt-ve-panel {
+  font-family: "PT Editor Sans", "Helvetica Neue", Arial, sans-serif;
+  color: #2a2b32;
+  font-size: 14px;
+  line-height: 1.4;
+  letter-spacing: normal;
+  text-transform: none;
+  font-style: normal;
+}
+.pt-ve-bar {
+  position: fixed;
+  left: 50%;
+  bottom: 16px;
+  transform: translateX(-50%);
+  z-index: 2147483000;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  max-width: calc(100vw - 24px);
+  padding: 8px 10px;
+  background: rgba(255, 255, 255, 0.97);
+  border: 1px solid #e4e6ed;
+  border-radius: 999px;
+  box-shadow: 0 12px 40px rgba(20, 24, 40, 0.18);
+}
+.pt-ve-tools {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+}
+.pt-ve-tools[hidden] {
+  display: none;
+}
+.pt-ve-btn {
+  font: inherit;
+  font-weight: 700;
+  padding: 8px 16px;
+  border-radius: 999px;
+  border: 1px solid #d5d8e2;
+  background: #fff;
+  color: #2a2b32;
+  cursor: pointer;
+}
+.pt-ve-btn.primary {
+  background: #3971c0;
+  border-color: #3971c0;
+  color: #fff;
+}
+.pt-ve-btn:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+.pt-ve-link {
+  color: #6b6d78;
+  font-weight: 500;
+  text-decoration: none;
+  padding: 0 6px;
+}
+.pt-ve-link:hover {
+  color: #2a2b32;
+  text-decoration: underline;
+}
+.pt-ve-msg {
+  margin: 0;
+  padding: 0 6px;
+  color: #6b6d78;
+}
+.pt-ve-msg:empty {
+  display: none;
+}
+.pt-ve-msg.ok {
+  color: #1f7a45;
+}
+.pt-ve-msg.error {
+  color: #b42318;
+}
+.pt-ve-panel {
+  position: fixed;
+  top: 80px;
+  right: 16px;
+  z-index: 2147483001;
+  width: min(380px, calc(100vw - 32px));
+  max-height: calc(100vh - 180px);
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border: 1px solid #e4e6ed;
+  border-radius: 14px;
+  box-shadow: 0 18px 50px rgba(20, 24, 40, 0.2);
+}
+.pt-ve-panel[hidden] {
+  display: none;
+}
+.pt-ve-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px 10px;
+  border-bottom: 1px solid #eef0f5;
+}
+.pt-ve-head h2 {
+  margin: 0;
+  font:
+    500 18px / 1.2 "PT Editor Display",
+    Georgia,
+    serif;
+  color: #2a2b32;
+}
+.pt-ve-close {
+  font: inherit;
+  background: none;
+  border: 0;
+  color: #6b6d78;
+  cursor: pointer;
+}
+.pt-ve-fields {
+  overflow-y: auto;
+  padding: 12px 16px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.pt-ve-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.pt-ve-field.check {
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+}
+.pt-ve-label {
+  font-weight: 700;
+}
+.pt-ve-field input:not([type="checkbox"]),
+.pt-ve-field textarea,
+.pt-ve-field select {
+  font: inherit;
+  font-weight: 300;
+  width: 100%;
+  padding: 9px 12px;
+  border: 1px solid #d5d8e2;
+  border-radius: 10px;
+  background: #fff;
+  color: #2a2b32;
+  box-sizing: border-box;
+}
+.pt-ve-field textarea {
+  resize: vertical;
+}
+.pt-ve-field input::placeholder,
+.pt-ve-field textarea::placeholder {
+  color: #a3a6b3;
+}
+.pt-ve-hint {
+  color: #6b6d78;
+  font-size: 12px;
+}
+.pt-ve-bar :focus-visible,
+.pt-ve-panel :focus-visible {
+  outline: 2px solid #3971c0;
+  outline-offset: 2px;
+}

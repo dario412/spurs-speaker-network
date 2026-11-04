@@ -1379,6 +1379,63 @@
         "consentLine": {
           "type": "string"
         },
+        "trustOfficial": {
+          "type": "string"
+        },
+        "trustShortlist": {
+          "type": "string"
+        },
+        "trustManaged": {
+          "type": "string"
+        },
+        "browseEyebrow": {
+          "type": "string"
+        },
+        "homeRolesTitle": {
+          "type": "string"
+        },
+        "waysEyebrow": {
+          "type": "string"
+        },
+        "waysHomeLead": {
+          "type": "string"
+        },
+        "homeFaqTitle": {
+          "type": "string"
+        },
+        "faqLead": {
+          "type": "string"
+        },
+        "howEyebrow": {
+          "type": "string"
+        },
+        "howHeadline": {
+          "type": "string"
+        },
+        "step1Title": {
+          "type": "string"
+        },
+        "step1Text": {
+          "type": "string"
+        },
+        "step2Title": {
+          "type": "string"
+        },
+        "step2Text": {
+          "type": "string"
+        },
+        "step3Title": {
+          "type": "string"
+        },
+        "step3Text": {
+          "type": "string"
+        },
+        "ctaTitle": {
+          "type": "string"
+        },
+        "ctaLead": {
+          "type": "string"
+        },
         "officialSmall": {
           "type": "string"
         },

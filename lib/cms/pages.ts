@@ -49,6 +49,8 @@ const vocab = (key: string, label: string, kind: FieldKind = 'text', hint?: stri
   };
 };
 
+const TOKENS = 'You can use {short} (Spurs), {org}, {platform}, {legendNoun} and {legendsNoun}; step texts also {diaryCheck}.';
+
 const FORMAT_TEXT: [string, string, FieldKind][] = [
   ['title', 'Title', 'text'],
   ['short', 'Short line (cards)', 'textarea'],
@@ -86,6 +88,18 @@ export const PAGES: PageDef[] = [
             hint: 'One per line, in order. The first must appear in the heading.',
           },
           vocab('heroLead', 'Intro', 'textarea'),
+          vocab('trustOfficial', 'Check 1', 'text', TOKENS),
+          vocab('trustShortlist', 'Check 2'),
+          vocab('trustManaged', 'Check 3'),
+        ],
+      },
+      {
+        title: 'Hero photo',
+        intro: 'The first photo in the hero; the carousel slides follow it.',
+        fields: [
+          { path: 'home.hero.image', label: 'Image', kind: 'image' },
+          { path: 'home.hero.name', label: 'Name' },
+          { path: 'home.hero.line', label: 'Caption' },
         ],
       },
       ...rows(site.home?.slides?.length ?? 0, 2, 8).map(i => ({
@@ -107,14 +121,44 @@ export const PAGES: PageDef[] = [
         ],
       },
       {
-        title: 'Find a speaker by role',
-        intro: 'The role tiles themselves are edited under Pages → Speaker categories.',
-        fields: [vocab('rolesEyebrow', 'Eyebrow'), vocab('rolesHeadline', 'Heading')],
+        title: 'Roles',
+        intro: 'The hero eyebrow and the role list. The roles themselves are edited under Pages → Speaker categories.',
+        fields: [
+          vocab('rolesEyebrow', 'Hero eyebrow'),
+          vocab('browseEyebrow', 'Role list eyebrow'),
+          vocab('homeRolesTitle', 'Role list heading'),
+        ],
       },
       {
         title: 'Ways to book',
         intro: 'The formats themselves are edited under Pages → Ways to book.',
-        fields: [{ path: 'waysTitle', label: 'Heading' }, vocab('waysLead', 'Intro', 'textarea')],
+        fields: [vocab('waysEyebrow', 'Eyebrow'), { path: 'waysTitle', label: 'Heading' }, vocab('waysHomeLead', 'Intro', 'textarea')],
+      },
+      {
+        title: 'FAQs',
+        intro: 'The questions themselves are edited under Pages → FAQs.',
+        fields: [vocab('homeFaqTitle', 'Heading', 'text', TOKENS), vocab('faqLead', 'Intro', 'textarea')],
+      },
+      {
+        title: 'How booking works',
+        fields: [
+          vocab('howEyebrow', 'Eyebrow'),
+          vocab('howHeadline', 'Heading'),
+          vocab('step1Title', 'Step 1'),
+          vocab('step1Text', 'Step 1 text', 'textarea'),
+          vocab('step2Title', 'Step 2'),
+          vocab('step2Text', 'Step 2 text', 'textarea', TOKENS),
+          vocab('step3Title', 'Step 3'),
+          vocab('step3Text', 'Step 3 text', 'textarea'),
+        ],
+      },
+      {
+        title: 'Closing band',
+        fields: [
+          { path: 'motto', label: 'Eyebrow (motto)' },
+          vocab('ctaTitle', 'Heading', 'text', TOKENS),
+          vocab('ctaLead', 'Line', 'textarea'),
+        ],
       },
       {
         title: 'First team',
@@ -166,7 +210,7 @@ export const PAGES: PageDef[] = [
       (site.roles ?? []).flatMap((role: SiteLike, r: number) => [
         {
           title: role.label ?? role.key,
-          intro: `Category page: /category/${role.key}`,
+          intro: 'Its category page’s address follows the name: renaming it moves the page (the site rebuilds).',
           fields: [
             { path: `roles.${r}.label`, label: 'Name (plural)' },
             { path: `roles.${r}.singular`, label: 'Name (one person)' },
@@ -388,6 +432,30 @@ export const STYLE_SECTIONS: Section[] = [
     ],
   },
 ];
+
+/**
+ * Every editable field by path, for the visual editor: the page editors' fields (the first page listing a path wins),
+ * with `page` naming the page editor that holds it.
+ */
+export function fieldCatalog(site: SiteLike): Map<string, Field & { page: string }> {
+  const catalog = new Map<string, Field & { page: string }>();
+  for (const page of PAGES)
+    for (const field of fieldsOf(page.sections(site))) if (!catalog.has(field.path)) catalog.set(field.path, { ...field, page: page.slug });
+  return catalog;
+}
+
+/** The page editor for a live page path (`/spurs/legends/…` → profile). */
+export function pageForPath(base: string, pathname: string): string | null {
+  const rest = pathname.startsWith(base) ? pathname.slice(base.length) || '/' : null;
+  if (rest === null) return null;
+  if (rest === '/') return 'home';
+  if (rest === '/legends') return 'speakers';
+  if (rest.startsWith('/legends/')) return 'profile';
+  if (rest.startsWith('/category/')) return 'categories';
+  if (rest === '/ways-to-book') return 'ways-to-book';
+  if (rest === '/about') return 'about';
+  return null;
+}
 
 export const findPage = (slug: string) => PAGES.find(page => page.slug === slug) ?? null;
 export const fieldsOf = (sections: Section[]) => sections.flatMap(section => section.fields);
