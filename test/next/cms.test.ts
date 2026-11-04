@@ -1,16 +1,18 @@
 // The CMS (/admin, lib/cms/): what can be tested without a database. The proxy's admin branch (outside the preview
-// gate, never cached or indexed), the session and form-token signing, link mounting for the local admin's screens,
+// gate, never cached or indexed), the session and form-token signing, the page editors' form round trip,
 // cache tags after a save, upload sniffing, and the JSON provider's overlay that the CMS provider is built on.
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { csrfOk, csrfToken, readSession, sessionCookie, signValue, unsignValue } from '../../lib/cms/auth.ts';
 import { CONTENT_PATH } from '../../lib/cms/content-files.ts';
 import { MEDIA_ID, sniffImage } from '../../lib/cms/media.ts';
+import { applyForm, fieldsOf, fieldValue, imageUses, PAGES, STYLE_SECTIONS } from '../../lib/cms/pages.ts';
 import { tagsFor } from '../../lib/cms/publish.ts';
-import { mountPath } from '../../lib/cms/web.ts';
 import { createJsonProvider } from '../../lib/content/json-provider.ts';
 import { buildCsp } from '../../lib/proxy/csp.ts';
 import { decide, isCmsPath, type ProxyConfig } from '../../lib/proxy/decide.ts';
+import { validateSite } from '../../scripts/validate-content.mjs';
+import { loadSite } from '../../src/sites/index.mjs';
 
 process.env.AUTH_SECRET ||= 'test-secret-test-secret-test-secret-0123456789';
 
@@ -39,7 +41,7 @@ const run = (path: string, method = 'GET') =>
   decide({ method, url: `https://appearances.getapeptalk.com${path}`, authorization: null }, gated);
 
 test('the CMS is outside the preview gate, never cached, never indexed, and allows data: images only for itself', async () => {
-  for (const path of ['/admin', '/admin/login', '/admin/sites/spurs/people/sandro']) {
+  for (const path of ['/admin', '/admin/login', '/admin/pages/home']) {
     for (const method of ['GET', 'POST']) {
       const decision = await run(path, method);
       assert.equal(decision.action, 'next', `${method} ${path}`);
@@ -80,14 +82,53 @@ test('sessions and form tokens are signed; a tampered or expired session is refu
   assert.equal(unsignValue(`${Buffer.from('{"text":"x"}').toString('base64url')}.nope`), null);
 });
 
-test('the local admin’s links and redirects are mounted under /admin; previews open the live page', () => {
-  assert.equal(mountPath('/'), '/admin/content');
-  assert.equal(mountPath('/sites/spurs/people'), '/admin/sites/spurs/people');
-  assert.equal(mountPath('/sites/spurs/licences?show=unapproved'), '/admin/sites/spurs/licences?show=unapproved');
-  assert.equal(mountPath('/preview/spurs/legends/sandro'), '/spurs/legends/sandro');
-  assert.equal(mountPath('/preview/all'), '/all');
-  assert.equal(mountPath('/assets/admin.css'), '/admin/assets/admin.css');
-  assert.equal(mountPath('/admin/users'), '/admin/users');
+test('every page editor saves what it shows: an untouched form changes nothing, and the result is valid', () => {
+  const site = loadSite('spurs');
+  for (const def of [...PAGES, { slug: 'style-guide', sections: () => STYLE_SECTIONS }]) {
+    const fields = fieldsOf(def.sections(site));
+    const form = new Map<string, unknown>();
+    for (const field of fields) {
+      const value = fieldValue(site, field);
+      if (value === true) form.set(field.path, 'on');
+      else if (typeof value === 'string') form.set(field.path, value);
+    }
+    const next = applyForm(site, fields, form);
+    assert.deepEqual(next, site, `${def.slug}: an unchanged form saves no change`);
+  }
+  assert.deepEqual(validateSite(site), []);
+});
+
+test('page editors: empty fields fall back to the defaults, empty rows are dropped, answer-only FAQs stay strings', () => {
+  const site = loadSite('spurs');
+  const home = fieldsOf(PAGES.find(page => page.slug === 'home')?.sections(site) ?? []);
+  const form = new Map<string, unknown>(home.map(field => [field.path, fieldValue(site, field)]));
+  form.set('vocab.heroLead', '  ');
+  form.set('home.slides.0.image', '');
+  form.set('home.slides.0.name', '');
+  form.set('home.slides.0.line', '');
+  form.set('heroWords', 'legend\r\n\r\ncoach\n');
+  const next = applyForm(site, home, form);
+  assert.equal(next.vocab.heroLead, undefined, 'cleared wording uses the shared default');
+  assert.equal(next.home.slides.length, site.home.slides.length - 1, 'an emptied slide is removed');
+  assert.deepEqual(next.heroWords, ['legend', 'coach']);
+  assert.equal(next.featured.length, site.featured.length, 'untouched fields stay');
+
+  const faqs = fieldsOf(PAGES.find(page => page.slug === 'faqs')?.sections(site) ?? []);
+  const faqForm = new Map<string, unknown>(faqs.map(field => [field.path, fieldValue(site, field)]));
+  faqForm.set('faqOverrides.official.a', 'Yes, it is.');
+  faqForm.set('faqOverrides.cost.q', '');
+  faqForm.set('faqOverrides.cost.a', '');
+  const faqNext = applyForm(site, faqs, faqForm);
+  assert.equal(faqNext.faqOverrides.official, 'Yes, it is.');
+  assert.equal(faqNext.faqOverrides.cost, undefined);
+  assert.equal(faqNext.faqOverrides.leadTime, site.faqOverrides.leadTime);
+
+  const about = fieldsOf(PAGES.find(page => page.slug === 'about')?.sections(site) ?? []);
+  const aboutForm = new Map<string, unknown>(about.map(field => [field.path, fieldValue(site, field)]));
+  aboutForm.delete('pages.about');
+  assert.equal(applyForm(site, about, aboutForm).pages.about, false, 'an unticked page switch is stored');
+
+  assert.deepEqual(imageUses(site).get(site.home.slides[0].image)?.includes('Home carousel'), true);
 });
 
 test('a save refreshes exactly the pages that used the saved files', () => {

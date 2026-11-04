@@ -25,6 +25,13 @@
   font-weight: 700;
   font-display: swap;
 }
+/* The site's own face, for the style guide's type samples. */
+@font-face {
+  font-family: "Outfit";
+  src: url("/fonts/outfit-latin.woff2") format("woff2");
+  font-weight: 400 900;
+  font-display: swap;
+}
 :root {
   --accent: #3971c0;
   --accent-soft: #ebf1f9;
@@ -277,6 +284,169 @@ form.inline {
 .media-item figcaption {
   padding: 8px 10px;
   font-size: 0.85rem;
+}
+
+/* Page editors */
+.cms fieldset {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  min-width: 0;
+}
+.field.wide {
+  grid-column: 1 / -1;
+}
+.field.check {
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+.field.check input {
+  width: 18px;
+  height: 18px;
+}
+.cms textarea::placeholder,
+.cms input::placeholder {
+  color: #a3a6b3;
+}
+.image-pick {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.image-pick input {
+  flex: 1;
+}
+.thumb {
+  width: 56px;
+  height: 56px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  flex-shrink: 0;
+}
+.savebar {
+  position: sticky;
+  bottom: 0;
+  padding: 14px 0;
+  background: linear-gradient(to top, var(--bg) 70%, transparent);
+}
+
+/* Speakers */
+.who {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+.avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: top;
+  background: var(--accent-soft);
+  flex-shrink: 0;
+  display: inline-block;
+}
+
+/* Style guide */
+.swatches,
+.marks {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+}
+.swatch {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+.swatch svg {
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+.marks figure {
+  margin: 0;
+}
+.mark-box {
+  display: grid;
+  place-items: center;
+  height: 120px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 16px;
+  background: #fff;
+}
+.mark-box img {
+  max-height: 88px;
+  max-width: 100%;
+}
+.type-sample p {
+  margin: 14px 0 2px;
+  color: #000a3c;
+}
+.sg-display,
+.sg-body,
+.sg-eyebrow {
+  font-family: "Outfit", helvetica, sans-serif;
+}
+.sg-h1 {
+  font-size: 2.6rem;
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+.sg-h2 {
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+.sg-body {
+  font-size: 1.05rem;
+  line-height: 1.6;
+  max-width: 60ch;
+}
+.sg-eyebrow {
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+}
+.sg-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 10px 0;
+}
+.sg-btn {
+  font-family: "Outfit", helvetica, sans-serif;
+  font-weight: 600;
+  padding: 12px 20px;
+  border: 2px solid #000a3c;
+}
+.sg-cta {
+  background: #ffe100;
+  border-color: #ffe100;
+  color: #000a3c;
+}
+.sg-navy {
+  background: #000a3c;
+  color: #fff;
+}
+.sg-ghost {
+  background: #fff;
+  color: #000a3c;
+}
+.sg-pill {
+  font-family: "Outfit", helvetica, sans-serif;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 5px 10px;
+  background: #000a3c;
+  color: #fff;
+}
+.sg-signal {
+  background: #50fa82;
+  color: #000a3c;
 }
 
 /* Signed-out pages */
