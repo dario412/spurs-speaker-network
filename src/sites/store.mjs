@@ -1,6 +1,8 @@
 // Turns site content back into files (and writes them). Content JSON has one canonical form (JSON.stringify, 2-space indent,
 // trailing newline) so the site tools, the admin and hand edits all produce minimal diffs.
 import { mkdir, rename, writeFile } from 'node:fs/promises';
+import { join } from 'node:path';
+import { pathToFileURL } from 'node:url';
 import { SITES_DIR } from './index.mjs';
 import { hasLicences, normaliseLicences } from './licences.mjs';
 import { hasVerification, normaliseVerification } from './verification.mjs';
@@ -33,7 +35,10 @@ export function siteFiles(
 
 export const registryFile = registry => ({ 'src/sites/registry.json': formatJson(registry) });
 
-export const PUBLIC_DIR = new URL('../../public/', import.meta.url);
+// Inside the Next.js app (the CMS at /admin) modules are bundled, so the folder is found from the working directory.
+export const PUBLIC_DIR = process.env.NEXT_RUNTIME
+  ? pathToFileURL(`${join(/*turbopackIgnore: true*/ process.cwd(), 'public')}/`)
+  : new URL(/*turbopackIgnore: true*/ '../../public/', import.meta.url);
 
 /**
  * Where a repo-relative content path lives on disk: `src/sites/…` under `dir`, `public/…` (og cards from site packs)

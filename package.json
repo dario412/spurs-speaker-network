@@ -9,7 +9,7 @@
   },
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "node scripts/db-migrate.mjs && next build",
     "start": "next start",
     "typecheck": "next typegen && tsc --noEmit",
     "lint": "biome check .",
@@ -29,18 +29,25 @@
     "assemble-site": "node scripts/assemble-site.mjs",
     "pack-site": "node scripts/pack-site.mjs",
     "import-pack": "node scripts/import-pack.mjs",
-    "admin": "node --env-file-if-exists=.env src/admin/server.mjs"
+    "admin": "node --env-file-if-exists=.env src/admin/server.mjs",
+    "db:migrate": "node scripts/db-migrate.mjs",
+    "cms:invite": "node scripts/cms-invite.mjs"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.5.15",
     "@types/node": "24.19.2",
+    "@types/qrcode": "^1.5.6",
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
     "puppeteer-core": "^25.14.0",
     "typescript": "7.0.2"
   },
   "dependencies": {
+    "@neondatabase/serverless": "^1.2.0",
+    "bcryptjs": "^3.0.3",
     "next": "16.4.2",
+    "otpauth": "^9.6.0",
+    "qrcode": "^1.5.4",
     "react": "19.3.1",
     "react-dom": "19.3.1"
   }

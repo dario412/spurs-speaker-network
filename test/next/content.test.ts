@@ -74,13 +74,17 @@ test('image hosts are Getty plus every published site’s mark hosts', async () 
   assert.equal(new Set(hosts).size, hosts.length);
 });
 
-test('provider selection: json by default, typed errors for unknown, unconfigured or unimplemented providers', async () => {
+test('provider selection: json by default, typed errors for unknown or unconfigured providers', async () => {
   assert.ok(await selectProvider({}).getRegistry());
   const configError = (pattern: RegExp) => (error: unknown) =>
     isContentError(error) && error.code === 'config' && pattern.test(error.message);
   assert.throws(() => selectProvider({ CONTENT_PROVIDER: 'mongo' }), configError(/Unknown CONTENT_PROVIDER/));
   assert.throws(() => selectProvider({ PEOPLE_PROVIDER: 'sheets' }), configError(/Unknown PEOPLE_PROVIDER/));
-  await assert.rejects(createCmsProvider().listSites(), /not implemented yet/);
+  // The CMS provider needs its database; without DATABASE_URL every read is a typed config error, never empty content.
+  const saved = process.env.DATABASE_URL;
+  delete process.env.DATABASE_URL;
+  await assert.rejects(createCmsProvider().listSites(), configError(/CONTENT_PROVIDER=cms needs DATABASE_URL/));
+  if (saved !== undefined) process.env.DATABASE_URL = saved;
   assert.throws(() => selectProvider({ PEOPLE_PROVIDER: 'airtable' }), configError(/PEOPLE_PROVIDER=airtable needs AIRTABLE_TOKEN/));
 });
 

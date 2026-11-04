@@ -6,6 +6,8 @@
 // - site.json `pages: { waysToBook, hospitality, about }` turns optional pages off.
 // - `active: false` on a person hides that profile.
 import { existsSync, readFileSync } from 'node:fs';
+import { join } from 'node:path';
+import { pathToFileURL } from 'node:url';
 import { emptyLicences } from './licences.mjs';
 
 const optionalJson = (path, dir, fallback) => {
@@ -13,7 +15,10 @@ const optionalJson = (path, dir, fallback) => {
   return existsSync(url) ? JSON.parse(readFileSync(url, 'utf8')) : fallback;
 };
 
-export const SITES_DIR = new URL('./', import.meta.url);
+// Inside the Next.js app (the CMS at /admin) modules are bundled, so the folder is found from the working directory.
+export const SITES_DIR = process.env.NEXT_RUNTIME
+  ? pathToFileURL(`${join(/*turbopackIgnore: true*/ process.cwd(), 'src', 'sites')}/`)
+  : new URL(/*turbopackIgnore: true*/ './', import.meta.url);
 
 const readJson = (path, dir) => JSON.parse(readFileSync(new URL(path, dir), 'utf8'));
 
