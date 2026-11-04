@@ -34,12 +34,12 @@
     "cms:invite": "node scripts/cms-invite.mjs"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.5.15",
-    "@types/node": "24.19.2",
+    "@biomejs/biome": "^2.6.4",
+    "@types/node": "26.6.6",
     "@types/qrcode": "^1.5.6",
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
-    "puppeteer-core": "^25.14.0",
+    "puppeteer-core": "^25.16.0",
     "typescript": "7.0.2"
   },
   "dependencies": {
