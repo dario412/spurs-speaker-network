@@ -1,26 +1,32 @@
-// CMS provider: the seam for the crediblecreators.com CMS (selected with CONTENT_PROVIDER=cms). Not implemented yet.
-//
-// To implement, return the shapes in the content contract (docs/content-contract.md, schema/*.schema.json) and apply
-// the publishing switches with lib/content/publish.ts, so inactive sites, hidden people and page switches behave
-// identically. lib/content/memory-provider.ts is a complete, minimal provider to copy from.
-//   getRegistry()   -> { order, rootSite?, redirects }
-//   listSites()     -> publishedSites(registry, rawSites)
-//   getSite(slug)   -> the published site, or null (unknown, malformed or inactive slug)
-//   getRawSite / listRawSites -> stored shape, for validation
-//   getLegal(kind)  -> parseLegal(kind, markdown) or an equivalent LegalDoc
-// Failures throw ContentError (lib/content/errors.ts), never an empty result. Images are stable URLs keyed with
-// imageIdFor(). Don't add fetch caching: lib/content/cached.ts already caches and tags every read for
-// POST /api/revalidate. Done when `CONTENT_PROVIDER=cms npm run contract` is green.
+// CMS provider (CONTENT_PROVIDER=cms): the content edited in /admin. Every read is the JSON provider over the files in
+// the repository with the CMS's saved files on top (lib/cms/content-files.ts, one database row per edited file), so an
+// empty database serves exactly what is committed, and the publishing switches, validation and contract are the same
+// as for the JSON files. Each call reads the saved files once; lib/content/cached.ts caches and tags every read, and the
+// CMS revalidates the tags it changed after each save (lib/cms/publish.ts).
+import { loadContentFiles } from '../cms/content-files.ts';
+import { databaseConfigured } from '../cms/db.ts';
+import { ContentError } from './errors.ts';
+import { createJsonProvider, type JsonProviderOptions } from './json-provider.ts';
 import type { ContentProvider } from './provider.ts';
 
-export function createCmsProvider(): ContentProvider {
-  const missing = (what: string) => () => Promise.reject(new Error(`CONTENT_PROVIDER=cms: ${what} is not implemented yet`));
+export function createCmsProvider(options: Omit<JsonProviderOptions, 'overlay' | 'cache' | 'name'> = {}): ContentProvider {
+  const current = async (): Promise<ContentProvider> => {
+    if (!databaseConfigured())
+      throw new ContentError('config', 'CONTENT_PROVIDER=cms needs DATABASE_URL (the CMS database)', { provider: 'cms' });
+    let overlay: Map<string, string>;
+    try {
+      overlay = await loadContentFiles();
+    } catch (error) {
+      throw new ContentError('unavailable', 'The CMS database could not be read', { provider: 'cms', cause: error });
+    }
+    return createJsonProvider({ ...options, cache: false, overlay, name: 'cms' });
+  };
   return {
-    getRegistry: missing('getRegistry'),
-    listSites: missing('listSites'),
-    getSite: missing('getSite'),
-    getRawSite: missing('getRawSite'),
-    listRawSites: missing('listRawSites'),
-    getLegal: missing('getLegal'),
+    getRegistry: async () => (await current()).getRegistry(),
+    listSites: async () => (await current()).listSites(),
+    getSite: async slug => (await current()).getSite(slug),
+    getRawSite: async slug => (await current()).getRawSite(slug),
+    listRawSites: async () => (await current()).listRawSites(),
+    getLegal: async kind => (await current()).getLegal(kind),
   };
 }

@@ -16,6 +16,13 @@ export interface JsonProviderOptions {
   legalDir?: string;
   /** Keep parsed files in memory (default: on outside `next dev`, so content edits show without a restart). */
   cache?: boolean;
+  /**
+   * Saved edits that take precedence over the files, keyed by repo-relative path (`src/sites/spurs/site.json`,
+   * `src/copy/legal/terms.md`): the CMS provider's database rows (lib/content/cms-provider.ts).
+   */
+  overlay?: ReadonlyMap<string, string>;
+  /** Names the provider in errors (default `json`). */
+  name?: string;
 }
 
 const SLUG = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
@@ -25,6 +32,8 @@ export function createJsonProvider(options: JsonProviderOptions = {}): ContentPr
   const sitesDir = options.sitesDir ?? process.env.APPEARANCES_SITES_DIR ?? join(/*turbopackIgnore: true*/ process.cwd(), 'src', 'sites');
   const legalDir = options.legalDir ?? join(/*turbopackIgnore: true*/ process.cwd(), 'src', 'copy', 'legal');
   const cache = options.cache ?? process.env.NODE_ENV !== 'development';
+  const overlay = options.overlay ?? new Map<string, string>();
+  const provider = options.name ?? 'json';
   const memo = new Map<string, unknown>();
   const once = <T>(key: string, load: () => T): T => {
     if (!cache) return load();
@@ -32,27 +41,30 @@ export function createJsonProvider(options: JsonProviderOptions = {}): ContentPr
     return memo.get(key) as T;
   };
   // Unreadable or malformed files are typed errors (never an empty site), naming the file but not the absolute path.
-  const read = (path: string, name: string): string => {
+  const read = (path: string, name: string, key: string): string => {
+    const saved = overlay.get(key);
+    if (saved !== undefined) return saved;
     try {
       return readFileSync(path, 'utf8');
     } catch (error) {
       throw new ContentError('unavailable', `Cannot read ${name}: ${(error as NodeJS.ErrnoException).code ?? 'error'}`, {
-        provider: 'json',
+        provider,
         cause: error,
       });
     }
   };
+  const siteKey = (parts: string[]) => `src/sites/${parts.join('/')}`;
   const readJson = <T>(...parts: string[]): T => {
     const name = parts.join('/');
-    const text = read(join(/*turbopackIgnore: true*/ sitesDir, ...parts), name);
+    const text = read(join(/*turbopackIgnore: true*/ sitesDir, ...parts), name, siteKey(parts));
     try {
       return JSON.parse(text) as T;
     } catch (error) {
-      throw new ContentError('invalid_content', `${name} is not valid JSON`, { provider: 'json', cause: error });
+      throw new ContentError('invalid_content', `${name} is not valid JSON`, { provider, cause: error });
     }
   };
   const optionalJson = <T>(fallback: T, ...parts: string[]): T =>
-    existsSync(join(/*turbopackIgnore: true*/ sitesDir, ...parts)) ? readJson<T>(...parts) : fallback;
+    overlay.has(siteKey(parts)) || existsSync(join(/*turbopackIgnore: true*/ sitesDir, ...parts)) ? readJson<T>(...parts) : fallback;
 
   const registry = () => once('registry', () => readJson<Registry>('registry.json'));
   const raw = (slug: string): RawSite | null =>
@@ -84,6 +96,8 @@ export function createJsonProvider(options: JsonProviderOptions = {}): ContentPr
     getRawSite: async slug => raw(slug),
     listRawSites: async () => raws(),
     getLegal: async (kind: LegalKind): Promise<LegalDoc> =>
-      once(`legal:${kind}`, () => parseLegal(kind, read(join(/*turbopackIgnore: true*/ legalDir, `${kind}.md`), `${kind}.md`))),
+      once(`legal:${kind}`, () =>
+        parseLegal(kind, read(join(/*turbopackIgnore: true*/ legalDir, `${kind}.md`), `${kind}.md`, `src/copy/legal/${kind}.md`)),
+      ),
   };
 }

@@ -22,6 +22,14 @@ import { REVALIDATE_PATH } from '../revalidate/handler.ts';
 import { buildCsp } from './csp.ts';
 import { gateConfigured, hasAccess, hasMasterAccess, hasSiteAccess, type Passwords, sitePasswordOwner } from './gate.ts';
 
+/** The CMS's paths (lib/cms/): the admin app, its media and the Airtable cron endpoint. */
+export const CMS_MEDIA_PREFIX = '/api/media/';
+export const isCmsPath = (pathname: string): boolean =>
+  pathname === '/admin' ||
+  pathname.startsWith('/admin/') ||
+  pathname.startsWith(CMS_MEDIA_PREFIX) ||
+  pathname === '/api/cron/sync-airtable';
+
 export interface ProxyConfig {
   manifest: Pick<
     Manifest,
@@ -175,6 +183,15 @@ export async function decide(
   const redirect = (status: 301 | 302, location: string) =>
     respond(status, { Location: location, 'Cache-Control': status === 301 ? 'public, max-age=3600' : 'no-store' });
 
+  // The CMS (/admin, lib/cms/web.ts) has its own sign-in, so it is outside the preview gate on every host: never cached,
+  // never indexed, GET and POST only. Its uploads (/api/media/<id>) are public like any site photo, and the Airtable
+  // cron endpoint authenticates with CRON_SECRET.
+  if (isCmsPath(pathname)) {
+    if (!['GET', 'HEAD', 'POST'].includes(request.method)) return respond(405, { Allow: 'GET, HEAD, POST' });
+    if (pathname.startsWith(CMS_MEDIA_PREFIX)) return { action: 'next', headers: { ...SECURITY_HEADERS, 'Content-Security-Policy': csp } };
+    const cmsCsp = buildCsp({ imageHosts: config.manifest.imageHosts, dev: config.dev, cms: true });
+    return { action: 'next', headers: { ...base, 'Content-Security-Policy': cmsCsp, 'Cache-Control': 'no-store' } };
+  }
   // The two POST routes: the enquiry endpoint (behind the gate, below) and the revalidation webhook, which
   // authenticates with REVALIDATE_SECRET instead of the preview password.
   const enquiry = pathname === ENQUIRY_PATH;

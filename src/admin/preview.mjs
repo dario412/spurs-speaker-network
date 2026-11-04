@@ -11,7 +11,7 @@ import { isKey } from './content.mjs';
 import { landingCss, published, renderPage, siteCss } from './next-render/index.mjs';
 
 export const PREFIX = '/preview';
-const PUBLIC = new URL('../../public/', import.meta.url);
+const PUBLIC = new URL(/*turbopackIgnore: true*/ '../../public/', import.meta.url);
 const STATIC = /^\/(styles\.css|fonts\/[a-z0-9-]+\.woff2|peptalk\/[a-z0-9-]+\.png|og\/[a-z0-9-]+\.jpg)$/;
 const HUB_LEGAL = new Set(['terms', 'privacy', 'accessibility']);
 const TYPES = {

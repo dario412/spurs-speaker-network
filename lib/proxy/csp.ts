@@ -19,17 +19,20 @@ export function buildCsp({
   imageHosts,
   dev = false,
   tracking = false,
+  cms = false,
 }: {
   imageHosts: string[];
   dev?: boolean;
   tracking?: boolean;
+  /** The CMS at /admin: also `data:` images (the 2FA QR code). Never on site pages. */
+  cms?: boolean;
 }): string {
   const extra = (hosts: readonly string[]) => (tracking ? hosts.map(host => ` ${host}`).join('') : '');
   return [
     "default-src 'self'",
     `script-src 'self' 'unsafe-inline'${dev ? " 'unsafe-eval'" : ''}${extra(TRACKING_CSP.script)}`,
     `style-src 'self'${dev ? " 'unsafe-inline'" : ''}`,
-    `img-src 'self' ${imageHosts.join(' ')}${extra(TRACKING_CSP.img)}`,
+    `img-src 'self'${cms ? ' data:' : ''} ${imageHosts.join(' ')}${extra(TRACKING_CSP.img)}`,
     "font-src 'self'",
     `connect-src 'self'${extra(TRACKING_CSP.connect)}`,
     "form-action 'self'",

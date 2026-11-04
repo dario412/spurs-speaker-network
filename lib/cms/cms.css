@@ -1,0 +1,339 @@
+/* PepTalk CMS: the getapeptalk.com look (Recoleta Alt headings, Sofia Pro text, PepTalk blue, pill buttons) over the
+   local admin's form styles (src/admin/public/admin.css), in a sidebar layout like the Credible Creators CMS.
+   No inline styles anywhere (strict CSP). */
+@font-face {
+  font-family: "Recoleta Alt";
+  src: url("/admin/assets/recoleta-alt-500.woff2") format("woff2");
+  font-weight: 500;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Sofia Pro";
+  src: url("/admin/assets/sofia-pro-300.woff2") format("woff2");
+  font-weight: 300;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Sofia Pro";
+  src: url("/admin/assets/sofia-pro-500.woff2") format("woff2");
+  font-weight: 500;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Sofia Pro";
+  src: url("/admin/assets/sofia-pro-700.woff2") format("woff2");
+  font-weight: 700;
+  font-display: swap;
+}
+:root {
+  --accent: #3971c0;
+  --accent-soft: #ebf1f9;
+  --ink: #2a2b32;
+  --muted: #6b6d78;
+  --line: #e4e6ed;
+  --bg: #f6f7fb;
+  --side: #ffffff;
+  --radius: 14px;
+  font-family: "Sofia Pro", "Helvetica Neue", Arial, sans-serif;
+  font-weight: 300;
+}
+body.cms {
+  background: var(--bg);
+  color: var(--ink);
+}
+.cms b,
+.cms strong,
+.cms label > span,
+.cms th {
+  font-weight: 500;
+}
+.cms h1,
+.cms h2,
+.cms h3 {
+  font-family: "Recoleta Alt", Georgia, serif;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: #1f2a44;
+}
+.cms h1 {
+  font-size: 2rem;
+}
+.cms .btn {
+  border-radius: 999px;
+  font-weight: 500;
+  padding: 0.5rem 1.1rem;
+}
+.cms .btn.primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+.cms .btn.primary:hover {
+  background: #2f5fa3;
+}
+.cms .btn.wide {
+  width: 100%;
+  justify-content: center;
+  padding: 0.75rem 1rem;
+}
+.cms input,
+.cms select,
+.cms textarea {
+  border-radius: 10px;
+  font: inherit;
+  font-weight: 300;
+}
+.cms input:invalid,
+.cms textarea:invalid {
+  border-color: var(--line);
+  box-shadow: none;
+}
+.cms :focus-visible {
+  outline: 3px solid #f6c443;
+  outline-offset: 2px;
+}
+.skip {
+  position: absolute;
+  left: -9999px;
+}
+.skip:focus {
+  left: 12px;
+  top: 12px;
+  background: #fff;
+  padding: 8px 12px;
+  z-index: 10;
+}
+
+/* Layout: white sidebar, sticky top bar, content */
+.cms-side {
+  position: fixed;
+  inset: 0 auto 0 0;
+  width: 248px;
+  background: var(--side);
+  border-right: 1px solid var(--line);
+  padding: 22px 16px;
+  overflow-y: auto;
+}
+.cms-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 8px 26px;
+  text-decoration: none;
+}
+.cms-brand img {
+  width: 110px;
+  height: auto;
+}
+.cms-brand span {
+  font-weight: 500;
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 2px 8px;
+}
+.nav-group {
+  margin-bottom: 18px;
+}
+.nav-label {
+  margin: 0 10px 6px;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 500;
+}
+.cms-side nav a {
+  display: block;
+  padding: 8px 10px;
+  border-radius: 10px;
+  color: var(--ink);
+  text-decoration: none;
+  font-weight: 300;
+}
+.cms-side nav a:hover {
+  background: var(--bg);
+}
+.cms-side nav a[aria-current="page"] {
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-weight: 500;
+}
+.cms-main {
+  margin-left: 248px;
+  min-height: 100vh;
+}
+.cms-top {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  height: 60px;
+  padding: 0 28px;
+  background: #fff;
+  border-bottom: 1px solid var(--line);
+}
+.cms-title {
+  font-weight: 500;
+}
+.cms-user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--muted);
+}
+.cms-body {
+  padding: 28px;
+  max-width: 1180px;
+}
+form.inline {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  margin: 0;
+}
+
+/* Cards, tiles, tables */
+.card,
+.tile {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 20px 22px;
+  margin-bottom: 20px;
+}
+.tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+  margin-bottom: 20px;
+}
+.grid2 {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px 20px;
+  align-items: start;
+}
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.field.end {
+  justify-content: flex-end;
+}
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.stack.narrow {
+  max-width: 420px;
+}
+.hint {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+.list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.list li {
+  padding: 8px 0;
+  border-bottom: 1px solid var(--line);
+}
+.center {
+  text-align: center;
+}
+.mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.9rem;
+}
+.media-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  gap: 14px;
+}
+.media-item {
+  margin: 0;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  overflow: hidden;
+  background: #fff;
+}
+.media-item img {
+  width: 100%;
+  height: 130px;
+  object-fit: cover;
+  display: block;
+}
+.media-item figcaption {
+  padding: 8px 10px;
+  font-size: 0.85rem;
+}
+
+/* Signed-out pages */
+.cms-bare {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(160deg, #ebf1f9 0%, #f6f7fb 60%);
+}
+.cms-card {
+  width: min(440px, calc(100vw - 32px));
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 32px;
+  box-shadow: 0 18px 50px rgb(31 42 68 / 0.08);
+}
+.cms-card-logo {
+  display: block;
+  margin: 0 auto 18px;
+}
+.cms-card h1 {
+  text-align: center;
+  font-size: 1.7rem;
+}
+.totp {
+  display: flex;
+  gap: 18px;
+  align-items: center;
+  margin: 12px 0 18px;
+  flex-wrap: wrap;
+}
+.totp img {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+.key {
+  display: inline-block;
+  margin-top: 6px;
+  font-size: 0.95rem;
+  word-break: break-all;
+}
+
+@media (max-width: 860px) {
+  .cms-side {
+    position: static;
+    width: auto;
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .cms-main {
+    margin-left: 0;
+  }
+  .grid2 {
+    grid-template-columns: 1fr;
+  }
+  .cms-body {
+    padding: 18px;
+  }
+}

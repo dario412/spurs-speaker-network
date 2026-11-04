@@ -17,7 +17,7 @@ Read `README.md`, `docs/onboarding.md` and `docs/architecture.md` first. This fi
 9. **CSP:** no inline styles in pages (never add `'unsafe-inline'` to `style-src`), and no inline scripts of our own. Pages are prerendered, so Next.js's own inline bootstrap scripts run under `script-src 'self' 'unsafe-inline'` with Trusted Types and SRI (`lib/proxy/csp.ts`). That is safe only because no page renders request data or user content: if one ever does, it needs a nonce (dynamic) policy. Client code builds DOM with DOM calls, never `innerHTML` (Trusted Types blocks it). See `docs/architecture.md` → Rendering and CSP.
 10. **Regenerate Open Graph cards** (`npm run og-cards`) when a site's name, theme, hero or section titles change. Commit only the affected site's cards.
 11. **Pure refactors change no page.** `npm test` must stay green, and `npm run visual` against a baseline from `main` must show no differences. For deliberate output changes, say in the PR which pages changed.
-12. **The admin stays local.** `src/admin/` binds to loopback by default (off-loopback requires `ADMIN_PASSWORD`) and is not deployed; keep its CSRF, origin and slug checks intact.
+12. **Two editors, both locked down.** The local admin (`src/admin/`, `npm run admin`) binds to loopback by default (off-loopback requires `ADMIN_PASSWORD`) and is not deployed. The online CMS (`/admin`, `lib/cms/`, [docs/cms.md](docs/cms.md)) is deployed behind its own sign-in: password plus required two-factor code, roles, per-session form tokens, same-origin POSTs, `noindex`, never cached. Keep all of that intact, validate every save with `scripts/validate-content.mjs`, and never expose an editing surface on a site page. Once a content file is saved in the CMS, the database copy wins over the committed file.
 13. **Search indexing is a launch switch.** Everything is `noindex` behind the password until a site's `site.json → indexable` is `true` (`docs/content-model.md` → Indexing). Never set it without the launch checklist in `docs/brand-and-legal.md`. SEO and AEO (titles, headings, alt text, structured data, sitemaps) are core: change them in `lib/seo/` and `components/`, never per site, and never mark up the placeholder testimonials as reviews.
 
 ## Commands
@@ -40,7 +40,8 @@ Read `README.md`, `docs/onboarding.md` and `docs/architecture.md` first. This fi
 | Revalidation webhook, cache tags | `app/api/revalidate/`, `lib/revalidate/`, `lib/content/tags.ts`, `lib/content/cached.ts` |
 | Terms and Privacy text (shared by every site) | `src/copy/legal/*.md` |
 | New-site scaffolding, writing content files | `src/sites/scaffold.mjs`, `src/sites/store.mjs` |
-| Admin app | `src/admin/`, [docs/admin.md](docs/admin.md) |
+| Admin app (local) | `src/admin/`, [docs/admin.md](docs/admin.md) |
+| CMS (online at /admin: sign-in, 2FA, users, editors, media, Airtable sync) | `lib/cms/`, `app/admin/`, `db/migrations/`, [docs/cms.md](docs/cms.md) |
 | Theme, crest, style tokens | `lib/render/theme.ts`, `public/styles.css` |
 | Password gate, redirects, headers, CSP, caching | `proxy.ts`, `lib/proxy/` |
 | Per-site domains, host routing, canonical URLs | `registry.json → domains`, `lib/domains.ts`, `lib/proxy/decide.ts`, [docs/domains.md](docs/domains.md) |

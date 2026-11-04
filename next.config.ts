@@ -54,6 +54,12 @@ export default async function config(phase: string): Promise<NextConfig> {
         './public/tracking.js',
         './public/gallery.css',
         './config/airtable.json',
+        // The CMS's own assets (lib/cms/web.ts serves them from /admin/assets/).
+        './lib/cms/cms.css',
+        './src/admin/public/*',
+        './public/peptalk/*',
+        './public/fonts/recoleta-alt-500.woff2',
+        './public/fonts/sofia-pro-*.woff2',
       ],
     },
     experimental: {

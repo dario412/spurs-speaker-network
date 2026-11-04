@@ -122,7 +122,7 @@ The site never reads storage directly. Everything comes through a `ContentProvid
 
 | File | What to do |
 |---|---|
-| `lib/content/cms-provider.ts` | Implement `createCmsProvider()`: today a stub whose methods reject with "not implemented yet". It is selected with `CONTENT_PROVIDER=cms` (`lib/content/select.ts`). |
+| `lib/content/cms-provider.ts` | `createCmsProvider()`: the built-in CMS at `/admin` ([cms.md](cms.md)), the committed files with the CMS's saved edits on top. Selected with `CONTENT_PROVIDER=cms` (`lib/content/select.ts`). An external CMS would replace it. |
 | `lib/content/memory-provider.ts` | The smallest complete provider, to copy from: fetch your content, map it to plain objects and hand it to the same publishing helpers |
 | `lib/content/provider.ts` | The interface: `getRegistry()`, `listSites()`, `getSite(slug)`, `getRawSite(slug)`, `listRawSites()`, `getLegal(kind)` |
 | `lib/content/publish.ts` | `publishedSites()`, `publishable()`, `isActive()`: apply the publishing switches exactly as the JSON provider does. Don't reimplement them. |
@@ -244,7 +244,7 @@ Gathered from every doc; each links to the detail.
 
 - **Moving the live demo.** `appearances.getapeptalk.com` is still served by PepTalk's previous hosting, not this repository, until the switch in [deployment.md](deployment.md#switching-the-demo-over-to-vercel).
 - **`/health` without a master password** answers `503` today. Decide whether it should keep doing that once Vercel deploy checks are set up ([deployment.md](deployment.md#switching-the-demo-over-to-vercel)).
-- **The CMS provider** is a stub ([above](#plugging-in-your-cms)).
+- **The CMS** at `/admin` is built in ([cms.md](cms.md)); an external CMS could still replace its provider ([above](#plugging-in-your-cms)).
 - **Where enquiries go.** The hub prepares a draft to `hello@getapeptalk.com`, which visitors must send themselves; it has no delivery backend. Partner-site forms use the endpoint, which forwards to `ENQUIRY_WEBHOOK_URL`, which is unset by default. Confirm whether the target environment has a receiver configured before submitting; a production receiver, a Vercel Firewall rate-limit rule and reviewed privacy wording are launch requirements ([vercel.md → Enquiry webhook](vercel.md#enquiry-webhook)).
 - **Tracking and consent.** No site has tags. The consent banner's wording, the cookie lifetime and which sites need consent are placeholders for legal review ([architecture.md → Tracking and consent](architecture.md#tracking-and-consent)). Vercel Speed Insights and Web Analytics aren't installed, for the same Trusted Types reason ([vercel.md](vercel.md#speed-insights-and-web-analytics)).
 - **Domains:** naming with each partner, whether the hub stays the home of the landing page, and partner subdomains ([domains.md → Open questions](domains.md#open-questions)).

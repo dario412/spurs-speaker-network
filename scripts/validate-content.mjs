@@ -30,6 +30,7 @@ export const RESERVED_SLUGS = new Set([
   'terms',
   'privacy',
   'accessibility',
+  'admin',
   'robots',
   'sitemap',
 ]);

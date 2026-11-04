@@ -15,7 +15,7 @@ export const TAG_LEGAL = 'legal';
 
 const SLUG = '[a-z0-9]+(?:-[a-z0-9]+)*';
 export const SLUG_RE = new RegExp(`^${SLUG}$`);
-const TAG_RE = new RegExp(`^(?:all|registry|sites|legal|legal:(?:terms|privacy)|site:${SLUG}|person:${SLUG}:${SLUG})$`);
+const TAG_RE = new RegExp(`^(?:all|registry|sites|legal|legal:(?:terms|privacy|accessibility)|site:${SLUG}|person:${SLUG}:${SLUG})$`);
 
 export const siteTag = (slug: string): string => `site:${slug}`;
 export const personTag = (site: string, person: string): string => `person:${site}:${person}`;
