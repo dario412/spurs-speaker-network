@@ -10,7 +10,7 @@ import { faqNode, siteGraph } from '../../lib/seo/jsonld.ts';
 import { Card, EnquiryCard, WaysGrid } from './components.tsx';
 import { EventSpaces } from './event-spaces.tsx';
 import { SiteLayout } from './layout.tsx';
-import { Button, Form, Photo } from './primitives.tsx';
+import { Button, edit, Form, Photo } from './primitives.tsx';
 import { CtaBand, FaqBlock, Head, HowItWorks, RoleList, TrustChecks } from './sections.tsx';
 
 /** "Featured": the site's `featured` people as cards. */
@@ -19,7 +19,13 @@ export function FeaturedGrid({ ctx }: { ctx: SiteContext }) {
   return (
     <section className="block tint" id="legends">
       <div className="wrap">
-        <Head ctx={ctx} eyebrow={v.featuredEyebrow} title={v.featuredHeadline} link={[`${base}/legends`, `See all ${v.legendsNoun}`]} />
+        <Head
+          ctx={ctx}
+          eyebrow={v.featuredEyebrow}
+          title={v.featuredHeadline}
+          link={[`${base}/legends`, `See all ${v.legendsNoun}`]}
+          paths={{ eyebrow: 'vocab.featuredEyebrow', title: 'vocab.featuredHeadline' }}
+        />
         <div className="grid">
           {/* A people provider can hide a featured person; skip them rather than fail the page. */}
           {site.featured
@@ -48,6 +54,7 @@ export function Squad({ ctx }: { ctx: SiteContext }) {
           title={v.squadHeadline}
           lead={v.squadLead}
           link={first ? [categoryPath(base, first), v.squadLinkText] : null}
+          paths={{ eyebrow: 'vocab.squadEyebrow', title: 'vocab.squadHeadline', lead: 'vocab.squadLead' }}
         />
         <div className="grid">
           {squad.slice(0, 4).map(person => (
@@ -61,15 +68,16 @@ export function Squad({ ctx }: { ctx: SiteContext }) {
 
 /** The home page's "Ways to book" section: the short format grid, closed by a "Not sure which?" tile. */
 export function WaysSection({ ctx }: { ctx: SiteContext }) {
-  const { site, FORMATS } = ctx;
+  const { site, v, FORMATS } = ctx;
   return (
     <section className="block tint" id="ways">
       <div className="wrap">
         <Head
           ctx={ctx}
-          eyebrow="Ways to book"
+          eyebrow={v.waysEyebrow}
           title={site.waysTitle}
-          lead="Pick a format to see who's available for it, or tell us about your event and we'll suggest the best fit."
+          lead={v.waysHomeLead}
+          paths={{ eyebrow: 'vocab.waysEyebrow', title: 'waysTitle', lead: 'vocab.waysHomeLead' }}
         />
         <WaysGrid ctx={ctx} keys={(Object.keys(FORMATS) as FormatKey[]).slice(0, 5)} help />
       </div>
@@ -147,11 +155,16 @@ export function HomeHero({ ctx }: { ctx: SiteContext }) {
     <section className="hero">
       <div className="wrap">
         <div className="hero-copy">
-          <span className="eyebrow">{v.rolesEyebrow}</span>
-          <h1 className="disp">
+          <span className="eyebrow" {...edit('vocab.rolesEyebrow')}>
+            {v.rolesEyebrow}
+          </span>
+          {/* Two paths: edited in a panel (the first line holds the rotating word). */}
+          <h1 className="disp" {...edit('heroTitle', 'heroWords')}>
             <HeroLine ctx={ctx} /> <span>{site.heroTitle[1]}</span>
           </h1>
-          <p className="lead">{v.heroLead}</p>
+          <p className="lead" {...edit('vocab.heroLead')}>
+            {v.heroLead}
+          </p>
           <Form demo={demo} className="finder" action={`${base}/legends`} method="get" role="search">
             <label>
               <span>Who</span>
@@ -185,7 +198,20 @@ export function HomeHero({ ctx }: { ctx: SiteContext }) {
           </Form>
           <TrustChecks ctx={ctx} />
         </div>{' '}
-        <Photo ctx={ctx} id={home.hero.image} cls="hero-media top" slot="hero" alt={slotAlt(home.hero)} priority>
+        <Photo
+          ctx={ctx}
+          id={home.hero.image}
+          cls="hero-media top"
+          slot="hero"
+          alt={slotAlt(home.hero)}
+          priority
+          paths={[
+            'home.hero.image',
+            'home.hero.name',
+            'home.hero.line',
+            ...(home.slides ?? []).flatMap((_, i) => [`home.slides.${i}.image`, `home.slides.${i}.name`, `home.slides.${i}.line`]),
+          ].join(' ')}
+        >
           <div className={`tag${home.hero.tag ? ` ${home.hero.tag}` : ''}`}>
             <b>{home.hero.name}</b>
             <small>{home.hero.line}</small>
@@ -222,11 +248,12 @@ export function HomePage({ ctx }: { ctx: SiteContext }) {
       {hasFeatured ? <FeaturedGrid ctx={ctx} /> : null}
       <RoleList
         ctx={ctx}
-        title="Find the right voice for the room."
+        title={ctx.v.homeRolesTitle}
+        titlePath="vocab.homeRolesTitle"
         lead={`${site.roles.map(role => role.label).join(', ')}, each with the formats they're available for.`}
       />
       <WaysSection ctx={ctx} />
-      <FaqBlock ctx={ctx} faq={faq} title={`Booking a ${site.short} ${ctx.v.legendNoun}, answered.`} />
+      <FaqBlock ctx={ctx} faq={faq} title={ctx.v.homeFaqTitle} titlePath="vocab.homeFaqTitle" />
       <HowItWorks ctx={ctx} form={ctx.demo ? undefined : <EnquiryCard ctx={ctx} />} />
       <EventSpaces ctx={ctx} />
       <CtaBand ctx={ctx} />

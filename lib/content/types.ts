@@ -179,6 +179,26 @@ export interface Vocab {
   aboutTitle: string | null;
   /** Enquiry consent line; `{terms:label}` and `{privacy:label}` become links to the site's legal pages. */
   consentLine: string;
+  /** Fixed section copy (trust checks, section heads, how booking works, closing band); placeholders filled on render. */
+  trustOfficial: string;
+  trustShortlist: string;
+  trustManaged: string;
+  browseEyebrow: string;
+  homeRolesTitle: string;
+  waysEyebrow: string;
+  waysHomeLead: string;
+  homeFaqTitle: string;
+  faqLead: string;
+  howEyebrow: string;
+  howHeadline: string;
+  step1Title: string;
+  step1Text: string;
+  step2Title: string;
+  step2Text: string;
+  step3Title: string;
+  step3Text: string;
+  ctaTitle: string;
+  ctaLead: string;
   /** Keys with no shared default. */
   officialSmall?: string;
   currentNoun?: string;

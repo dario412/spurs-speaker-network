@@ -7,6 +7,15 @@ import type { Crumb } from '../../lib/seo/jsonld.ts';
 
 type Demo = { demo?: boolean };
 
+/**
+ * Marks an element for the CMS's visual editor (lib/visual-editor/): the site.json paths it shows. A single path on
+ * an element whose text is exactly that value is edited in place; several paths open a panel. No effect otherwise.
+ */
+export const edit = (...paths: (string | false | null | undefined)[]) => {
+  const list = paths.filter(Boolean);
+  return list.length ? { 'data-edit': list.join(' ') } : {};
+};
+
 export function A({ demo, href, ...rest }: AnchorHTMLAttributes<HTMLAnchorElement> & Demo) {
   return demo ? <a {...rest} aria-disabled="true" /> : <a href={href} {...rest} />;
 }
@@ -23,14 +32,14 @@ export function Form({ demo, action, method, ...rest }: FormHTMLAttributes<HTMLF
  * One FAQ entry: <details>/<summary> normally, a static block on demo pages. The question is an <h3>, so FAQs sit in
  * the page outline under their section's <h2>; the answer is in the HTML either way (crawlable without JavaScript).
  */
-export function FaqItem({ demo, q, a, open = false }: Demo & { q: string; a: string; open?: boolean }) {
+export function FaqItem({ demo, q, a, open = false, paths }: Demo & { q: string; a: string; open?: boolean; paths?: string }) {
   return demo ? (
-    <div className="faq-static">
+    <div className="faq-static" {...edit(paths)}>
       <h3 className="faq-q">{q}</h3>
       <p>{a}</p>
     </div>
   ) : (
-    <details open={open || undefined}>
+    <details open={open || undefined} {...edit(paths)}>
       <summary>
         <h3 className="faq-q">{q}</h3>
       </summary>
@@ -48,17 +57,22 @@ export function Picture({
   credit,
   cls = '',
   children,
+  paths,
   ...options
-}: PhotoOptions & { url: string | null; credit?: string; cls?: string; children?: ReactNode }) {
+}: PhotoOptions & { url: string | null; credit?: string; cls?: string; children?: ReactNode; paths?: string }) {
   if (!url)
     return (
-      <div className={`photo noimg ${cls}`} {...(options.alt ? { role: 'img', 'aria-label': `${options.alt}: photo to come` } : {})}>
+      <div
+        className={`photo noimg ${cls}`}
+        {...edit(paths)}
+        {...(options.alt ? { role: 'img', 'aria-label': `${options.alt}: photo to come` } : {})}
+      >
         {children}
         <span className="gid">Photo to come</span>
       </div>
     );
   return (
-    <div className={`photo ${cls}`}>
+    <div className={`photo ${cls}`} {...edit(paths)}>
       {/* biome-ignore lint/performance/noImgElement: getImageProps() output; next/image's inline style is blocked by the CSP. */}
       {/* biome-ignore lint/a11y/useAltText: alt is in the spread attributes (required by PhotoOptions). */}
       <img className="ph" {...photoAttributes(url, options)} />
@@ -73,7 +87,7 @@ export function Photo({
   ctx,
   id,
   ...rest
-}: PhotoOptions & { ctx: SiteContext; id: string | null | undefined; cls?: string; children?: ReactNode }) {
+}: PhotoOptions & { ctx: SiteContext; id: string | null | undefined; cls?: string; children?: ReactNode; paths?: string }) {
   const { site } = ctx;
   if (id === null && site.status === 'shell') return <Picture url={null} {...rest} />;
   if (!id || !site.images[id]) throw new Error(`Unknown image ${id} for ${site.slug}`);

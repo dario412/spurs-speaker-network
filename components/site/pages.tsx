@@ -21,7 +21,7 @@ import { type Crumb, faqNode, peopleListNode, personNode, servicesNode, siteGrap
 import { Availability, Card, FormSection, Official, ShortlistButton, WaysGrid } from './components.tsx';
 import { EventSpaces } from './event-spaces.tsx';
 import { SimplePage, SiteLayout } from './layout.tsx';
-import { A, Button, FaqItem, Photo } from './primitives.tsx';
+import { A, Button, edit, FaqItem, Photo } from './primitives.tsx';
 import { CtaBand, FaqBlock, FORMAT_SHORT, offering, RoleList } from './sections.tsx';
 
 /** Home, then the given trail. The visible breadcrumbs and the BreadcrumbList use the same list. */
@@ -131,7 +131,9 @@ export function LegendsPage({ ctx }: { ctx: SiteContext }) {
           <span className="eyebrow">All {v.legendsNoun}</span>
           <div className="ph-row">
             <h1 className="disp">{heading}.</h1>
-            <p className="lead">{v.rosterLead}</p>
+            <p className="lead" {...edit('vocab.rosterLead')}>
+              {v.rosterLead}
+            </p>
           </div>
         </div>
       </section>
@@ -267,7 +269,9 @@ export function CategoryPage({ ctx, role }: { ctx: SiteContext; role: Role }) {
             <div className="badges">
               <span className="badge light">Category</span>
             </div>
-            <h1 className="disp">{role.label}</h1>
+            <h1 className="disp" {...edit(`roles.${site.roles.indexOf(role)}.label`)}>
+              {role.label}
+            </h1>
             <p className="lead">
               Book {site.orgName} {label} for {listText(formats.slice(0, 3).map(({ key }) => lower(FORMATS[key].title)))}. {role.blurb}
             </p>
@@ -340,17 +344,21 @@ export function CategoryPage({ ctx, role }: { ctx: SiteContext; role: Role }) {
         <section className="block" aria-labelledby="pitch-title">
           <div className="wrap side-head">
             <div className="intro">
-              <span className="eyebrow">{role.pitch.eyebrow}</span>
-              <h2 className="disp" id="pitch-title">
+              <span className="eyebrow" {...edit(`roles.${site.roles.indexOf(role)}.pitch.eyebrow`)}>
+                {role.pitch.eyebrow}
+              </span>
+              <h2 className="disp" id="pitch-title" {...edit(`roles.${site.roles.indexOf(role)}.pitch.heading`)}>
                 {role.pitch.heading}
               </h2>
-              <p className="lead">{role.pitch.lead}</p>
+              <p className="lead" {...edit(`roles.${site.roles.indexOf(role)}.pitch.lead`)}>
+                {role.pitch.lead}
+              </p>
             </div>
             <ul className="pitch-points">
-              {role.pitch.points.map(point => (
+              {role.pitch.points.map((point, i) => (
                 <li key={point.title}>
-                  <h3>{point.title}</h3>
-                  <p>{point.text}</p>
+                  <h3 {...edit(`roles.${site.roles.indexOf(role)}.pitch.points.${i}.title`)}>{point.title}</h3>
+                  <p {...edit(`roles.${site.roles.indexOf(role)}.pitch.points.${i}.text`)}>{point.text}</p>
                 </li>
               ))}
             </ul>
@@ -556,7 +564,11 @@ export function ProfileHero({ ctx, person }: { ctx: SiteContext; person: Person 
       <div className="split-hero">
         <div className="copy">
           <div className="badges">
-            <Official ctx={ctx} label={v.officialLegendLabel ?? `Official ${site.short} ${v.legendNoun}`} />
+            <Official
+              ctx={ctx}
+              label={v.officialLegendLabel ?? `Official ${site.short} ${v.legendNoun}`}
+              path="vocab.officialLegendLabel"
+            />
             <span className="pill">{person.roleLabel}</span>
           </div>
           <h1 className="disp">{person.name}</h1>
@@ -624,7 +636,7 @@ export function Timeline({ ctx, person }: { ctx: SiteContext; person: Person }) 
   return (
     <section id="career">
       <span className="eyebrow">Career</span>
-      <h2>{v.careerHeadline ?? `${site.short} story`}</h2>
+      <h2 {...edit('vocab.careerHeadline')}>{v.careerHeadline ?? `${site.short} story`}</h2>
       <ol className="timeline">
         {person.timeline.map(([year, text]) => (
           <li key={`${year}${text}`}>
@@ -649,8 +661,8 @@ export function ProfileFormats({ ctx, person }: { ctx: SiteContext; person: Pers
           const format = FORMATS[key];
           return (
             <div className="fmt" key={key}>
-              <h3>{format.title}</h3>
-              <p>{format.desc}</p>
+              <h3 {...edit(`formats.${key}.title`)}>{format.title}</h3>
+              <p {...edit(`formats.${key}.desc`)}>{format.desc}</p>
               <ul>
                 {format.items.map(item => (
                   <li key={item}>{item}</li>
@@ -674,7 +686,7 @@ export function ProfileGallery({ ctx, person }: { ctx: SiteContext; person: Pers
   return (
     <section id="gallery">
       <span className="eyebrow">Gallery</span>
-      <h2>
+      <h2 {...edit('vocab.galleryHeadline')}>
         <span className="sr-only">{person.name}: </span>
         {v.galleryHeadline}
       </h2>
@@ -795,6 +807,7 @@ export function WaysToBookPage({ ctx }: { ctx: SiteContext }) {
       eyebrow="Ways to book"
       title={title}
       lead={v.waysLead ?? `From a keynote to a full matchday, here is how you can work with ${site.short} ${v.legendsNoun}.`}
+      paths={{ lead: 'vocab.waysLead' }}
       graph={graph}
       crumbs={crumbs}
       extra={
@@ -902,7 +915,16 @@ export function AboutPage({ ctx }: { ctx: SiteContext }) {
   const photo = site.home.aboutImage;
   const pictured = photo ? site.people.find(person => person.hero === photo || person.card === photo) : undefined;
   return (
-    <SimplePage ctx={ctx} path="/about" eyebrow="About the network" title={v.aboutTitle} lead={site.entity} graph={graph} crumbs={crumbs}>
+    <SimplePage
+      ctx={ctx}
+      path="/about"
+      eyebrow="About the network"
+      title={v.aboutTitle}
+      lead={site.entity}
+      paths={{ title: 'vocab.aboutTitle', lead: 'entity' }}
+      graph={graph}
+      crumbs={crumbs}
+    >
       <section className="about-media">
         <div className="wrap">
           <Photo ctx={ctx} id={site.home.hospitalityImage} cls="wide" slot="split" alt="" priority />
@@ -924,7 +946,7 @@ export function AboutPage({ ctx }: { ctx: SiteContext }) {
             <h2 className="disp" id="intro-title">
               The people who made the club, in your room.
             </h2>
-            <p className="lead">
+            <p className="lead" {...edit('vocab.aboutLead', 'home.aboutImage')}>
               {site.platform}{' '}
               {v.aboutLead ??
                 `brings together former ${site.orgName} players, managers and backroom staff, plus today's first-team squad, for keynotes, dinners, workshops and events, all through one official platform.`}

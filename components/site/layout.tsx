@@ -7,7 +7,7 @@ import { categoryPath } from '../../lib/render/routes.ts';
 import type { Crumb, Node } from '../../lib/seo/jsonld.ts';
 import { Behaviour } from '../behaviour.tsx';
 import { Concept } from '../concept.tsx';
-import { A, Button, Crest, Crumbs, JsonLd } from './primitives.tsx';
+import { A, Button, Crest, Crumbs, edit, JsonLd } from './primitives.tsx';
 
 /**
  * Every site page: structured data, skip link and concept banner, utility bar, header and nav, the page's breadcrumb
@@ -81,7 +81,7 @@ export function SiteHeader({ ctx, path }: { ctx: SiteContext; path: string }) {
         <div className="wrap">
           <span>
             <Crest ctx={ctx} size="xs" />
-            {site.tagline}
+            <span {...edit('tagline')}>{site.tagline}</span>
           </span>
           <span className="util-r">
             <span className="promise">Free, tailored shortlists</span>
@@ -142,20 +142,26 @@ export function SiteFooter({ ctx }: { ctx: SiteContext }) {
             ) : (
               <Crest ctx={ctx} size="lg" />
             )}
-            <p className="fstate">{site.entity}</p>
+            <p className="fstate" {...edit('entity')}>
+              {site.entity}
+            </p>
             {site.contact && Object.keys(site.contact).length ? (
               <address className="fcontact">
                 {site.contact.email ? (
-                  <A demo={demo} className="fc-mail" href={`mailto:${site.contact.email}`}>
+                  <A demo={demo} className="fc-mail" href={`mailto:${site.contact.email}`} {...edit('contact.email')}>
                     {site.contact.email}
                   </A>
                 ) : null}
                 {site.contact.phone ? (
-                  <A demo={demo} className="fc-phone" href={`tel:${site.contact.phone.replace(/[^+\d]/g, '')}`}>
+                  <A demo={demo} className="fc-phone" href={`tel:${site.contact.phone.replace(/[^+\d]/g, '')}`} {...edit('contact.phone')}>
                     {site.contact.phone}
                   </A>
                 ) : null}
-                {site.contact.hours ? <span className="fc-hours">{site.contact.hours}</span> : null}
+                {site.contact.hours ? (
+                  <span className="fc-hours" {...edit('contact.hours')}>
+                    {site.contact.hours}
+                  </span>
+                ) : null}
               </address>
             ) : null}
           </div>
@@ -224,7 +230,7 @@ export function SiteFooter({ ctx }: { ctx: SiteContext }) {
         </div>
         <div className="fbar">
           <span>
-            © 2026 {site.copyright} {v.officialFooter}
+            © 2026 <span {...edit('copyright')}>{site.copyright}</span> <span {...edit('vocab.officialFooter')}>{v.officialFooter}</span>
           </span>
           <span className="flegal">
             <A demo={demo} href={`${base}/terms`}>
@@ -254,6 +260,7 @@ export function SimplePage({
   eyebrow,
   title,
   lead,
+  paths,
   graph,
   crumbs,
   extra,
@@ -264,6 +271,8 @@ export function SimplePage({
   eyebrow: string;
   title: string;
   lead?: string | null;
+  /** site.json paths of the title and lead, for the visual editor. */
+  paths?: { title?: string; lead?: string };
   graph: Node;
   crumbs: Crumb[];
   /** Shown under the heading row (jump links on ways to book, filters on the roster). */
@@ -276,8 +285,14 @@ export function SimplePage({
         <div className="wrap">
           <span className="eyebrow">{eyebrow}</span>
           <div className="ph-row">
-            <h1 className="disp">{title}</h1>
-            {lead ? <p className="lead">{lead}</p> : null}
+            <h1 className="disp" {...edit(paths?.title)}>
+              {title}
+            </h1>
+            {lead ? (
+              <p className="lead" {...edit(paths?.lead)}>
+                {lead}
+              </p>
+            ) : null}
           </div>
           {extra}
         </div>

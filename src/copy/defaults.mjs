@@ -183,4 +183,25 @@ export const VOCAB = {
   aboutTitle: null,
   // Under the enquiry form's submit button. {terms:label} and {privacy:label} become links to the site's legal pages.
   consentLine: 'By sending this enquiry you agree to our {terms:Terms} and {privacy:Privacy Policy}.',
+  // Fixed section copy, editable per site. {short}, {org}, {platform}, {legendNoun}, {legendsNoun} and {diaryCheck}
+  // are filled in by the renderer (lib/render/context.ts).
+  trustOfficial: 'Official {short} service',
+  trustShortlist: 'Free, tailored shortlist',
+  trustManaged: 'Managed end to end',
+  browseEyebrow: 'Browse by role',
+  homeRolesTitle: 'Find the right voice for the room.',
+  waysEyebrow: 'Ways to book',
+  waysHomeLead: "Pick a format to see who's available for it, or tell us about your event and we'll suggest the best fit.",
+  homeFaqTitle: 'Booking a {short} {legendNoun}, answered.',
+  faqLead: "Can't see your question? The bookings team replies to every enquiry.",
+  howEyebrow: 'How booking works',
+  howHeadline: 'From brief to booked in three steps.',
+  step1Title: 'Share your brief',
+  step1Text: 'Date, audience, format and who you have in mind. It takes two minutes and commits you to nothing.',
+  step2Title: 'Get a tailored shortlist',
+  step2Text: '{diaryCheck} You get options and an indicative fee.',
+  step3Title: 'Confirm and relax',
+  step3Text: 'One contract, one point of contact. The bookings team handles logistics, briefing and the day itself.',
+  ctaTitle: 'Bring a {short} {legendNoun} to your next event.',
+  ctaLead: 'Tell us about your event and get a free, tailored shortlist from the PepTalk bookings team.',
 };

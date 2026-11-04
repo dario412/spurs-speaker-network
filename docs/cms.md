@@ -18,6 +18,14 @@ headings, Sofia Pro text, PepTalk blue). There is no way to add sites here: this
   that page shows. An empty field uses the shared default (shown greyed out as the placeholder); empty carousel slides
   and pitch points are dropped. To make more wording editable, add the setting to `site.json` (CLAUDE.md, rule 4) and a
   field to the page's list; `test/next/cms.test.ts` checks every editor saves an untouched form unchanged.
+- **Visual editor** (`lib/visual-editor/client.ts`), like the Credible CMS: signed-in editors see an **Edit page**
+  bar on the live site. In edit mode every element marked with `edit()` (`components/site/primitives.tsx`, a
+  `data-edit` attribute naming its `site.json` paths) is outlined; clicking one opens a panel with its fields, text
+  updates as you type, and **Save** posts to `/admin/api/visual` (session cookie, form token in a header, same-origin
+  only), which applies the fields and saves through the same validated path as the page editors. The site only knows
+  to load the editor from the `pt_cms_edit=1` marker cookie the CMS sets (no secret in it); the editor is bundled with
+  the page script because Trusted Types block loading chunks on demand. A new marked element needs its path in a
+  page editor's field list; `test/next/cms.test.ts` fails otherwise.
 - **Speakers:** read-only. Airtable owns the speakers: edit them there, then run a sync.
 - **Media:** every image in `images.json`, with what uses it, plus uploads.
 - **Style guide:** the club's marks, colours, type and buttons, and the editable brand colours and shapes
