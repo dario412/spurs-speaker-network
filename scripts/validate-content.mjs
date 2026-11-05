@@ -286,6 +286,7 @@ export function validateSite(site) {
     need(text(slide?.name) && text(slide?.line), `home.slides[${i}]`, 'needs a name and a line');
   }
   if (site.home?.aboutImage !== undefined) image(site.home.aboutImage, 'home.aboutImage');
+  need(site.home?.fromSpeakers === undefined || flag(site.home.fromSpeakers), 'home.fromSpeakers', 'must be true or false');
   need(eraKeys.has(site.home?.activeEra), 'home.activeEra', 'is not one of this site’s eras');
   // Stories were removed from the product; a leftover array would otherwise sit in the file unnoticed.
   need(site.stories === undefined, 'stories', 'is no longer supported (stories were removed); delete the "stories" key');

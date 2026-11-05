@@ -3,7 +3,11 @@
 // - site.json `pages: { waysToBook, hospitality, about }` switches optional pages off
 // - `active: false` on a person hides that profile and removes them from every list
 // Pure functions, so every provider (JSON, CMS, Airtable) publishes the same way.
+import { speakerSlots as slots } from '../../src/sites/speaker-slots.mjs';
 import type { ImageId, Images, PageKey, Person, RawSite, Registry, Site, SiteConfig } from './types.ts';
+
+/** site.json `home.fromSpeakers` (src/sites/speaker-slots.mjs, shared with the site tools' loader). */
+export const speakerSlots = (site: Site): Site => slots(site) as Site;
 
 /** Optional pages a site can switch off. Home, roster, profiles, enquiry and the legal pages always exist. */
 export const PAGE_DEFAULTS: Readonly<Record<PageKey, boolean>> = { waysToBook: true, hospitality: true, about: true };
@@ -13,7 +17,7 @@ export const isActive = (item: { active?: boolean }): boolean => item.active !==
 /** The site as published: hidden people removed, licence and verification bookkeeping left behind. */
 export function publishable(raw: RawSite): Site {
   const { licences: _licences, verification: _verification, ...site } = raw;
-  return { ...site, people: site.people.filter(isActive) };
+  return speakerSlots({ ...site, people: site.people.filter(isActive) });
 }
 
 /** Every published site in registry order. */

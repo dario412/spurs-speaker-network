@@ -213,3 +213,30 @@ test('Airtable sync: the slug comes from the Spurs table, else the linked PepTal
   assert.equal(slugFor({}, { fldR5crnvyROkmZsi: 'Not a slug!' }), '');
   assert.equal(slugFor({}, undefined), '');
 });
+
+test('home.fromSpeakers: hero, inset, carousel, about photo and role tiles show only listed speakers, featured first', async () => {
+  const { publishable } = await import('../../lib/content/publish.ts');
+  const raw = loadSite('spurs');
+  const [hidden, ...rest] = raw.people;
+  const site = publishable({
+    ...raw,
+    home: { ...raw.home, fromSpeakers: true },
+    people: [{ ...hidden, active: false }, ...rest],
+    featured: [rest[3].slug, rest[1].slug],
+  });
+  const shown = [site.home.hero, site.home.inset, ...(site.home.slides ?? [])];
+  assert.deepEqual(
+    shown.slice(0, 2).map(slot => slot.name),
+    [rest[3].name, rest[1].name],
+    'featured first',
+  );
+  assert.equal(site.home.slides?.length, raw.home.slides?.length, 'as many slides as configured');
+  const live = new Set(site.people.flatMap(person => [person.hero, person.card]));
+  for (const slot of shown) assert.ok(live.has(slot.image), `${slot.name} is a listed speaker`);
+  assert.ok(!shown.some(slot => slot.name === hidden.name), 'a hidden speaker never appears');
+  for (const role of site.roles.filter(role => site.people.some(person => person.role === role.key)))
+    assert.ok(live.has(role.image ?? ''), `${role.label} tile shows a listed speaker`);
+  assert.ok(live.has(site.home.aboutImage ?? ''), 'about photo is a listed speaker');
+  const off = publishable({ ...raw, home: { ...raw.home, fromSpeakers: false } });
+  assert.deepEqual(off.home.hero, raw.home.hero, 'off: the configured slots stay');
+});

@@ -448,8 +448,11 @@ export async function runSpursSync({
     const flagged = valid.filter(item => item.featured && item.person.active !== false).map(item => item.person.slug);
     const live = people.filter(person => person.active !== false);
     const keptFeatured = site.featured.filter(slug => live.some(person => person.slug === slug));
-    // Ticked in Airtable, else the current picks that are still live, else the first four live speakers.
-    const featured = flagged.length ? flagged : keptFeatured.length ? keptFeatured : live.slice(0, 4).map(person => person.slug);
+    // Ticked in Airtable, else the current picks that are still live topped up with other live speakers (the home
+    // page's featured grid, hero and carousel draw from this list).
+    const featured = flagged.length
+      ? flagged
+      : [...keptFeatured, ...live.map(person => person.slug).filter(slug => !keptFeatured.includes(slug))].slice(0, 8);
     const images = Object.assign({}, site.images, ...valid.map(item => item.images));
     const created = valid.filter(item => !bySlug.has(item.person.slug)).length;
     const roleless = valid.filter(item => item.needsRole).map(item => item.person.name);

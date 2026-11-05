@@ -71,6 +71,10 @@
         },
         "aboutImage": {
           "$ref": "#/$defs/ImageId"
+        },
+        "fromSpeakers": {
+          "type": "boolean",
+          "description": "The hero, inset, carousel, about photo and role tile photos follow the live speakers (featured first), so only listed speakers are ever shown. The slots above then only set how many slides there are."
         }
       },
       "required": [

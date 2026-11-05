@@ -3,6 +3,7 @@
 // the venue-hire promotion and the closing call to action.
 import type { FormatKey, Slot } from '../../lib/content/types.ts';
 import { slotAlt } from '../../lib/render/alt.ts';
+import { categoryRoles } from '../../lib/render/category.ts';
 import type { SiteContext } from '../../lib/render/context.ts';
 import { categoryPath } from '../../lib/render/routes.ts';
 import { homeCopy } from '../../lib/seo/copy.ts';
@@ -205,12 +206,15 @@ export function HomeHero({ ctx }: { ctx: SiteContext }) {
           slot="hero"
           alt={slotAlt(home.hero)}
           priority
-          paths={[
-            'home.hero.image',
-            'home.hero.name',
-            'home.hero.line',
-            ...(home.slides ?? []).flatMap((_, i) => [`home.slides.${i}.image`, `home.slides.${i}.name`, `home.slides.${i}.line`]),
-          ].join(' ')}
+          paths={(home.fromSpeakers
+            ? ['home.fromSpeakers']
+            : [
+                'home.hero.image',
+                'home.hero.name',
+                'home.hero.line',
+                ...(home.slides ?? []).flatMap((_, i) => [`home.slides.${i}.image`, `home.slides.${i}.name`, `home.slides.${i}.line`]),
+              ]
+          ).join(' ')}
         >
           <div className={`tag${home.hero.tag ? ` ${home.hero.tag}` : ''}`}>
             <b>{home.hero.name}</b>
@@ -250,7 +254,9 @@ export function HomePage({ ctx }: { ctx: SiteContext }) {
         ctx={ctx}
         title={ctx.v.homeRolesTitle}
         titlePath="vocab.homeRolesTitle"
-        lead={`${site.roles.map(role => role.label).join(', ')}, each with the formats they're available for.`}
+        lead={`${categoryRoles(site)
+          .map(role => role.label)
+          .join(', ')}, each with the formats they're available for.`}
       />
       <WaysSection ctx={ctx} />
       <FaqBlock ctx={ctx} faq={faq} title={ctx.v.homeFaqTitle} titlePath="vocab.homeFaqTitle" />
