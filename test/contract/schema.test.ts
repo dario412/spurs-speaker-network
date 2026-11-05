@@ -55,7 +55,8 @@ test('the validator reports precise problems', () => {
   assert.deepEqual(errors('person', without(person, 'name')), ['/name is required']);
   assert.deepEqual(errors('person', { ...person, nickname: 'x' }), ['/nickname is not a known field']);
   assert.deepEqual(errors('person', { ...person, slug: 'Jo Marsh' }), ['/slug must match ^[a-z0-9]+(?:-[a-z0-9]+)*$']);
-  assert.deepEqual(errors('person', { ...person, stats: person.stats.slice(0, 3) }), ['/stats must have at least 4 item(s)']);
+  assert.deepEqual(errors('person', { ...person, stats: [...person.stats, person.stats[0]] }), ['/stats must have at most 4 item(s)']);
+  assert.deepEqual(errors('person', { ...person, stats: [] }), [], 'no stats is allowed (the profile leaves them out)');
   assert.deepEqual(errors('person', { ...person, stats: [['a'], ...person.stats.slice(1)] }), ['/stats/0 must have at least 2 item(s)']);
   assert.deepEqual(errors('person', { ...person, role: 'goalkeeper' }), [
     '/role must be one of "player", "manager", "staff", "women", "squad"',

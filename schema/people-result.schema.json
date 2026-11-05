@@ -155,9 +155,8 @@
           "items": {
             "$ref": "#/$defs/Pair"
           },
-          "minItems": 4,
           "maxItems": 4,
-          "description": "Exactly four `[value, caption]` pairs; stable facts only."
+          "description": "Four `[value, caption]` pairs, or none (the profile then leaves out its key stats); stable facts only."
         },
         "bio": {
           "type": "array",
@@ -178,8 +177,7 @@
           "items": {
             "$ref": "#/$defs/Pair"
           },
-          "minItems": 1,
-          "description": "`[year, text]` entries, oldest first."
+          "description": "`[year, text]` entries, oldest first; empty leaves out the career section."
         },
         "talks": {
           "type": "array",
@@ -196,8 +194,7 @@
             "type": "string",
             "minLength": 1
           },
-          "minItems": 1,
-          "description": "Audiences (\"Great for\")."
+          "description": "Audiences (\"Great for\"); empty leaves the list out."
         },
         "industries": {
           "type": "array",
@@ -205,8 +202,7 @@
             "type": "string",
             "minLength": 1
           },
-          "minItems": 1,
-          "description": "Industries."
+          "description": "Industries; empty leaves the list out."
         },
         "formats": {
           "type": "array",

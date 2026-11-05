@@ -246,11 +246,17 @@ export function validateSite(site) {
     for (const key of ['name', 'first', 'roleLabel', 'pos', 'short', 'honour', 'line', 'why', 'langs']) {
       need(typeof person[key] === 'string' && person[key] !== '', `${p}.${key}`, 'is required');
     }
-    need(Array.isArray(person.stats) && person.stats.length === 4, `${p}.stats`, 'needs exactly 4 [value, caption] pairs');
+    // Stats, the career timeline, audiences and industries may be empty (speakers synced with PepTalk's profile data
+    // only); the profile leaves those sections out. Stats are all four or none.
+    need(
+      Array.isArray(person.stats) && [0, 4].includes(person.stats.length),
+      `${p}.stats`,
+      'needs exactly 4 [value, caption] pairs, or none',
+    );
     need(Array.isArray(person.bio) && person.bio.length >= 1, `${p}.bio`, 'needs at least one paragraph');
-    need(Array.isArray(person.timeline) && person.timeline.length >= 1, `${p}.timeline`, 'needs at least one entry');
-    for (const key of ['talks', 'audiences', 'industries'])
-      need(Array.isArray(person[key]) && person[key].length >= 1, `${p}.${key}`, 'needs entries');
+    need(Array.isArray(person.timeline), `${p}.timeline`, 'must be a list');
+    need(Array.isArray(person.talks) && person.talks.length >= 1, `${p}.talks`, 'needs entries');
+    for (const key of ['audiences', 'industries']) need(Array.isArray(person[key]), `${p}.${key}`, 'must be a list');
     need(Array.isArray(person.formats) && person.formats.every(f => FORMAT_KEYS.has(f)), `${p}.formats`, 'has an unknown format');
     if (Array.isArray(site.formatKeys) && Array.isArray(person.formats))
       need(

@@ -331,13 +331,13 @@ A site as stored (`getRawSite()`, `listRawSites()`): hidden people and bookkeepi
 | `short` | string | yes |  | Card line. |
 | `honour` | string | yes |  | Headline honour. |
 | `line` | string | yes |  | Positioning line on the profile. |
-| `stats` | [Pair](#pair)[] (exactly 4) | yes |  | Exactly four `[value, caption]` pairs; stable facts only. |
+| `stats` | [Pair](#pair)[] (max 4) | yes |  | Four `[value, caption]` pairs, or none (the profile then leaves out its key stats); stable facts only. |
 | `bio` | string[] (min 1) | yes |  | Paragraphs of original copy (no quotes, no contested numbers). |
 | `why` | string | yes |  | "Best for" paragraph. |
-| `timeline` | [Pair](#pair)[] (min 1) | yes |  | `[year, text]` entries, oldest first. |
+| `timeline` | [Pair](#pair)[] | yes |  | `[year, text]` entries, oldest first; empty leaves out the career section. |
 | `talks` | string[] (min 1) | yes |  | Talk topics. |
-| `audiences` | string[] (min 1) | yes |  | Audiences ("Great for"). |
-| `industries` | string[] (min 1) | yes |  | Industries. |
+| `audiences` | string[] | yes |  | Audiences ("Great for"); empty leaves the list out. |
+| `industries` | string[] | yes |  | Industries; empty leaves the list out. |
 | `formats` | [FormatKey](#formatkey)[] | yes |  | Booking formats offered, in display order. |
 | `langs` | string | yes |  | Languages, as display text ("English, French"). |
 | `travelsFrom` | string | no |  | Defaults to the site’s `vocab.travelsFrom`. |
