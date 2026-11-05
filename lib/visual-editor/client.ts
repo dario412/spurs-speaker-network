@@ -57,15 +57,34 @@ const pathsOf = (node: Element) => (node.getAttribute(ATTR) ?? '').split(' ').fi
 /** Once per page load (React's development double effects would otherwise start two editors). */
 let started = false;
 
-export async function startVisualEditor(doc: Document): Promise<void> {
+/**
+ * `autoEdit` (the page was opened with ?edit=1, from the CMS's "Edit on the page" buttons) starts in edit mode, and
+ * when the visitor isn't signed in shows a sign-in link instead of nothing.
+ */
+export async function startVisualEditor(doc: Document, { autoEdit = false }: { autoEdit?: boolean } = {}): Promise<void> {
   if (started) return;
   started = true;
-  const response = await fetch(`${API}?path=${encodeURIComponent(location.pathname)}`, { credentials: 'same-origin' }).catch(() => null);
-  if (!response?.ok) return;
-  const catalog = (await response.json()) as Catalog;
-  if (!catalog.canEdit) return;
-
+  if (autoEdit) {
+    const clean = new URL(location.href);
+    clean.searchParams.delete('edit');
+    history.replaceState(history.state, '', clean.pathname + clean.search + clean.hash);
+  }
   const stylesheet = el('link', { attrs: { rel: 'stylesheet', href: '/admin/assets/visual-editor.css' } });
+  const response = await fetch(`${API}?path=${encodeURIComponent(location.pathname)}`, { credentials: 'same-origin' }).catch(() => null);
+  const catalog = response?.ok ? ((await response.json()) as Catalog) : null;
+  if (!catalog?.canEdit) {
+    if (!autoEdit) return;
+    doc.head.append(stylesheet);
+    const text = catalog ? 'Your CMS role can view but not edit.' : 'Sign in to the CMS to edit this page.';
+    const link = el('a', { className: 'pt-ve-btn primary', text: catalog ? 'Open the CMS' : 'Sign in', attrs: { href: '/admin' } });
+    doc.body.append(
+      el('div', { className: 'pt-ve-bar', attrs: { role: 'region', 'aria-label': 'Page editor' } }, [
+        el('p', { className: 'pt-ve-msg', text }),
+        link,
+      ]),
+    );
+    return;
+  }
   doc.head.append(stylesheet);
 
   /** Unsaved values by path. Text fields hold plain text; check fields booleans. */
@@ -291,5 +310,9 @@ export async function startVisualEditor(doc: Document): Promise<void> {
     refresh();
   });
 
+  if (autoEdit) {
+    editing = true;
+    say('Click any outlined text or photo to edit it.');
+  }
   refresh();
 }
