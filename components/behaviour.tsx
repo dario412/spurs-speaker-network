@@ -10,10 +10,13 @@ import { startVisualEditor } from '../lib/visual-editor/client.ts';
 const EDITOR_COOKIE = 'pt_cms_edit=1';
 
 export function Behaviour() {
-  useEffect(() => startBehaviour(document), []);
   useEffect(() => {
-    if (!document.cookie.split('; ').includes(EDITOR_COOKIE)) return;
-    startVisualEditor(document).catch(error => console.warn('Visual editor unavailable', error));
+    // ?edit=1 comes from the CMS's "Edit on the page" buttons; the cookie keeps the bar on while browsing. Read before
+    // startBehaviour, whose roster filters rewrite the query string.
+    const autoEdit = new URLSearchParams(location.search).get('edit') === '1';
+    if (!autoEdit && !document.cookie.split('; ').includes(EDITOR_COOKIE)) return;
+    startVisualEditor(document, { autoEdit }).catch(error => console.warn('Visual editor unavailable', error));
   }, []);
+  useEffect(() => startBehaviour(document), []);
   return null;
 }

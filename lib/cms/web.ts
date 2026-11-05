@@ -14,6 +14,7 @@ import { HttpError } from '../../src/admin/http.mjs';
 import { FORMATS, VOCAB } from '../../src/copy/defaults.mjs';
 import { parseLegal } from '../content/legal.ts';
 import { FILLED_VOCAB, vocabTokens } from '../render/context.ts';
+import { categoryPath } from '../render/routes.ts';
 import {
   type CmsUser,
   can,
@@ -92,6 +93,9 @@ export interface CmsDeps {
 }
 
 const FLASH_COOKIE = 'pt_cms_flash';
+/** Why an email may not go out: no Resend key, or Resend's test sender (it only delivers to the account owner). */
+const MAIL_HELP =
+  'Resend sends to other people only from a verified domain: verify one in Resend and set AUTH_EMAIL_FROM to an address on it.';
 const PREFIX = '/admin';
 const LEGAL_KINDS = ['terms', 'privacy', 'accessibility'] as const;
 
@@ -348,6 +352,7 @@ async function route(request: Request, url: URL, path: string, method: string, d
     description: string;
     action: string;
     live: string | null;
+    visual?: string;
     sections: (site: SiteLike) => Section[];
     crumbs?: [string, string?][];
     wrap?: (editorHtml: string) => string;
@@ -363,6 +368,7 @@ async function route(request: Request, url: URL, path: string, method: string, d
         description: opts.wrap ? 'Colours and shapes used across the site.' : opts.description,
         action: opts.action,
         live: opts.live,
+        visual: opts.visual,
         sections,
         images: current.images ?? {},
         csrf: session.csrf,
@@ -484,7 +490,7 @@ async function route(request: Request, url: URL, path: string, method: string, d
           flashCookie({
             text: sent
               ? `Added ${user.email} and emailed them a link to set their password.`
-              : `Added ${user.email}. Email isn’t configured, so send them a reset link once it is (or set their password).`,
+              : `Added ${user.email}, but the invite email couldn’t be sent. ${MAIL_HELP}`,
             kind: sent ? 'ok' : 'warn',
           }),
         ]);
@@ -527,7 +533,7 @@ async function route(request: Request, url: URL, path: string, method: string, d
           text: sent
             ? `Reset link emailed to ${target.email}.`
             : invite
-              ? 'Email isn’t configured, so no link was sent.'
+              ? `The email couldn’t be sent. ${MAIL_HELP}`
               : 'A link was sent in the last two minutes; wait a moment.',
           kind: sent ? 'ok' : 'warn',
         }),
@@ -571,10 +577,30 @@ async function route(request: Request, url: URL, path: string, method: string, d
       description: def.description,
       action: `${PREFIX}/pages/${def.slug}`,
       live: def.live === null ? null : base + def.live,
+      visual: def.slug,
       sections: def.sections,
       crumbs,
       message: `content(${site.slug}): edit ${def.title} in the CMS`,
     });
+  }
+
+  // "Edit on the page": the live page for a page editor, opened in edit mode, with the editor marker set.
+  const visual = /^\/admin\/visual(?:\/([a-z-]+))?$/.exec(path);
+  if (visual && method === 'GET') {
+    const def = findPage(visual[1] ?? 'home');
+    if (!def) throw new HttpError(404, 'There is no such page.');
+    if (!canEdit) return redirect(`${PREFIX}/pages`, [flashCookie({ text: 'Your role can view but not edit content.', kind: 'warn' })]);
+    const firstRole = (site.roles as SiteLike[]).find(role => (site.people as SiteLike[]).some(person => person.role === role.key));
+    const firstPerson = (site.people as SiteLike[]).find(person => person.active !== false);
+    const live =
+      def.live !== null
+        ? base + def.live
+        : def.slug === 'categories' && firstRole
+          ? categoryPath(base, firstRole as never)
+          : def.slug === 'profile' && firstPerson
+            ? `${base}/legends/${firstPerson.slug}`
+            : base;
+    return redirect(`${live || '/'}?edit=1`, [editMarker(true)]);
   }
 
   // Style guide

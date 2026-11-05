@@ -53,6 +53,7 @@ function nav(user: CmsUser, path: string): string {
       'Content',
       [
         { label: 'Pages', href: '/admin/pages', match: /^\/admin\/(pages|legal)/ },
+        { label: 'Edit on the site', href: '/admin/visual', match: /^\/admin\/visual/, show: u => can(u, 'edit_content') },
         { label: 'Speakers', href: '/admin/speakers', match: /^\/admin\/speakers/ },
         { label: 'Media', href: '/admin/media', match: /^\/admin\/media/ },
       ],
@@ -251,7 +252,7 @@ export function dashboardPage(data: DashboardData) {
       site => `<div class="tile">
 <h3>${esc(site.name)} ${site.active ? '<span class="badge ok">Live</span>' : '<span class="badge muted">Inactive</span>'}</h3>
 <p class="sub">${site.people} speakers</p>
-<div class="actions"><a class="btn primary" href="/admin/pages">Edit pages</a><a class="btn" href="/admin/speakers">Speakers</a><a class="btn" href="${esc(site.livePath)}" target="_blank" rel="noopener">View live</a></div>
+<div class="actions"><a class="btn primary" href="/admin/visual">Edit on the site</a><a class="btn" href="/admin/pages">Edit pages</a><a class="btn" href="/admin/speakers">Speakers</a><a class="btn" href="${esc(site.livePath)}" target="_blank" rel="noopener">View live</a></div>
 </div>`,
     )
     .join('');
@@ -411,10 +412,10 @@ export function pagesList(pages: { slug: string; title: string; description: str
   const rows = pages
     .map(
       page => `<tr><td data-label="Page"><b>${esc(page.title)}</b><br><small>${esc(page.description)}</small></td>
-<td data-label="Actions"><div class="actions"><a class="btn primary" href="/admin/pages/${esc(page.slug)}">Edit</a>${page.live !== null ? `<a class="btn" href="${esc(base + page.live)}" target="_blank" rel="noopener">View</a>` : ''}</div></td></tr>`,
+<td data-label="Actions"><div class="actions"><a class="btn primary" href="/admin/pages/${esc(page.slug)}">Edit</a><a class="btn" href="/admin/visual/${esc(page.slug)}">Edit on the page</a>${page.live !== null ? `<a class="btn" href="${esc(base + page.live)}" target="_blank" rel="noopener">View</a>` : ''}</div></td></tr>`,
     )
     .join('');
-  return `<div class="page-head"><div><h1>Pages</h1><p class="sub">Edit the site’s wording and images. Empty fields use the standard wording, shown in grey. Saved changes go live within a minute.</p></div></div>
+  return `<div class="page-head"><div><h1>Pages</h1><p class="sub">Edit the site’s wording and images here, or click <b>Edit on the page</b> to change them on the live page itself. Empty fields use the standard wording, shown in grey. Saved changes go live within a minute.</p></div><a class="btn primary" href="/admin/visual">Edit on the site</a></div>
 <table class="table"><tbody>${rows}
 <tr><td data-label="Page"><b>Legal pages</b><br><small>Terms, privacy and accessibility statement.</small></td><td data-label="Actions"><div class="actions"><a class="btn primary" href="/admin/legal">Edit</a></div></td></tr>
 </tbody></table>`;
@@ -464,6 +465,7 @@ export function pageEditor({
   description,
   action,
   live,
+  visual,
   sections,
   images,
   csrf,
@@ -474,6 +476,8 @@ export function pageEditor({
   description: string;
   action: string;
   live: string | null;
+  /** The page editor's slug, for its "Edit on the page" button. */
+  visual?: string;
   sections: { title: string; intro?: string; fields: EditorField[] }[];
   images: Record<string, string>;
   csrf: string;
@@ -500,7 +504,7 @@ export function pageEditor({
   const save = canEdit
     ? '<div class="savebar"><button class="btn primary">Save changes</button></div>'
     : '<p class="hint">Your role can look but not change anything.</p>';
-  return `<div class="page-head"><div><h1>${esc(title)}</h1><p class="sub">${esc(description)}</p></div>${live !== null ? `<a class="btn" href="${esc(live)}" target="_blank" rel="noopener">View live</a>` : ''}</div>
+  return `<div class="page-head"><div><h1>${esc(title)}</h1><p class="sub">${esc(description)}</p></div><div class="actions">${visual && canEdit ? `<a class="btn primary" href="/admin/visual/${esc(visual)}">Edit on the page</a>` : ''}${live !== null ? `<a class="btn" href="${esc(live)}" target="_blank" rel="noopener">View live</a>` : ''}</div></div>
 ${box}<form method="post" action="${esc(action)}" class="stack"><input type="hidden" name="_csrf" value="${esc(csrf)}">${list}
 <fieldset${canEdit ? '' : ' disabled'}>${body}</fieldset>${save}</form>`;
 }

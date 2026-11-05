@@ -18,8 +18,9 @@ headings, Sofia Pro text, PepTalk blue). There is no way to add sites here: this
   that page shows. An empty field uses the shared default (shown greyed out as the placeholder); empty carousel slides
   and pitch points are dropped. To make more wording editable, add the setting to `site.json` (CLAUDE.md, rule 4) and a
   field to the page's list; `test/next/cms.test.ts` checks every editor saves an untouched form unchanged.
-- **Visual editor** (`lib/visual-editor/client.ts`), like the Credible CMS: signed-in editors see an **Edit page**
-  bar on the live site. In edit mode every element marked with `edit()` (`components/site/primitives.tsx`, a
+- **Visual editor** (`lib/visual-editor/client.ts`), like the Credible CMS: **Edit on the page** (sidebar, Pages list,
+  each page editor, dashboard) opens `/admin/visual/<page>`, which marks the browser and sends it to the live page with
+  `?edit=1`, already in edit mode. After that, signed-in editors see an **Edit page** bar on every page of the site. In edit mode every element marked with `edit()` (`components/site/primitives.tsx`, a
   `data-edit` attribute naming its `site.json` paths) is outlined; clicking one opens a panel with its fields, text
   updates as you type, and **Save** posts to `/admin/api/visual` (session cookie, form token in a header, same-origin
   only), which applies the fields and saves through the same validated path as the page editors. The site only knows
