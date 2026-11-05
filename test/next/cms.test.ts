@@ -204,3 +204,12 @@ test('the visual editor: every element marked on a page is a field the CMS can e
   assert.equal(pageForPath('/spurs', '/spurs/category/first-team'), 'categories');
   assert.equal(pageForPath('/spurs', '/other'), null);
 });
+
+test('Airtable sync: the slug comes from the Spurs table, else the linked PepTalk expert (a slug or a profile URL)', async () => {
+  const { slugFor } = await import('../../lib/cms/sync.ts');
+  assert.equal(slugFor({ fldF7T9szP3ufzdrv: 'Dele-Alli' }, { fldR5crnvyROkmZsi: 'other' }), 'dele-alli');
+  assert.equal(slugFor({}, { fldR5crnvyROkmZsi: 'gary-mabbutt' }), 'gary-mabbutt');
+  assert.equal(slugFor({}, { fldR5crnvyROkmZsi: 'https://getapeptalk.com/speakers/gary-mabbutt/?x=1' }), 'gary-mabbutt');
+  assert.equal(slugFor({}, { fldR5crnvyROkmZsi: 'Not a slug!' }), '');
+  assert.equal(slugFor({}, undefined), '');
+});

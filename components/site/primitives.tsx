@@ -91,7 +91,8 @@ export function Photo({
   const { site } = ctx;
   if (id === null && site.status === 'shell') return <Picture url={null} {...rest} />;
   if (!id || !site.images[id]) throw new Error(`Unknown image ${id} for ${site.slug}`);
-  return <Picture url={site.images[id]} credit={`Getty ${id}`} {...rest} />;
+  // Getty comps carry their id as the credit; other licensed photos (PepTalk's profile photos) carry none.
+  return <Picture url={site.images[id]} credit={/^\d+$/.test(id) ? `Getty ${id}` : undefined} {...rest} />;
 }
 
 /** Visible breadcrumb trail (the same trail is in the page's BreadcrumbList structured data). */

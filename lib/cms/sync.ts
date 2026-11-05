@@ -134,6 +134,22 @@ async function fetchByIds(table: string, ids: string[]): Promise<AirtableRecord[
   return records;
 }
 
+/** Image URLs that don't load (checked once per sync, so a broken link in Airtable never becomes a broken photo). */
+async function brokenImages(urls: string[]): Promise<Set<string>> {
+  const broken = new Set<string>();
+  const queue = [...new Set(urls)];
+  const worker = async () => {
+    for (let next = queue.shift(); next; next = queue.shift()) {
+      const ok = await fetch(next, { method: 'HEAD', cache: 'no-store', signal: AbortSignal.timeout(10_000) })
+        .then(response => response.ok && (response.headers.get('content-type') ?? 'image/').startsWith('image/'))
+        .catch(() => false);
+      if (!ok) broken.add(next);
+    }
+  };
+  await Promise.all(Array.from({ length: 6 }, worker));
+  return broken;
+}
+
 // ---- Cell readers ----
 const text = (fields: Fields, id: string): string => {
   const value = fields[id];
@@ -154,7 +170,8 @@ const list = (fields: Fields, id: string): string[] => {
     : [];
 };
 const url = (fields: Fields, id: string): string | null => {
-  const value = text(fields, id);
+  // A doubled folder ("/images/images/") is a known slip in PepTalk's image links.
+  const value = text(fields, id).replace(/\/images\/images\//, '/images/');
   return /^https:\/\/\S+$/.test(value) ? value : null;
 };
 /** Airtable rich text is markdown: plain paragraphs, formatting marks removed. */
@@ -190,10 +207,10 @@ const FORMAT_MAP: Record<string, FormatKey[]> = {
 };
 const ORDER: FormatKey[] = ['keynote', 'dinner', 'appearance', 'workshop', 'virtual'];
 
-/** The site role, or null when Airtable doesn't say and the linked expert isn't a footballer (shown only once set). */
-function roleFor(fields: Fields, expertTypes: string[] = []): Person['role'] | null {
+/** The site role from "Spurs roles" and "Team", or null when the record sets neither. */
+function roleFor(fields: Fields): Person['role'] | null {
   const roles = list(fields, F.roles).map(role => role.toLowerCase());
-  if (!roles.length && !text(fields, F.team) && !expertTypes.some(type => FOOTBALL_TYPES.test(type))) return null;
+  if (!roles.length && !text(fields, F.team)) return null;
   if (text(fields, F.team) === "Women's") return 'women';
   if (roles.includes('manager')) return 'manager';
   if (roles.includes('player')) return text(fields, F.status) === 'Current' ? 'squad' : 'player';
@@ -230,6 +247,7 @@ function mapRecord(
   expert: Fields | undefined,
   lookups: { topics: Map<string, string>; languages: Map<string, string>; types: Map<string, string> },
   site: RawSite,
+  broken: Set<string> = new Set(),
 ): Mapped | { problem: string } {
   const f = record.fields;
   const x = expert ?? {};
@@ -239,27 +257,39 @@ function mapRecord(
   const slug = slugFor(f, expert);
   if (!slug) return { problem: 'no Slug (in this table or on the linked PepTalk expert)' };
   const images: Record<string, string> = {};
+  const usable = (id: string | null | undefined) => (id && !broken.has(site.images[id] ?? '') ? id : undefined);
   const image = (value: string | null, fallback: string | null | undefined): string | undefined => {
-    if (!value) return fallback ?? undefined;
+    if (!value || broken.has(value)) return usable(fallback);
     const id = imageIdFor(value);
     images[id] = value;
     return id;
   };
-  const expertImage = url(x, E.image) ?? url(f, F.headshot);
+  const expertImage = [url(x, E.image), url(f, F.headshot)].find(value => value && !broken.has(value)) ?? null;
   const hero = image(url(f, F.hero), existing?.hero) ?? image(expertImage, undefined);
   const card = image(url(f, F.card), existing?.card ?? hero);
   const galleryUrls = F.gallery.map(id => url(f, id));
   const gallery: string[] | undefined = galleryUrls.some(Boolean)
     ? galleryUrls.map((value, i) => image(value, existing?.gallery?.[i]) ?? (hero as string))
     : existing?.gallery?.map(id => id ?? (hero as string));
-  if (!hero || !card) return { problem: 'no image (add an image URL here or on the linked PepTalk expert)' };
+  if (!hero || !card) {
+    const dead = [url(f, F.hero), url(x, E.image), url(f, F.headshot)].filter((value): value is string =>
+      Boolean(value && broken.has(value)),
+    );
+    return {
+      problem: dead.length
+        ? `the photo link doesn’t load (${dead[0]}); fix it in Airtable`
+        : 'no image (add an image URL here or on the linked PepTalk expert)',
+    };
+  }
   const formats = new Set<FormatKey>();
   for (const choice of list(f, F.formats)) for (const key of FORMAT_MAP[choice.toLowerCase()] ?? []) formats.add(key);
   if (text(f, F.virtual).toLowerCase() === 'yes') formats.add('virtual');
   const offered = (site.formatKeys ?? ORDER).filter(key => formats.has(key));
-  const inferred = roleFor(f, expertTypes);
-  // No Spurs role and not a footballer: synced hidden, so nobody is presented as something they are not.
-  const role = inferred ?? existing?.role ?? 'player';
+  // Airtable's Spurs role, else the speaker's role on the site, else "ex-player" for someone PepTalk lists as a
+  // footballer. Anyone else is synced hidden until a role is set, so nobody is presented as something they are not.
+  const footballer = expertTypes.some(type => FOOTBALL_TYPES.test(type));
+  const known = roleFor(f) ?? (existing && existing.active !== false ? existing.role : null) ?? (footballer ? 'player' : null);
+  const role = known ?? 'player';
   const roleName = (site.roles ?? []).find(item => item.key === role);
   const expertBio = paragraphs(text(x, E.longBio));
   const expertTalks = list(x, E.topics)
@@ -280,7 +310,7 @@ function mapRecord(
     roleLabel: text(f, F.roleLabel) || existing?.roleLabel || roleName?.singular || roleName?.label || '',
     era: existing?.era ?? site.home.activeEra,
     limited: f[F.limited] === true,
-    active: text(f, F.publishing) !== 'Unlisted' && (inferred !== null || existing !== undefined),
+    active: text(f, F.publishing) !== 'Unlisted' && known !== null,
     hero,
     card,
     gallery: (gallery ?? [hero, hero, hero]).slice(0, 3),
@@ -314,7 +344,7 @@ function mapRecord(
   const travels = text(f, F.travelsFrom);
   if (travels) person.travelsFrom = travels;
   if (!person.talks.length) person.talks = existing?.talks?.length ? existing.talks : expertTalks;
-  return { person, images, featured: f[F.featured] === true, needsRole: inferred === null && existing === undefined };
+  return { person, images, featured: f[F.featured] === true, needsRole: known === null };
 }
 
 /** The validator's problems for one speaker (checked inside the site, so roles, formats and images resolve). */
@@ -368,13 +398,22 @@ export async function runSpursSync({
     const bySlug = new Map(site.people.map(person => [person.slug, person]));
     const expertIds = [...new Set(records.flatMap(record => list(record.fields, F.expert)))];
     const experts = new Map((await fetchByIds(EXPERTS_TABLE, expertIds)).map(record => [record.id, record.fields]));
+    const imageFields = [F.hero, F.card, F.headshot, ...F.gallery];
+    // Getty comps are checked when they are chosen; everything else is checked on every sync.
+    const broken = await brokenImages(
+      [
+        ...records.flatMap(record => imageFields.map(field => url(record.fields, field))),
+        ...[...experts.values()].map(fields => url(fields, E.image)),
+        ...site.people.flatMap(person => [person.hero, person.card, ...(person.gallery ?? [])].map(id => site.images[id ?? ''])),
+      ].filter((value): value is string => Boolean(value) && !String(value).includes('media.gettyimages.com')),
+    );
     const skipped: { name: string; problem: string }[] = [];
     const valid: Mapped[] = [];
     const seen = new Set<string>();
     for (const record of records) {
       const name = text(record.fields, F.name) || record.id;
       const expert = experts.get(list(record.fields, F.expert)[0] ?? '');
-      const mapped = mapRecord(record, bySlug.get(slugFor(record.fields, expert)), expert, lookups, site);
+      const mapped = mapRecord(record, bySlug.get(slugFor(record.fields, expert)), expert, lookups, site, broken);
       if ('problem' in mapped) {
         skipped.push({ name, problem: mapped.problem });
         continue;
