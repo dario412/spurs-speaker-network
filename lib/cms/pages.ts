@@ -4,7 +4,7 @@
 // An empty field falls back to the shared default (shown as the placeholder); optional rows left empty are dropped.
 import { FAQ, FORMATS, VOCAB } from '../../src/copy/defaults.mjs';
 
-export type FieldKind = 'text' | 'textarea' | 'lines' | 'image' | 'color' | 'select' | 'check' | 'url';
+export type FieldKind = 'text' | 'textarea' | 'lines' | 'image' | 'color' | 'select' | 'check' | 'url' | 'slides' | 'speakers';
 
 export interface Field {
   /** Dotted path into site.json; numbers index arrays (roles.1.pitch.points.0.title). */
@@ -107,6 +107,9 @@ export const PAGES: PageDef[] = [
           { path: 'home.hero.image', label: 'Image', kind: 'image' },
           { path: 'home.hero.name', label: 'Name' },
           { path: 'home.hero.line', label: 'Caption' },
+          { path: 'home.inset.image', label: 'Small photo: image', kind: 'image' },
+          { path: 'home.inset.name', label: 'Small photo: name' },
+          { path: 'home.inset.line', label: 'Small photo: caption' },
         ],
       },
       ...rows(site.home?.slides?.length ?? 0, 2, 8).map(i => ({
@@ -139,7 +142,15 @@ export const PAGES: PageDef[] = [
       {
         title: 'Ways to book',
         intro: 'The formats themselves are edited under Pages → Ways to book.',
-        fields: [vocab('waysEyebrow', 'Eyebrow'), { path: 'waysTitle', label: 'Heading' }, vocab('waysHomeLead', 'Intro', 'textarea')],
+        fields: [
+          vocab('waysEyebrow', 'Eyebrow'),
+          { path: 'waysTitle', label: 'Heading' },
+          vocab('waysHomeLead', 'Intro', 'textarea'),
+          vocab('waysSeeWho', 'Format link'),
+          vocab('waysHelpTitle', 'Help tile heading'),
+          vocab('waysHelpText', 'Help tile text', 'textarea'),
+          vocab('askTeam', 'Help tile link'),
+        ],
       },
       {
         title: 'FAQs',
@@ -165,6 +176,15 @@ export const PAGES: PageDef[] = [
           { path: 'motto', label: 'Eyebrow (motto)' },
           vocab('ctaTitle', 'Heading', 'text', TOKENS),
           vocab('ctaLead', 'Line', 'textarea'),
+          vocab('ctaBrowse', 'Second link', 'text', TOKENS),
+        ],
+      },
+      {
+        title: 'Buttons and links',
+        fields: [
+          vocab('checkAvailability', 'Check availability button', 'text', 'Used on every page.'),
+          vocab('findButton', 'Hero search button', 'text', TOKENS),
+          vocab('seeAllLink', 'Featured speakers link', 'text', TOKENS),
         ],
       },
       {
@@ -304,6 +324,10 @@ export const PAGES: PageDef[] = [
           { path: 'eventSpaces.imageAlt', label: 'Image description' },
           { path: 'eventSpaces.buttonText', label: 'Button text' },
           { path: 'eventSpaces.url', label: 'Button link', kind: 'url' },
+          vocab('eventSpacesNav', 'Menu link'),
+          vocab('esVenueTitle', '“Already have a venue?” heading'),
+          vocab('esVenueText', '“Already have a venue?” text', 'textarea', TOKENS),
+          vocab('esVenueLink', '“Already have a venue?” link', 'text', TOKENS),
         ],
       },
     ],
@@ -320,7 +344,13 @@ export const PAGES: PageDef[] = [
           { path: 'pages.about', label: 'Show the About page', kind: 'check', default: true },
           vocab('aboutTitle', 'Title'),
           vocab('aboutLead', 'Intro', 'textarea', 'Follows the platform name: “Spurs Speaker Network …”.'),
-          { path: 'home.aboutImage', label: 'Image', kind: 'image' },
+          { path: 'home.hospitalityImage', label: 'Wide photo', kind: 'image' },
+          {
+            path: 'home.aboutImage',
+            label: 'Image',
+            kind: 'image',
+            hint: 'Follows the speakers while “Use the synced speakers” is on (Home).',
+          },
         ],
       },
     ],
@@ -386,6 +416,14 @@ export const PAGES: PageDef[] = [
         ],
       },
       {
+        title: 'Menu',
+        fields: [
+          { path: 'vocab.navLabels.legends', label: 'Speakers link', placeholder: 'Legends' },
+          { path: 'vocab.navLabels.ways', label: 'Ways to book link', placeholder: 'Ways to book' },
+          { path: 'vocab.navLabels.about', label: 'About link', placeholder: 'About' },
+        ],
+      },
+      {
         title: 'Pages',
         fields: [{ path: 'pages.waysToBook', label: 'Show the Ways to book page', kind: 'check', default: true }],
       },
@@ -448,6 +486,21 @@ export function fieldCatalog(site: SiteLike): Map<string, Field & { page: string
   const catalog = new Map<string, Field & { page: string }>();
   for (const page of PAGES)
     for (const field of fieldsOf(page.sections(site))) if (!catalog.has(field.path)) catalog.set(field.path, { ...field, page: page.slug });
+  // The visual editor edits these lists as a whole (add, remove, reorder) instead of row by row.
+  catalog.set('home.slides', {
+    path: 'home.slides',
+    label: 'Carousel slides',
+    kind: 'slides',
+    hint: 'Shown after the first photo, in this order.',
+    page: 'home',
+  });
+  catalog.set('featured', {
+    path: 'featured',
+    label: 'Featured speakers',
+    kind: 'speakers',
+    hint: 'In order: the first is the hero photo, the second the small photo, the next ones the carousel, and the first four the featured cards. Speakers ticked “Featured” in Airtable replace this list at the next sync.',
+    page: 'home',
+  });
   return catalog;
 }
 
@@ -527,10 +580,11 @@ const collapseFaq = (site: SiteLike) => {
 };
 
 /** The current value of a field as the form shows it. */
-export function fieldValue(site: SiteLike, field: Field): string | boolean {
+export function fieldValue(site: SiteLike, field: Field): string | boolean | unknown[] {
   const copy = structuredClone(site);
   expandFaq(copy);
   const value = getPath(copy, field.path);
+  if (field.kind === 'slides' || field.kind === 'speakers') return Array.isArray(value) ? value : [];
   if (field.kind === 'check') return typeof value === 'boolean' ? value : field.default === true;
   if (field.kind === 'lines') return Array.isArray(value) ? value.join('\n') : '';
   return typeof value === 'string' ? value : value === undefined || value === null ? '' : String(value);
@@ -543,7 +597,17 @@ export function applyForm(site: SiteLike, fields: Field[], form: { get(name: str
   for (const field of fields) {
     const raw = form.get(field.path);
     let value: unknown;
-    if (field.kind === 'check') {
+    if (field.kind === 'slides') {
+      // { image, name, line } rows (the visual editor sends the whole list); incomplete rows are dropped.
+      const slides = (Array.isArray(raw) ? raw : [])
+        .map(row => (row && typeof row === 'object' ? (row as Record<string, unknown>) : {}))
+        .map(row => ({ image: String(row.image ?? '').trim(), name: String(row.name ?? '').trim(), line: String(row.line ?? '').trim() }))
+        .filter(row => row.image || row.name || row.line);
+      value = slides.length ? slides : undefined;
+    } else if (field.kind === 'speakers') {
+      const slugs = (Array.isArray(raw) ? raw : []).map(item => String(item).trim()).filter(Boolean);
+      value = slugs.length ? [...new Set(slugs)] : undefined;
+    } else if (field.kind === 'check') {
       const on = raw === 'on';
       value = on === (field.default === true) ? undefined : on;
     } else {

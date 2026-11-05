@@ -544,6 +544,18 @@ Wording overrides; any key left out keeps the default in src/copy/defaults.mjs (
 | `step3Text` | string | no |  |  |
 | `ctaTitle` | string | no |  |  |
 | `ctaLead` | string | no |  |  |
+| `checkAvailability` | string | no |  |  |
+| `eventSpacesNav` | string | no |  |  |
+| `findButton` | string | no |  |  |
+| `seeAllLink` | string | no |  |  |
+| `waysSeeWho` | string | no |  |  |
+| `waysHelpTitle` | string | no |  |  |
+| `waysHelpText` | string | no |  |  |
+| `askTeam` | string | no |  |  |
+| `esVenueTitle` | string | no |  |  |
+| `esVenueText` | string | no |  |  |
+| `esVenueLink` | string | no |  |  |
+| `ctaBrowse` | string | no |  |  |
 | `officialSmall` | string | no |  |  |
 | `currentNoun` | string | no |  |  |
 | `navLabels` | { legends?, ways?, hospitality?, about? } | no |  |  |

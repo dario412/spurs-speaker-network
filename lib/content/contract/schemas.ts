@@ -289,6 +289,18 @@ const vocabShape = {
   step3Text: str(),
   ctaTitle: str(),
   ctaLead: str(),
+  checkAvailability: str(),
+  eventSpacesNav: str(),
+  findButton: str(),
+  seeAllLink: str(),
+  waysSeeWho: str(),
+  waysHelpTitle: str(),
+  waysHelpText: str(),
+  askTeam: str(),
+  esVenueTitle: str(),
+  esVenueText: str(),
+  esVenueLink: str(),
+  ctaBrowse: str(),
 };
 const VocabFull = s.object({
   ...vocabShape,

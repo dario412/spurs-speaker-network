@@ -204,6 +204,19 @@ export interface Vocab {
   step3Text: string;
   ctaTitle: string;
   ctaLead: string;
+  /** Link and button labels (placeholders filled on render). */
+  checkAvailability: string;
+  eventSpacesNav: string;
+  findButton: string;
+  seeAllLink: string;
+  waysSeeWho: string;
+  waysHelpTitle: string;
+  waysHelpText: string;
+  askTeam: string;
+  esVenueTitle: string;
+  esVenueText: string;
+  esVenueLink: string;
+  ctaBrowse: string;
   /** Keys with no shared default. */
   officialSmall?: string;
   currentNoun?: string;

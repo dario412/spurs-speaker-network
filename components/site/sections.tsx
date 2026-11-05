@@ -48,7 +48,7 @@ export function Head({
   link?: [string, string] | null;
   id?: string;
   /** site.json paths of the eyebrow, title and lead, for the visual editor. */
-  paths?: { eyebrow?: string; title?: string; lead?: string };
+  paths?: { eyebrow?: string; title?: string; lead?: string; link?: string };
 }) {
   return (
     <div className="head">
@@ -66,7 +66,7 @@ export function Head({
         </p>
       ) : null}
       {link ? (
-        <A demo={ctx.demo} className="more" href={link[0]}>
+        <A demo={ctx.demo} className="more" href={link[0]} {...edit(paths.link)}>
           {link[1]} <span aria-hidden="true">→</span>
         </A>
       ) : null}
@@ -137,7 +137,8 @@ export function RoleList({
                       cls="thumb top"
                       slot="cat"
                       alt=""
-                      paths={site.home.fromSpeakers ? undefined : `${r}.image`}
+                      paths={site.home.fromSpeakers ? 'home.fromSpeakers featured' : `${r}.image`}
+                      imagePath={site.home.fromSpeakers ? undefined : `${r}.image`}
                     />
                   ) : (
                     <span className="thumb" />
@@ -212,8 +213,8 @@ export function HowItWorks({ ctx, form }: { ctx: SiteContext; form?: ReactNode }
               {v.howHeadline}
             </h2>
           </div>
-          <A demo={demo} className="btn btn-cta" href={`${base}/check-availability`}>
-            Check availability <span aria-hidden="true">→</span>
+          <A demo={demo} className="btn btn-cta" href={`${base}/check-availability`} {...edit('vocab.checkAvailability')}>
+            {v.checkAvailability} <span aria-hidden="true">→</span>
           </A>
         </div>
         {list}
@@ -322,11 +323,11 @@ export function CtaBand({ ctx, title, children }: { ctx: SiteContext; title?: st
           <p {...edit(!children && 'vocab.ctaLead')}>{children ?? v.ctaLead}</p>
         </div>
         <div className="actions">
-          <A demo={demo} className="btn btn-cta btn-lg" href={`${base}/check-availability`}>
-            Check availability <span aria-hidden="true">→</span>
+          <A demo={demo} className="btn btn-cta btn-lg" href={`${base}/check-availability`} {...edit('vocab.checkAvailability')}>
+            {v.checkAvailability} <span aria-hidden="true">→</span>
           </A>
-          <A demo={demo} className="quiet" href={`${base}/legends`}>
-            or browse all {v.legendsNoun}
+          <A demo={demo} className="quiet" href={`${base}/legends`} {...edit('vocab.ctaBrowse')}>
+            {v.ctaBrowse}
           </A>
         </div>
       </div>

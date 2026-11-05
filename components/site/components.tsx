@@ -165,18 +165,19 @@ export function WaysGrid({
             <div className="way" key={key}>
               <Heading {...edit(`formats.${key}.title`)}>{format.title}</Heading>
               <p {...edit(`formats.${key}.short`)}>{format.short}</p>
-              <A demo={demo} className="more" href={`${base}/legends?format=${key}`}>
-                See who’s available<span className="sr-only"> for {format.title.toLowerCase()}</span> <span aria-hidden="true">→</span>
+              <A demo={demo} className="more" href={`${base}/legends?format=${key}`} {...edit('vocab.waysSeeWho')}>
+                {ctx.v.waysSeeWho}
+                <span className="sr-only"> for {format.title.toLowerCase()}</span> <span aria-hidden="true">→</span>
               </A>
             </div>
           );
         })}
         {help ? (
           <div className="way way-help">
-            <Heading>Not sure which?</Heading>
-            <p>Tell us about your event and we’ll suggest the right format and speaker.</p>
-            <A demo={demo} className="more" href={`${base}/check-availability`}>
-              Ask the bookings team <span aria-hidden="true">→</span>
+            <Heading {...edit('vocab.waysHelpTitle')}>{ctx.v.waysHelpTitle}</Heading>
+            <p {...edit('vocab.waysHelpText')}>{ctx.v.waysHelpText}</p>
+            <A demo={demo} className="more" href={`${base}/check-availability`} {...edit('vocab.askTeam')}>
+              {ctx.v.askTeam} <span aria-hidden="true">→</span>
             </A>
           </div>
         ) : null}

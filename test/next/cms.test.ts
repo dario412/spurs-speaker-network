@@ -240,3 +240,23 @@ test('home.fromSpeakers: hero, inset, carousel, about photo and role tiles show 
   const off = publishable({ ...raw, home: { ...raw.home, fromSpeakers: false } });
   assert.deepEqual(off.home.hero, raw.home.hero, 'off: the configured slots stay');
 });
+
+test('visual editor lists: slides and featured speakers save as whole lists; empty rows and repeats are dropped', () => {
+  const site = loadSite('spurs');
+  const catalog = fieldCatalog(site);
+  const slides = catalog.get('home.slides');
+  const featured = catalog.get('featured');
+  assert.equal(slides?.kind, 'slides');
+  assert.equal(featured?.kind, 'speakers');
+  const [a, b] = site.home.slides;
+  const values: Record<string, unknown> = {
+    'home.slides': [b, { image: '', name: '', line: '' }, a],
+    featured: [site.people[2].slug, site.people[1].slug, site.people[2].slug],
+  };
+  const next = applyForm(site, [slides, featured] as never, { get: (key: string) => values[key] ?? null });
+  assert.deepEqual(next.home.slides, [b, a], 'reordered, empty row dropped');
+  assert.deepEqual(next.featured, [site.people[2].slug, site.people[1].slug], 'reordered, repeat dropped');
+  assert.deepEqual(validateSite(next), []);
+  assert.deepEqual(fieldValue(site, slides as never), site.home.slides);
+  for (const key of ['legends', 'ways', 'about']) assert.ok(catalog.has(`vocab.navLabels.${key}`), `menu label ${key} is editable`);
+});

@@ -52,15 +52,17 @@ export function SiteLayout({
 export function SiteHeader({ ctx, path }: { ctx: SiteContext; path: string }) {
   const { site, base, pages, v, nl, demo } = ctx;
   const nav = (
-    [['/legends', nl.legends], pages.waysToBook && ['/ways-to-book', nl.ways], pages.about && ['/about', nl.about]].filter(Boolean) as [
-      string,
-      string,
-    ][]
-  ).map(([href, label]) => (
+    [
+      ['/legends', nl.legends, 'legends'],
+      pages.waysToBook && ['/ways-to-book', nl.ways, 'ways'],
+      pages.about && ['/about', nl.about, 'about'],
+    ].filter(Boolean) as [string, string, string][]
+  ).map(([href, label, key]) => (
     <li key={href}>
       <A
         demo={demo}
         href={`${base}${href}`}
+        {...edit(`vocab.navLabels.${key}`)}
         aria-current={path.startsWith(href) || (href === '/legends' && path.startsWith('/category')) ? 'page' : undefined}
       >
         {label}
@@ -69,8 +71,9 @@ export function SiteHeader({ ctx, path }: { ctx: SiteContext; path: string }) {
   ));
   const venue = site.eventSpaces?.url ? (
     <li>
-      <A demo={demo} href={site.eventSpaces.url} target="_blank" rel="noopener">
-        Event spaces<span className="sr-only"> (opens in a new tab)</span>
+      <A demo={demo} href={site.eventSpaces.url} target="_blank" rel="noopener" {...edit('vocab.eventSpacesNav', 'eventSpaces.url')}>
+        {v.eventSpacesNav}
+        <span className="sr-only"> (opens in a new tab)</span>
       </A>
     </li>
   ) : null;
@@ -119,8 +122,8 @@ export function SiteHeader({ ctx, path }: { ctx: SiteContext; path: string }) {
             {nav}
             {venue}
           </ul>{' '}
-          <A demo={demo} className="btn btn-cta cta" href={`${base}/check-availability`}>
-            Check availability <span aria-hidden="true">→</span>
+          <A demo={demo} className="btn btn-cta cta" href={`${base}/check-availability`} {...edit('vocab.checkAvailability')}>
+            {v.checkAvailability} <span aria-hidden="true">→</span>
           </A>
         </div>
       </header>
@@ -209,7 +212,8 @@ export function SiteFooter({ ctx }: { ctx: SiteContext }) {
               {site.eventSpaces?.url ? (
                 <li>
                   <A demo={demo} href={site.eventSpaces.url} target="_blank" rel="noopener">
-                    Event spaces<span className="sr-only"> (opens in a new tab)</span>
+                    {v.eventSpacesNav}
+                    <span className="sr-only"> (opens in a new tab)</span>
                   </A>
                 </li>
               ) : null}
@@ -221,8 +225,8 @@ export function SiteFooter({ ctx }: { ctx: SiteContext }) {
                 </li>
               ) : null}
               <li>
-                <A demo={demo} href={`${base}/check-availability`}>
-                  Check availability
+                <A demo={demo} href={`${base}/check-availability`} {...edit('vocab.checkAvailability')}>
+                  {v.checkAvailability}
                 </A>
               </li>
             </ul>

@@ -204,4 +204,17 @@ export const VOCAB = {
   step3Text: 'One contract, one point of contact. The bookings team handles logistics, briefing and the day itself.',
   ctaTitle: 'Bring a {short} {legendNoun} to your next event.',
   ctaLead: 'Tell us about your event and get a free, tailored shortlist from the PepTalk bookings team.',
+  // Link and button labels.
+  checkAvailability: 'Check availability',
+  eventSpacesNav: 'Event spaces',
+  findButton: 'Find {legendsNoun}',
+  seeAllLink: 'See all {legendsNoun}',
+  waysSeeWho: 'See who’s available',
+  waysHelpTitle: 'Not sure which?',
+  waysHelpText: 'Tell us about your event and we’ll suggest the right format and speaker.',
+  askTeam: 'Ask the bookings team',
+  esVenueTitle: 'Already have a venue?',
+  esVenueText: 'Bring a {short} {legendNoun} to your own meeting, conference or celebration.',
+  esVenueLink: 'Find a {legendNoun}',
+  ctaBrowse: 'or browse all {legendsNoun}',
 };

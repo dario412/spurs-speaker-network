@@ -58,13 +58,17 @@ export function Picture({
   cls = '',
   children,
   paths,
+  imagePath,
   ...options
-}: PhotoOptions & { url: string | null; credit?: string; cls?: string; children?: ReactNode; paths?: string }) {
+}: PhotoOptions & { url: string | null; credit?: string; cls?: string; children?: ReactNode; paths?: string; imagePath?: string }) {
+  // The visual editor swaps the photo in place when the image at `imagePath` changes.
+  const swap = imagePath ? { 'data-edit-image': imagePath } : {};
   if (!url)
     return (
       <div
         className={`photo noimg ${cls}`}
         {...edit(paths)}
+        {...swap}
         {...(options.alt ? { role: 'img', 'aria-label': `${options.alt}: photo to come` } : {})}
       >
         {children}
@@ -72,7 +76,7 @@ export function Picture({
       </div>
     );
   return (
-    <div className={`photo ${cls}`} {...edit(paths)}>
+    <div className={`photo ${cls}`} {...edit(paths)} {...swap}>
       {/* biome-ignore lint/performance/noImgElement: getImageProps() output; next/image's inline style is blocked by the CSP. */}
       {/* biome-ignore lint/a11y/useAltText: alt is in the spread attributes (required by PhotoOptions). */}
       <img className="ph" {...photoAttributes(url, options)} />
@@ -87,7 +91,14 @@ export function Photo({
   ctx,
   id,
   ...rest
-}: PhotoOptions & { ctx: SiteContext; id: string | null | undefined; cls?: string; children?: ReactNode; paths?: string }) {
+}: PhotoOptions & {
+  ctx: SiteContext;
+  id: string | null | undefined;
+  cls?: string;
+  children?: ReactNode;
+  paths?: string;
+  imagePath?: string;
+}) {
   const { site } = ctx;
   if (id === null && site.status === 'shell') return <Picture url={null} {...rest} />;
   if (!id || !site.images[id]) throw new Error(`Unknown image ${id} for ${site.slug}`);

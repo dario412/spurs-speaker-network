@@ -24,8 +24,8 @@ export function FeaturedGrid({ ctx }: { ctx: SiteContext }) {
           ctx={ctx}
           eyebrow={v.featuredEyebrow}
           title={v.featuredHeadline}
-          link={[`${base}/legends`, `See all ${v.legendsNoun}`]}
-          paths={{ eyebrow: 'vocab.featuredEyebrow', title: 'vocab.featuredHeadline' }}
+          link={[`${base}/legends`, v.seeAllLink]}
+          paths={{ eyebrow: 'vocab.featuredEyebrow', title: 'vocab.featuredHeadline', link: 'vocab.seeAllLink' }}
         />
         <div className="grid">
           {/* A people provider can hide a featured person; skip them rather than fail the page. */}
@@ -55,7 +55,7 @@ export function Squad({ ctx }: { ctx: SiteContext }) {
           title={v.squadHeadline}
           lead={v.squadLead}
           link={first ? [categoryPath(base, first), v.squadLinkText] : null}
-          paths={{ eyebrow: 'vocab.squadEyebrow', title: 'vocab.squadHeadline', lead: 'vocab.squadLead' }}
+          paths={{ eyebrow: 'vocab.squadEyebrow', title: 'vocab.squadHeadline', lead: 'vocab.squadLead', link: 'vocab.squadLinkText' }}
         />
         <div className="grid">
           {squad.slice(0, 4).map(person => (
@@ -119,7 +119,15 @@ export function HeroSlides({ ctx, slides }: { ctx: SiteContext; slides: Slot[] }
   return (
     <>
       {slides.map(slide => (
-        <Photo key={slide.image} ctx={ctx} id={slide.image} cls="slide top" slot="hero" alt={slotAlt(slide)}>
+        <Photo
+          key={slide.image}
+          ctx={ctx}
+          id={slide.image}
+          cls="slide top"
+          slot="hero"
+          alt={slotAlt(slide)}
+          imagePath={ctx.site.home.fromSpeakers ? undefined : `home.slides.${slides.indexOf(slide)}.image`}
+        >
           <div className={`tag${slide.tag ? ` ${slide.tag}` : ''}`}>
             <b>{slide.name}</b>
             <small>{slide.line}</small>
@@ -193,8 +201,8 @@ export function HomeHero({ ctx }: { ctx: SiteContext }) {
               <span>Search</span>
               <input name="q" placeholder="Name or topic" disabled={demo || undefined} />
             </label>{' '}
-            <Button demo={demo} type="submit">
-              Find {v.legendsNoun}
+            <Button demo={demo} type="submit" {...edit('vocab.findButton')}>
+              {v.findButton}
             </Button>
           </Form>
           <TrustChecks ctx={ctx} />
@@ -206,22 +214,34 @@ export function HomeHero({ ctx }: { ctx: SiteContext }) {
           slot="hero"
           alt={slotAlt(home.hero)}
           priority
-          paths={(home.fromSpeakers
-            ? ['home.fromSpeakers']
-            : [
-                'home.hero.image',
-                'home.hero.name',
-                'home.hero.line',
-                ...(home.slides ?? []).flatMap((_, i) => [`home.slides.${i}.image`, `home.slides.${i}.name`, `home.slides.${i}.line`]),
-              ]
-          ).join(' ')}
+          imagePath={home.fromSpeakers ? undefined : 'home.hero.image'}
+          // The hero panel edits both: the featured speakers while the hero follows them, the photos and slides otherwise.
+          paths={[
+            'home.fromSpeakers',
+            'featured',
+            'home.hero.image',
+            'home.hero.name',
+            'home.hero.line',
+            'home.inset.image',
+            'home.inset.name',
+            'home.inset.line',
+            'home.slides',
+          ].join(' ')}
         >
           <div className={`tag${home.hero.tag ? ` ${home.hero.tag}` : ''}`}>
             <b>{home.hero.name}</b>
             <small>{home.hero.line}</small>
           </div>
           {home.slides?.length ? <HeroSlides ctx={ctx} slides={home.slides} /> : null}
-          <Photo ctx={ctx} id={home.inset.image} cls="mini top" slot="mini" alt={slotAlt(home.inset)} eager>
+          <Photo
+            ctx={ctx}
+            id={home.inset.image}
+            cls="mini top"
+            slot="mini"
+            alt={slotAlt(home.inset)}
+            eager
+            imagePath={home.fromSpeakers ? undefined : 'home.inset.image'}
+          >
             <div className="tag">
               <b>{home.inset.name}</b>
               <small>{home.inset.line}</small>

@@ -1436,6 +1436,42 @@
         "ctaLead": {
           "type": "string"
         },
+        "checkAvailability": {
+          "type": "string"
+        },
+        "eventSpacesNav": {
+          "type": "string"
+        },
+        "findButton": {
+          "type": "string"
+        },
+        "seeAllLink": {
+          "type": "string"
+        },
+        "waysSeeWho": {
+          "type": "string"
+        },
+        "waysHelpTitle": {
+          "type": "string"
+        },
+        "waysHelpText": {
+          "type": "string"
+        },
+        "askTeam": {
+          "type": "string"
+        },
+        "esVenueTitle": {
+          "type": "string"
+        },
+        "esVenueText": {
+          "type": "string"
+        },
+        "esVenueLink": {
+          "type": "string"
+        },
+        "ctaBrowse": {
+          "type": "string"
+        },
         "officialSmall": {
           "type": "string"
         },
