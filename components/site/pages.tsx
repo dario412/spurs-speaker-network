@@ -473,11 +473,13 @@ export function ProfilePage({ ctx, person }: { ctx: SiteContext; person: Person 
                 ['gallery', 'Gallery'],
                 ['faq', 'FAQ'],
               ] as const
-            ).map(([id, label]) => (
-              <A demo={demo} key={id} href={`#${id}`}>
-                {label}
-              </A>
-            ))}
+            )
+              .filter(([id]) => id !== 'career' || person.timeline.length > 0)
+              .map(([id, label]) => (
+                <A demo={demo} key={id} href={`#${id}`}>
+                  {label}
+                </A>
+              ))}
           </span>
           <span className="sub-cta">
             <b>{person.first}</b>
@@ -498,7 +500,7 @@ export function ProfilePage({ ctx, person }: { ctx: SiteContext; person: Person 
             ))}
             <div className="why">{person.why}</div>
           </section>{' '}
-          <Timeline ctx={ctx} person={person} />{' '}
+          {person.timeline.length ? <Timeline ctx={ctx} person={person} /> : null}{' '}
           <section id="talks">
             <span className="eyebrow">Talks about</span>
             <h2>Themes &amp; audiences</h2>{' '}
@@ -507,14 +509,18 @@ export function ProfilePage({ ctx, person }: { ctx: SiteContext; person: Person 
                 <h3>Talks about</h3>
                 {tags(person.talks, `${person.first} talks about`, 'tags line')}
               </div>
-              <div>
-                <h3>Great for</h3>
-                {tags(person.audiences, `${person.first} is great for`)}
-              </div>
-              <div>
-                <h3>Industries</h3>
-                {tags(person.industries, `Industries ${person.first} works with`)}
-              </div>
+              {person.audiences.length ? (
+                <div>
+                  <h3>Great for</h3>
+                  {tags(person.audiences, `${person.first} is great for`)}
+                </div>
+              ) : null}
+              {person.industries.length ? (
+                <div>
+                  <h3>Industries</h3>
+                  {tags(person.industries, `Industries ${person.first} works with`)}
+                </div>
+              ) : null}
             </div>
           </section>{' '}
           <ProfileFormats ctx={ctx} person={person} /> <ProfileGallery ctx={ctx} person={person} />{' '}
@@ -584,18 +590,20 @@ export function ProfileHero({ ctx, person }: { ctx: SiteContext; person: Person 
         </div>{' '}
         <Photo ctx={ctx} id={person.hero} cls="top media" slot="profile" alt={personAlt(person)} priority />
       </div>
-      <div className="wrap">
-        <dl className="kstats">
-          {person.stats.map(([value, caption]) => (
-            <div key={caption}>
-              <dt>
-                <small>{caption}</small>
-              </dt>
-              <dd>{value}</dd>
-            </div>
-          ))}
-        </dl>
-      </div>
+      {person.stats.length ? (
+        <div className="wrap">
+          <dl className="kstats">
+            {person.stats.map(([value, caption]) => (
+              <div key={caption}>
+                <dt>
+                  <small>{caption}</small>
+                </dt>
+                <dd>{value}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+      ) : null}
     </section>
   );
 }
@@ -615,8 +623,12 @@ export function AtAGlance({ ctx, person }: { ctx: SiteContext; person: Person })
         </dd>
         <dt>Known for</dt>
         <dd>{person.honour}</dd>
-        <dt>Best for</dt>
-        <dd>{listText(person.audiences)}</dd>
+        {person.audiences.length ? (
+          <>
+            <dt>Best for</dt>
+            <dd>{listText(person.audiences)}</dd>
+          </>
+        ) : null}
         <dt>Talks about</dt>
         <dd>{listText(person.talks)}</dd>
         <dt>Formats</dt>
