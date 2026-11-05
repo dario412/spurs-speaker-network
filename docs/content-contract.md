@@ -388,6 +388,7 @@ Type: `"keynote"` \| `"dinner"` \| `"appearance"` \| `"hospitality"` \| `"brand"
 | `activeEra` | string | yes |  | An `eras[].key`. |
 | `slides` | [Slot](#slot)[] | no |  | More hero slides after `hero`; the hero photo becomes a carousel. |
 | `aboutImage` | [ImageId](#imageid) | no |  | A key of the site’s `images` map: a Getty id today ("2206513784"), the URL’s host and path for R2 images ("media.example.com/people/a.jpg"). `null` only on `status: "shell"` sites (a labelled placeholder renders). |
+| `fromSpeakers` | boolean | no |  | The hero, inset, carousel, about photo and role tile photos follow the live speakers (featured first), so only listed speakers are ever shown. The slots above then only set how many slides there are. |
 
 ### ImageId
 

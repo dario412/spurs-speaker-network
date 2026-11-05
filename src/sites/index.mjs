@@ -9,6 +9,7 @@ import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { emptyLicences } from './licences.mjs';
+import { speakerSlots } from './speaker-slots.mjs';
 
 const optionalJson = (path, dir, fallback) => {
   const url = new URL(path, dir);
@@ -40,10 +41,11 @@ export function loadSite(slug, dir = SITES_DIR) {
 export const isActive = item => item.active !== false;
 
 /** The site as published: hidden people removed, licence and verification bookkeeping left behind. */
-export const publishable = ({ licences: _, verification: __, ...site }) => ({
-  ...site,
-  people: site.people.filter(isActive),
-});
+export const publishable = ({ licences: _, verification: __, ...site }) =>
+  speakerSlots({
+    ...site,
+    people: site.people.filter(isActive),
+  });
 
 /** Every published site in registry order. */
 export const loadSites = (dir = SITES_DIR) =>

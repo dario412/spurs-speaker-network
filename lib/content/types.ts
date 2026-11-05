@@ -78,6 +78,11 @@ export interface Home {
   slides?: Slot[];
   /** Speaker photo beside the about page's introduction. */
   aboutImage?: ImageId;
+  /**
+   * The hero, inset, carousel, about photo and role tiles follow the live speakers (featured first), so a hidden or
+   * removed speaker is never shown (lib/content/publish.ts → speakerSlots). The slots above set how many slides.
+   */
+  fromSpeakers?: boolean;
 }
 
 export interface Role {

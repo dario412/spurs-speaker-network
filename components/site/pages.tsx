@@ -177,7 +177,7 @@ export function LegendsPage({ ctx }: { ctx: SiteContext }) {
               <input
                 className="roster-q"
                 type="search"
-                placeholder="Search by name, e.g. Ledley King"
+                placeholder={`Search by name, e.g. ${site.featured.map(slug => ctx.bySlug[slug]).find(Boolean)?.name ?? site.people[0]?.name ?? 'Ledley King'}`}
                 aria-label={`Search ${v.legendsNoun}`}
                 disabled={demo || undefined}
               />

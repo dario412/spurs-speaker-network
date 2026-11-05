@@ -131,7 +131,14 @@ export function RoleList({
                 <A demo={demo} href={categoryPath(base, role)}>
                   {/* Decorative: the row's label names the role. */}
                   {role.image ? (
-                    <Photo ctx={ctx} id={role.image} cls="thumb top" slot="cat" alt="" paths={`${r}.image`} />
+                    <Photo
+                      ctx={ctx}
+                      id={role.image}
+                      cls="thumb top"
+                      slot="cat"
+                      alt=""
+                      paths={site.home.fromSpeakers ? undefined : `${r}.image`}
+                    />
                   ) : (
                     <span className="thumb" />
                   )}

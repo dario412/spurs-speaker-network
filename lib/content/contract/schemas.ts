@@ -176,6 +176,13 @@ const Home = s.ref(
     activeEra: text().describe('An `eras[].key`.'),
     slides: s.optional(s.array(Slot).describe('More hero slides after `hero`; the hero photo becomes a carousel.')),
     aboutImage: s.optional(ImageId),
+    fromSpeakers: s.optional(
+      s
+        .boolean()
+        .describe(
+          'The hero, inset, carousel, about photo and role tile photos follow the live speakers (featured first), so only listed speakers are ever shown. The slots above then only set how many slides there are.',
+        ),
+    ),
   }),
 );
 

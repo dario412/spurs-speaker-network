@@ -97,6 +97,13 @@ export const PAGES: PageDef[] = [
         title: 'Hero photo',
         intro: 'The first photo in the hero; the carousel slides follow it.',
         fields: [
+          {
+            path: 'home.fromSpeakers',
+            label: 'Use the synced speakers',
+            kind: 'check',
+            default: false,
+            hint: 'The hero, carousel, About photo and role tiles show the listed speakers (featured first), so only speakers synced from Airtable appear. The photos below are then only used if no speaker is listed.',
+          },
           { path: 'home.hero.image', label: 'Image', kind: 'image' },
           { path: 'home.hero.name', label: 'Name' },
           { path: 'home.hero.line', label: 'Caption' },
