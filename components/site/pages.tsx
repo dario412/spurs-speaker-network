@@ -68,8 +68,8 @@ function ShowMore({ ctx }: { ctx: SiteContext }) {
       </Button>
       <p className="roster-help">
         Can’t find who you’re after?{' '}
-        <A demo={demo} href={`${base}/check-availability`}>
-          Ask the bookings team
+        <A demo={demo} href={`${base}/check-availability`} {...edit('vocab.askTeam')}>
+          {ctx.v.askTeam}
         </A>
       </p>
     </div>
@@ -198,7 +198,7 @@ export function LegendsPage({ ctx }: { ctx: SiteContext }) {
           {/* Shown by the filters when nothing matches; shown from the start (no script needed) when the roster is empty. */}
           <p className="empty" hidden={site.people.length > 0}>
             No {v.legendsNoun} match those filters yet.{' '}
-            <A demo={demo} href={v.beyondUrl} rel="noopener">
+            <A demo={demo} href={v.beyondUrl} rel="noopener" {...edit('vocab.beyondLinkText', 'vocab.beyondUrl')}>
               <b>Browse {v.beyondLinkText} →</b>
             </A>
           </p>
@@ -285,7 +285,16 @@ export function CategoryPage({ ctx, role }: { ctx: SiteContext; role: Role }) {
             </div>
           </div>
           {role.image ? (
-            <Photo ctx={ctx} id={role.image} cls="top media" slot="profile" alt={`${role.label}, ${site.orgName}`} priority />
+            <Photo
+              ctx={ctx}
+              id={role.image}
+              cls="top media"
+              slot="profile"
+              alt={`${role.label}, ${site.orgName}`}
+              priority
+              paths={site.home.fromSpeakers ? 'home.fromSpeakers featured' : `roles.${site.roles.indexOf(role)}.image`}
+              imagePath={site.home.fromSpeakers ? undefined : `roles.${site.roles.indexOf(role)}.image`}
+            />
           ) : null}
         </div>
       </section>
@@ -735,8 +744,13 @@ export function ClosingBand({ ctx, person }: { ctx: SiteContext; person: Person 
             <p>Tell us your date and the PepTalk bookings team will come back with availability and an indicative fee.</p>
           </div>
         </div>
-        <A demo={demo} className="btn btn-cta btn-lg" href={`${base}/check-availability?legend=${person.slug}`}>
-          Check availability <span aria-hidden="true">→</span>
+        <A
+          demo={demo}
+          className="btn btn-cta btn-lg"
+          href={`${base}/check-availability?legend=${person.slug}`}
+          {...edit('vocab.checkAvailability')}
+        >
+          {ctx.v.checkAvailability} <span aria-hidden="true">→</span>
         </A>
       </div>
     </section>
@@ -939,7 +953,16 @@ export function AboutPage({ ctx }: { ctx: SiteContext }) {
     >
       <section className="about-media">
         <div className="wrap">
-          <Photo ctx={ctx} id={site.home.hospitalityImage} cls="wide" slot="split" alt="" priority />
+          <Photo
+            ctx={ctx}
+            id={site.home.hospitalityImage}
+            cls="wide"
+            slot="split"
+            alt=""
+            priority
+            paths="home.hospitalityImage"
+            imagePath="home.hospitalityImage"
+          />
           <dl className="facts">
             {facts.map(([value, caption]) => (
               <div key={caption}>
@@ -958,7 +981,7 @@ export function AboutPage({ ctx }: { ctx: SiteContext }) {
             <h2 className="disp" id="intro-title">
               The people who made the club, in your room.
             </h2>
-            <p className="lead" {...edit('vocab.aboutLead', 'home.aboutImage')}>
+            <p className="lead" {...edit('vocab.aboutLead')}>
               {site.platform}{' '}
               {v.aboutLead ??
                 `brings together former ${site.orgName} players, managers and backroom staff, plus today's first-team squad, for keynotes, dinners, workshops and events, all through one official platform.`}
@@ -968,7 +991,15 @@ export function AboutPage({ ctx }: { ctx: SiteContext }) {
             </A>
           </div>
           {photo ? (
-            <Photo ctx={ctx} id={photo} cls="top" slot="split" alt={pictured ? personAlt(pictured) : `A ${site.short} ${v.legendNoun}`} />
+            <Photo
+              ctx={ctx}
+              id={photo}
+              cls="top"
+              slot="split"
+              alt={pictured ? personAlt(pictured) : `A ${site.short} ${v.legendNoun}`}
+              paths={site.home.fromSpeakers ? 'home.fromSpeakers featured' : 'home.aboutImage'}
+              imagePath={site.home.fromSpeakers ? undefined : 'home.aboutImage'}
+            />
           ) : null}
         </div>
       </section>

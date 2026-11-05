@@ -119,6 +119,7 @@ const EDIT_COOKIE = 'pt_cms_edit';
 const editMarker = (on: boolean) =>
   `${EDIT_COOKIE}=${on ? '1' : ''}; Path=/; SameSite=Lax; Max-Age=${on ? SESSION_TTL_S : 0}${process.env.NODE_ENV === 'production' ? '; Secure' : ''}`;
 const VISUAL_API = '/admin/api/visual';
+const VISUAL_UPLOAD = '/admin/api/visual/upload';
 const json = (body: unknown, status = 200, cookies: string[] = []) => {
   const headers = new Headers({ 'Content-Type': 'application/json; charset=utf-8', ...NO_STORE });
   for (const value of cookies) headers.append('Set-Cookie', value);
@@ -254,14 +255,14 @@ async function route(request: Request, url: URL, path: string, method: string, d
   // ---- Signed in ----
   const found = await sessionUser(readCookie(request, SESSION_COOKIE));
   if (!found) {
-    if (path === VISUAL_API) return json({ error: 'signed-out' }, 401, [editMarker(false)]);
+    if (path === VISUAL_API || path === VISUAL_UPLOAD) return json({ error: 'signed-out' }, 401, [editMarker(false)]);
     if (method === 'POST') return redirect(`${PREFIX}/login`);
     return redirect(`${PREFIX}/login?next=${encodeURIComponent(path + url.search)}`);
   }
   const session: Session = { user: found.user, csrf: csrfToken(found.sid) };
   let form: FormData | null = null;
-  if (method === 'POST' && path === VISUAL_API) {
-    // The visual editor posts JSON with the form token in a header.
+  if (method === 'POST' && (path === VISUAL_API || path === VISUAL_UPLOAD)) {
+    // The visual editor posts JSON (or an upload) with the form token in a header.
     if (!csrfOk(found.sid, request.headers.get('x-csrf-token') ?? '')) return json({ error: 'token' }, 403);
   } else if (method === 'POST') {
     form = await request.formData();
@@ -361,7 +362,8 @@ async function route(request: Request, url: URL, path: string, method: string, d
     const render = (current: SiteLike, problems: string[] = [], status = 200) => {
       const sections = opts.sections(current).map(section => ({
         ...section,
-        fields: section.fields.map(f => ({ ...f, value: fieldValue(current, f) })),
+        // Page editors never list the visual editor's list kinds (slides, speakers), so values are text or booleans.
+        fields: section.fields.map(f => ({ ...f, value: fieldValue(current, f) as string | boolean })),
       }));
       const editorHtml = pageEditor({
         title: opts.wrap ? 'Brand settings' : opts.title,
@@ -386,6 +388,36 @@ async function route(request: Request, url: URL, path: string, method: string, d
     if (result.saved?.unchanged) return redirect(opts.action, [flashCookie({ text: 'No changes to save.', kind: 'info' })]);
     return done(opts.action, { text: 'Saved.', kind: 'ok' });
   };
+
+  /** Every image the site has, with what uses it, for the visual editor's photo picker. */
+  const imageLibrary = () => {
+    const uses = imageUses(site);
+    return Object.entries(site.images as Record<string, string>)
+      .map(([id, imageUrl]) => ({ id, url: imageUrl, usedBy: uses.get(id) ?? [] }))
+      .sort((a, b) => Number(/^m-/.test(b.id)) - Number(/^m-/.test(a.id)) || (a.usedBy[0] ?? '~').localeCompare(b.usedBy[0] ?? '~'));
+  };
+
+  // The visual editor's photo upload: the same checks and save as Media, answered in JSON.
+  if (path === VISUAL_UPLOAD && method === 'POST') {
+    if (!canEdit) return json({ ok: false, problems: ['Your role can’t change content.'] }, 403);
+    const upload = await request.formData().catch(() => null);
+    const file = upload?.get('file');
+    if (!(file instanceof File) || !file.size) return json({ ok: false, problems: ['Choose an image.'] }, 422);
+    const origin = process.env.PUBLIC_ORIGIN?.replace(/\/+$/, '') || url.origin;
+    const result = await saveMedia(file, String(upload?.get('alt') ?? ''), session.user.email, origin);
+    if ('problem' in result) return json({ ok: false, problems: [result.problem] }, 422);
+    const saving = await content.saveSite(
+      snap,
+      { ...site, images: { ...site.images, [result.id]: result.url } },
+      { registry: undefined, message: `content(${site.slug}): add image ${result.id}` },
+    );
+    if (saving.problems) {
+      await deleteMedia(result.id);
+      return json({ ok: false, problems: saving.problems }, 422);
+    }
+    await afterSave({ text: 'Uploaded.', kind: 'ok' });
+    return json({ ok: true, image: { id: result.id, url: result.url, usedBy: [] } });
+  }
 
   // The visual editor on the live pages (lib/visual-editor/client.ts): the fields it can edit, and saving them.
   if (path === VISUAL_API) {
@@ -413,7 +445,10 @@ async function route(request: Request, url: URL, path: string, method: string, d
           page: pageForPath(base, url.searchParams.get('path') ?? ''),
           tokens: vocabTokens(site as never, v as never),
           filled: FILLED_VOCAB.map(key => `vocab.${key}`),
-          images: Object.keys(site.images ?? {}),
+          images: imageLibrary(),
+          speakers: (site.people as SiteLike[])
+            .filter(person => person.active !== false)
+            .map(person => ({ slug: person.slug, name: person.name, image: site.images?.[person.card ?? person.hero] ?? null })),
           fields,
         },
         200,
@@ -430,7 +465,7 @@ async function route(request: Request, url: URL, path: string, method: string, d
       get: (key: string) => {
         const value = values[key];
         if (typeof value === 'boolean') return value ? 'on' : null;
-        return typeof value === 'string' ? value : null;
+        return typeof value === 'string' || Array.isArray(value) ? value : null;
       },
     };
     const candidate = applyForm(site, fields as Field[], formLike);

@@ -19,6 +19,7 @@ export function EventSpaces({ ctx }: { ctx: SiteContext }) {
           slot="split"
           cls="event-spaces-photo"
           paths="eventSpaces.image eventSpaces.imageAlt"
+          imagePath="eventSpaces.image"
         />
         <div className="event-spaces-copy">
           <span className="eyebrow" {...edit('eventSpaces.eyebrow')}>
@@ -43,13 +44,11 @@ export function EventSpaces({ ctx }: { ctx: SiteContext }) {
           </A>
           <div className="es-venue">
             <div>
-              <b>Already have a venue?</b>
-              <span>
-                Bring a {site.short} {v.legendNoun} to your own meeting, conference or celebration.
-              </span>
+              <b {...edit('vocab.esVenueTitle')}>{v.esVenueTitle}</b>
+              <span {...edit('vocab.esVenueText')}>{v.esVenueText}</span>
             </div>
-            <A demo={demo} className="more" href={`${base}/legends`}>
-              Find a {v.legendNoun} <span aria-hidden="true">→</span>
+            <A demo={demo} className="more" href={`${base}/legends`} {...edit('vocab.esVenueLink')}>
+              {v.esVenueLink} <span aria-hidden="true">→</span>
             </A>
           </div>
         </div>

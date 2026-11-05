@@ -462,9 +462,6 @@ export async function runSpursSync({
     const next = { ...site, people, images, featured: featured.length ? featured : site.featured };
     if (dryRun) {
       const problems = validateSite(next as never);
-      const changed = valid
-        .filter(item => JSON.stringify(item.person) !== JSON.stringify(bySlug.get(item.person.slug)))
-        .map(item => item.person.name);
       const summary = {
         message: `Preview only, nothing saved: ${valid.length} of ${records.length} records would sync (${people.filter(person => person.active !== false).length} shown on the site)${skipped.length ? `, ${skipped.length} skipped` : ''}${replace ? '' : ' (merge mode)'}${problems.length ? `; the result would fail the content rules: ${problems.slice(0, 2).join('; ')}` : ''}.${notes}`,
         created,

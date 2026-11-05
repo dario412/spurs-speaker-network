@@ -27,6 +27,10 @@ headings, Sofia Pro text, PepTalk blue). There is no way to add sites here: this
   to load the editor from the `pt_cms_edit=1` marker cookie the CMS sets (no secret in it); the editor is bundled with
   the page script because Trusted Types block loading chunks on demand. A new marked element needs its path in a
   page editor's field list; `test/next/cms.test.ts` fails otherwise.
+  Photos open a picker (every image in Media, searchable, with upload) and swap on the page at once (`imagePath` on
+  `Photo` marks which image a photo shows). Link and button labels are wording settings edited in place. The hero
+  panel edits the carousel as a list (add, remove, reorder slides) or, while **Use the synced speakers** is on, the
+  ordered featured speakers that fill the hero, carousel and featured cards.
 - **Speakers:** read-only. Airtable owns the speakers: edit them there, then run a sync.
 - **Media:** every image in `images.json`, with what uses it, plus uploads.
 - **Style guide:** the club's marks, colours, type and buttons, and the editable brand colours and shapes

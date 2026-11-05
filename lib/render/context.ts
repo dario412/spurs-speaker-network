@@ -35,6 +35,11 @@ export const FILLED_VOCAB = [
   'step3Text',
   'ctaTitle',
   'ctaLead',
+  'findButton',
+  'seeAllLink',
+  'esVenueText',
+  'esVenueLink',
+  'ctaBrowse',
 ] as const;
 
 /** The values those placeholders take for a site (decoded content, merged wording). */
