@@ -26,6 +26,7 @@ import {
   csrfToken,
   getUser,
   listUsers,
+  needsTotp,
   type Permission,
   passwordProblem,
   ROLES,
@@ -37,6 +38,7 @@ import {
   sessionCookie,
   sessionUser,
   setPassword,
+  setTotpRequired,
   signIn,
   signValue,
   startTotp,
@@ -205,7 +207,7 @@ async function route(request: Request, url: URL, path: string, method: string, d
         result.error === 'locked' ? 429 : 401,
       );
     }
-    const next = result.user.totpEnabled ? safeNext(String(form.get('next') ?? '')) : `${PREFIX}/2fa`;
+    const next = needsTotp(result.user) ? `${PREFIX}/2fa` : safeNext(String(form.get('next') ?? ''));
     return redirect(next, [cookie(SESSION_COOKIE, sessionCookie(result.user), SESSION_TTL_S)]);
   }
   if (path === `${PREFIX}/forgot`) {
@@ -272,8 +274,9 @@ async function route(request: Request, url: URL, path: string, method: string, d
   if (path === `${PREFIX}/logout` && method === 'POST')
     return redirect(`${PREFIX}/login`, [cookie(SESSION_COOKIE, '', 0), editMarker(false)]);
 
-  // Two-factor sign-in is required before anything else.
-  if (!session.user.totpEnabled || path === `${PREFIX}/2fa`) {
+  // Two-factor sign-in is required before anything else (unless an owner turned it off for this user, who may still
+  // set it up at /admin/2fa).
+  if (needsTotp(session.user) || path === `${PREFIX}/2fa`) {
     if (session.user.totpEnabled) return redirect(PREFIX);
     if (method === 'POST' && path === `${PREFIX}/2fa`) {
       if (await confirmTotp(session.user, String(form?.get('code') ?? '')))
@@ -534,7 +537,7 @@ async function route(request: Request, url: URL, path: string, method: string, d
         throw error;
       }
     }
-    const action = /^\/admin\/users\/([0-9a-f-]{36})(?:\/(active|reset-2fa|invite))?$/.exec(path);
+    const action = /^\/admin\/users\/([0-9a-f-]{36})(?:\/(active|reset-2fa|invite|password|2fa-off|2fa-on))?$/.exec(path);
     if (!action || method !== 'POST') throw new HttpError(404, 'Not found.');
     const [, id, verb] = action;
     const target = await getUser(id);
@@ -551,6 +554,35 @@ async function route(request: Request, url: URL, path: string, method: string, d
         await updateUser(session.user, id, { active });
         return redirect(`${PREFIX}/users`, [
           flashCookie({ text: `${target.email} ${active ? 'reactivated' : 'deactivated and signed out'}.`, kind: 'ok' }),
+        ]);
+      }
+      if (verb === 'password') {
+        const password = String(form?.get('password') ?? '');
+        const problem = password !== String(form?.get('confirm') ?? '') ? 'The two passwords don’t match.' : passwordProblem(password);
+        if (problem) return redirect(`${PREFIX}/users`, [flashCookie({ text: `${target.email}: ${problem}`, kind: 'error' })]);
+        await setPassword(id, password);
+        const self = id === session.user.id ? await getUser(id) : null;
+        return redirect(`${PREFIX}/users`, [
+          flashCookie({
+            text:
+              id === session.user.id
+                ? 'Your password is changed. Your other sessions are signed out.'
+                : `Password set for ${target.email}. They are signed out everywhere and sign in with the new password; share it with them privately.`,
+            kind: 'ok',
+          }),
+          ...(self ? [cookie(SESSION_COOKIE, sessionCookie(self), SESSION_TTL_S)] : []),
+        ]);
+      }
+      if (verb === '2fa-off' || verb === '2fa-on') {
+        await setTotpRequired(id, verb === '2fa-on');
+        return redirect(`${PREFIX}/users`, [
+          flashCookie({
+            text:
+              verb === '2fa-on'
+                ? `Two-factor sign-in is required again for ${target.email}: they set it up at their next step in the CMS.`
+                : `Two-factor sign-in is off for ${target.email}: they sign in with email and password only.`,
+            kind: verb === '2fa-on' ? 'ok' : 'warn',
+          }),
         ]);
       }
       if (verb === 'reset-2fa') {

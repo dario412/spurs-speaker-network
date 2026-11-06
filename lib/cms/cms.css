@@ -332,6 +332,26 @@ form.inline {
   background: linear-gradient(to top, var(--bg) 70%, transparent);
 }
 
+/* Users: set a password */
+.set-password {
+  margin-top: 8px;
+}
+.set-password summary {
+  cursor: pointer;
+  color: var(--accent);
+  font-weight: 500;
+}
+.set-password form {
+  margin-top: 10px;
+}
+.set-password input {
+  width: 100%;
+  height: auto;
+  min-height: 42px;
+  padding: 9px 12px;
+  box-sizing: border-box;
+}
+
 /* Speakers */
 .who {
   display: flex;
