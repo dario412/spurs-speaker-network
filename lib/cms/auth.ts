@@ -26,6 +26,8 @@ export interface CmsUser {
   name: string;
   role: Role;
   totpEnabled: boolean;
+  /** False when an owner turned two-factor sign-in off for this user (db/migrations/002_totp_optional.sql). */
+  totpRequired: boolean;
   active: boolean;
   hasPassword: boolean;
   sessionVersion: number;
@@ -62,6 +64,7 @@ interface UserRow {
   password_hash: string | null;
   totp_secret: string | null;
   totp_enabled: boolean;
+  totp_required?: boolean;
   active: boolean;
   session_version: number;
   created_at: string;
@@ -73,6 +76,7 @@ const toUser = (row: UserRow): CmsUser => ({
   name: row.name,
   role: row.role,
   totpEnabled: row.totp_enabled,
+  totpRequired: row.totp_required !== false,
   active: row.active,
   hasPassword: Boolean(row.password_hash),
   sessionVersion: row.session_version,
@@ -140,6 +144,18 @@ export const resetTotp = async (id: string): Promise<void> => {
     id,
   ]);
 };
+
+/**
+ * Owners only: two-factor sign-in on or off for one user. Off clears their authenticator, so they sign in with email
+ * and password alone; on makes them set it up again before they can do anything else.
+ */
+export const setTotpRequired = async (id: string, required: boolean): Promise<void> => {
+  if (required) await sql().query('UPDATE cms_users SET totp_required = true WHERE id = $1', [id]);
+  else await sql().query('UPDATE cms_users SET totp_required = false, totp_secret = NULL, totp_enabled = false WHERE id = $1', [id]);
+};
+
+/** Two-factor sign-in still has to be set up before this user can use the CMS. */
+export const needsTotp = (user: Pick<CmsUser, 'totpEnabled' | 'totpRequired'>): boolean => !user.totpEnabled && user.totpRequired;
 
 export function passwordProblem(password: string): string | null {
   if (password.length < MIN_PASSWORD) return `Use at least ${MIN_PASSWORD} characters.`;

@@ -56,7 +56,7 @@ Every content file the site reads (`src/sites/registry.json`, `src/sites/<slug>/
 
 | Role | Can |
 |---|---|
-| Owner | everything, including Users (add, change role, deactivate, reset 2FA, email reset links) |
+| Owner | everything, including Users (add, change role, deactivate, reset 2FA, email reset links, set a password, turn 2FA off or back on for a user) |
 | Editor | edit content, upload media, run the Airtable sync |
 | Viewer | look at everything, change nothing |
 
@@ -64,6 +64,9 @@ Every content file the site reads (`src/sites/registry.json`, `src/sites/<slug>/
 - Two-factor sign-in (TOTP, any authenticator app) is required: a user without it can only reach the setup page.
 - Sessions: a signed cookie (`AUTH_SECRET`), 12 hours, re-checked against the database on every request, so
   deactivating a user, resetting their 2FA or changing a password signs them out everywhere at once.
+- Two-factor sign-in is required by default. An owner can turn it off for one user (`cms_users.totp_required`,
+  `db/migrations/002_totp_optional.sql`): their authenticator is cleared and they sign in with email and password
+  only, and they can still set it up themselves from Your account. **Require 2FA** makes them set it up again.
 - Eight failed sign-ins lock that email and that address for 15 minutes.
 - Every form carries a per-session token, and every POST must come from the same origin.
 - The CMS is outside the preview password, always `noindex`, never cached, and disallowed in `robots.txt`.

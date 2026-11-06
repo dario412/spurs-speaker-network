@@ -201,7 +201,9 @@ export function usersPage({ users, me, csrf }: { users: CmsUser[]; me: CmsUser; 
           ? '<span class="badge warn">Invited</span>'
           : user.totpEnabled
             ? '<span class="badge ok">2FA on</span>'
-            : '<span class="badge warn">2FA pending</span>';
+            : !user.totpRequired
+              ? '<span class="badge muted">2FA off</span>'
+              : '<span class="badge warn">2FA pending</span>';
       return `<tr>
 <td data-label="User"><b>${esc(user.name || user.email)}</b><br><small>${esc(user.email)}</small></td>
 <td data-label="Role"><form method="post" action="/admin/users/${esc(user.id)}" class="inline">${token}${roleSelect(user.role)}<button class="btn">Save</button></form></td>
@@ -209,12 +211,25 @@ export function usersPage({ users, me, csrf }: { users: CmsUser[]; me: CmsUser; 
 <td data-label="Actions"><div class="actions">
 <form method="post" action="/admin/users/${esc(user.id)}/invite" class="inline">${token}<button class="btn">Email reset link</button></form>
 ${user.totpEnabled ? `<form method="post" action="/admin/users/${esc(user.id)}/reset-2fa" class="inline">${token}<button class="btn">Reset 2FA</button></form>` : ''}
+${
+  user.totpRequired
+    ? `<form method="post" action="/admin/users/${esc(user.id)}/2fa-off" class="inline">${token}<button class="btn" title="They will sign in with email and password only">Turn off 2FA</button></form>`
+    : `<form method="post" action="/admin/users/${esc(user.id)}/2fa-on" class="inline">${token}<button class="btn">Require 2FA</button></form>`
+}
+</div>
+<details class="set-password"><summary>Set a password</summary>
+<form method="post" action="/admin/users/${esc(user.id)}/password" class="stack narrow">${token}
+${field('New password', 'password', `type="password" autocomplete="new-password" minlength="${MIN_PASSWORD}" required`, '', `At least ${MIN_PASSWORD} characters. They are signed out everywhere and use this password from now on.`)}
+${field('Repeat password', 'confirm', `type="password" autocomplete="new-password" minlength="${MIN_PASSWORD}" required`)}
+<button class="btn primary">Set password</button>
+</form></details>
+<div class="actions">
 ${self ? '' : `<form method="post" action="/admin/users/${esc(user.id)}/active" class="inline">${token}<input type="hidden" name="active" value="${user.active ? 'off' : 'on'}"><button class="btn${user.active ? ' danger' : ''}">${user.active ? 'Deactivate' : 'Reactivate'}</button></form>`}
 </div></td>
 </tr>`;
     })
     .join('');
-  return `<div class="page-head"><div><h1>Users</h1><p class="sub">Owners manage users; editors edit content and run the sync; viewers can look but not change anything.</p></div></div>
+  return `<div class="page-head"><div><h1>Users</h1><p class="sub">Owners manage users; editors edit content and run the sync; viewers can look but not change anything. Owners can set a user’s password and turn two-factor sign-in off for a user (they then sign in with email and password only).</p></div></div>
 <table class="table"><thead><tr><th>User</th><th>Role</th><th>Status</th><th>Actions</th></tr></thead><tbody>${rows}</tbody></table>
 <section class="card" id="new-user"><h2>Add a user</h2>
 <p class="hint">They get an email with a link to set their password, then set up two-factor sign-in the first time they sign in.</p>
@@ -235,7 +250,13 @@ ${field('New password', 'password', `type="password" autocomplete="new-password"
 ${field('Repeat new password', 'confirm', `type="password" autocomplete="new-password" minlength="${MIN_PASSWORD}" required`)}
 <button class="btn primary">Change password</button>
 </form></section>
-<section class="card"><h2>Two-factor sign-in</h2><p>${user.totpEnabled ? 'On. To move it to a new phone, ask an owner to reset it; you’ll set it up again at your next sign-in.' : 'Not set up yet.'}</p></section>`;
+<section class="card"><h2>Two-factor sign-in</h2><p>${
+    user.totpEnabled
+      ? 'On. To move it to a new phone, ask an owner to reset it; you’ll set it up again at your next sign-in.'
+      : user.totpRequired
+        ? 'Not set up yet.'
+        : 'Off for your account (an owner turned it off): you sign in with email and password only. You can still turn it on for yourself.</p><p><a class="btn" href="/admin/2fa">Set up two-factor sign-in</a>'
+  }</p></section>`;
 }
 
 export interface DashboardData {
